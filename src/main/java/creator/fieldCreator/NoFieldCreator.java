@@ -1,5 +1,6 @@
-package creator;
+package creator.fieldCreator;
 
+import creator.fieldCreator.FieldCreator;
 import field.Field;
 import field.NoField;
 

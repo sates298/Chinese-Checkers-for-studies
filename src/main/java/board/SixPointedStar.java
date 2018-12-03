@@ -5,6 +5,10 @@ import field.Field;
 public class SixPointedStar implements Board {
     private Field[][] fields;
 
+    public SixPointedStar(){
+        this.fields = new Field[17][17];
+    }
+
     public Field[][] getFields() {
         return fields;
     }

@@ -1,4 +1,4 @@
-package creator;
+package creator.fieldCreator;
 
 import field.Field;
 import field.Pawn;
