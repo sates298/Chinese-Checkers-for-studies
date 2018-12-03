@@ -1,5 +1,6 @@
 package board;
 
+
 import field.Field;
 
 public class SixPointedStar implements Board {
@@ -16,4 +17,5 @@ public class SixPointedStar implements Board {
     public Field getOneField(int x, int y){
         return this.fields[x][y];
     }
+
 }

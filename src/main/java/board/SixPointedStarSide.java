@@ -115,4 +115,5 @@ public enum SixPointedStarSide implements BoardSide{
     }
 
     public abstract List<Field> getOppositeArea(SixPointedStar board);
+
 }
