@@ -1,4 +1,15 @@
 package field;
 
-public class Field {
+public abstract class Field {
+    int x;
+    int y;
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
 }

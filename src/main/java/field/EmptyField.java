@@ -1,4 +1,4 @@
 package field;
 
-public class EmptyField {
+public class EmptyField extends Field{
 }
