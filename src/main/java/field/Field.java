@@ -19,4 +19,5 @@ public abstract class Field {
     public int getY() {
         return y;
     }
+
 }
