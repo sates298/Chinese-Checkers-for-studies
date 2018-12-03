@@ -1,5 +1,6 @@
 package field;
 
+
 import player.Player;
 
 public class Pawn extends Field {
@@ -14,4 +15,5 @@ public class Pawn extends Field {
     public Player getOwner() {
         return owner;
     }
+
 }
