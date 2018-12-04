@@ -22,10 +22,12 @@ public class MainMovement extends Movement {
 
 
   public void moveOne(Pawn pawn, EmptyField target) {
+    int pawnX = pawn.getX();
+    int pawnY = pawn.getY();
     pawn.setX(target.getX());
     pawn.setY(target.getY());
-    target.setX(pawn.getX());
-    target.setY(pawn.getY());
+    target.setX(pawnX);
+    target.setY(pawnY);
     // TODO swap fields in array
   }
 
@@ -39,14 +41,14 @@ public class MainMovement extends Movement {
     if (!(target instanceof EmptyField)) {
       return false;
     }
-    // all following checks assume that we sue standard cartesian coordinates
+    // all following checks assume that we sue flipped cartesian coordinates (ys raise as we go down)
     //forward move
-    if (target.getY() == pawn.getY()+1) {
+    if (target.getY() == pawn.getY()-1) {
       return pawn.getX() - target.getX() == 0
           || pawn.getX() - target.getX() == 1;
     }
     // backwards move
-    if (target.getY() == pawn.getY()-1) {
+    if (target.getY() == pawn.getY()+1) {
       return pawn.getX() - target.getX() == 0
           || pawn.getX() - target.getX() == -1;
     }
