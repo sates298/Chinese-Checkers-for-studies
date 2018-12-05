@@ -1,7 +1,7 @@
 package server.board;
 
-
 import server.field.Field;
+
 
 public class SixPointedStar implements Board {
     private Field[][] fields;
@@ -21,5 +21,4 @@ public class SixPointedStar implements Board {
     public Field getOneField(int x, int y){
         return this.fields[x][y];
     }
-
 }
