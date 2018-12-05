@@ -1,8 +1,11 @@
 package field;
 
+import board.Board;
+
 public abstract class Field {
-    int x;
-    int y;
+    protected int x;
+    protected int y;
+    protected Board board;
 
     public Field(){
         this.x = 0;
@@ -20,4 +23,11 @@ public abstract class Field {
         return y;
     }
 
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
 }
