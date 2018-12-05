@@ -1,6 +1,6 @@
 package server.field;
 
-import board.Board;
+import server.board.Board;
 
 public abstract class Field {
     protected int x;
