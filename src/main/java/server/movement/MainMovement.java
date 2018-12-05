@@ -19,7 +19,7 @@ public class MainMovement extends Movement {
     return checkMoveOne(pawn, target)
         || checkJump(pawn, target);
   }
-
+  
 
   public void moveOne(Pawn pawn, EmptyField target) {
     int pawnX = pawn.getX();

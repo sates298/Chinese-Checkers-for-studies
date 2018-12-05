@@ -4,6 +4,7 @@ import server.board.Board;
 import server.movement.Movement;
 import server.player.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
@@ -15,6 +16,7 @@ public class Game {
 
   public Game(){
     this. controller = new GameController(this);
+    this.players = new ArrayList<Player>();
 
   }
 
@@ -57,4 +59,5 @@ public class Game {
   public void setMovement(Movement movement) {
     this.movement = movement;
   }
+
 }

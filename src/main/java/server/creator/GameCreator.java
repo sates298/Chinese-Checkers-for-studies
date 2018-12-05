@@ -19,7 +19,6 @@ public class GameCreator {
 
     public Game createGame(String boardType, String movementType) throws WrongMovementTypeException, WrongBoardTypeException {
         Game game = new Game();
-        List<Player> players = new ArrayList<>();
 
         if(boardType.equals("SixPointedStar")){
             boardCreator = new SixPointedStarCreator();
