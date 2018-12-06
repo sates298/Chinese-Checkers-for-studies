@@ -1,25 +1,21 @@
 package server.board;
 
-
 import server.field.Field;
 
-public class SixPointedStar implements Board {
-    private Field[][] fields;
+
+public class SixPointedStar extends Board {
 
     public SixPointedStar(){
-        this.fields = new Field[17][17];
+        setFields(new Field[17][17]);
     }
 
-    public Field[][] getFields() {
-        return fields;
+    @Override
+    public int sizeY() {
+        return 17;
     }
 
-    public void setOneField(Field field){
-        this.fields[field.getX()][field.getY()] = field;
+    @Override
+    public int sizeX() {
+        return 17;
     }
-
-    public Field getOneField(int x, int y){
-        return this.fields[x][y];
-    }
-
 }

@@ -1,6 +1,7 @@
 package server.movement;
 
 import server.board.Board;
+import server.exception.ForbiddenMoveException;
 import server.field.Field;
 import server.field.Pawn;
 import server.player.Player;
@@ -13,6 +14,6 @@ public abstract class Movement {
     this.player = player;
   }
 
-  public abstract void move(Pawn pawn, Field target);
+  public abstract void move(Pawn pawn, Field target) throws ForbiddenMoveException;
   public abstract boolean checkMove(Pawn pawn, Field target);
 }

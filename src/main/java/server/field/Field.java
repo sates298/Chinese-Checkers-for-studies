@@ -1,8 +1,11 @@
 package server.field;
 
+import server.board.Board;
+
 public abstract class Field {
-    int x;
-    int y;
+    private int x;
+    private int y;
+    private Board board;
 
     public Field(){
         this.x = 0;
@@ -18,6 +21,15 @@ public abstract class Field {
 
     public int getY() {
         return y;
+    }
+
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 
     public void setX(int x) {
