@@ -1,4 +1,4 @@
-package server.creator.exception;
+package server.exception;
 
 public class WrongBoardTypeException extends Exception {
 }
