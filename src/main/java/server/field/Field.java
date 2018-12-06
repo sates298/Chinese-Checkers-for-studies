@@ -1,11 +1,11 @@
 package server.field;
 
-import board.Board;
+import server.board.Board;
 
 public abstract class Field {
-    protected int x;
-    protected int y;
-    protected Board board;
+    private int x;
+    private int y;
+    private Board board;
 
     public Field(){
         this.x = 0;
