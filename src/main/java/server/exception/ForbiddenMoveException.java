@@ -1,4 +1,4 @@
 package server.exception;
 
-public class ForbiddenMoveException {
+public class ForbiddenMoveException extends Exception{
 }
