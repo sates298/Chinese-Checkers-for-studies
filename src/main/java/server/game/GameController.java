@@ -1,5 +1,6 @@
 package server.game;
 
+import server.exception.ForbiddenMoveException;
 import server.field.Field;
 import server.field.Pawn;
 import server.player.Player;
@@ -14,7 +15,7 @@ public class GameController {
   public void endGame() {
 
   }
-  public void move(Player player, Pawn pawn, Field target) {
+  public void move(Player player, Pawn pawn, Field target) throws ForbiddenMoveException {
     this.actual.getMovement().move(pawn, target);
   }
   public void skipTurn(Player player) {
