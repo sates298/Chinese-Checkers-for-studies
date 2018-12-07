@@ -49,12 +49,19 @@ public class Server {
             e.printStackTrace(); // delete after testing phase and replace it with smth more user friendly
         }
         while (true) {
-            //todo it is necessary to create infinitely many objects?
+            // start  new thread when new client connects
             try {
-                new GameClientHandler(serverSocket.accept()).start();
+                new Thread(new GameClientHandler(serverSocket.accept())).start();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+    public void stop() {
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -63,7 +70,7 @@ public class Server {
     }
 
 
-    private class GameClientHandler {
+    private class GameClientHandler implements Runnable {
         private Socket clientSocket;
         private PrintWriter out;
         private BufferedReader in;
@@ -74,7 +81,14 @@ public class Server {
             this.clientSocket = client;
         }
 
-        public void start() throws IOException {
+        public void run() {
+            try {
+                handleClient();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        private void handleClient() throws IOException {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(
                     new InputStreamReader(clientSocket.getInputStream()));
@@ -100,27 +114,26 @@ public class Server {
         }
 
         private void handleClientMessage(JsonObject jsonObject) {
-            if (jsonObject.get("command").toString().equals("connect")) {
+            if (jsonObject.get("command").getAsString().equals("connect")) {
                 // request looks like "{"command":"connect", "gameId": "gameId"}"
-                connectToGame(Integer.parseInt(jsonObject.get("gameId").toString()));
+                connectToGame(jsonObject.get("gameId").getAsInt());
                 return;
             }
 
             if (jsonObject.get("command").toString().equals("create")) {
-                createGame();
+                createGame(jsonObject.get("gameType").getAsString(), jsonObject.get("movementType").getAsString());
                 return;
             }
 
-            if (jsonObject.get("command").toString().equals("join")) {
-                joinGame(jsonObject.get("side").toString(), jsonObject.get("color").toString());
+            if (jsonObject.get("command").getAsString().equals("join")) {
+                joinGame(jsonObject.get("side").getAsString(), jsonObject.get("color").getAsString());
                 return;
             }
         }
 
-        private void createGame() {
-            // todo improve method to extends
+        private void createGame(String boardType, String movementType) {
             try {
-                this.game = new GameCreator().createGame("SixPointedStar", "main");
+                this.game = new GameCreator().createGame(boardType, movementType);
                 out.println("{\"status\": \"created\", \"gameId\": \"" + this.game.getGameId() + "\"}");
 
             } catch (WrongMovementTypeException | WrongBoardTypeException e) {
