@@ -12,6 +12,10 @@ public class Player {
 
   public Player() {
   }
+  public Player(BoardSide side, Color color) {
+    this.startingSide = side;
+    this.color = color;
+  }
   public Player(List<Pawn> pawns, BoardSide side, Color color) {
     pawns.forEach(p -> p.setOwner(this));
     this.pawns = pawns;

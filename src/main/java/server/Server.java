@@ -1,6 +1,13 @@
 package server;
 
+import server.creator.GameCreator;
+import server.creator.exception.WrongBoardTypeException;
+import server.creator.exception.WrongMovementTypeException;
+import server.exception.GameFullException;
 import server.game.Game;
+
+import com.google.gson.*;
+import server.player.Player;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -66,10 +73,19 @@ public class Server {
             in = new BufferedReader(
                 new InputStreamReader(clientSocket.getInputStream()));
 
+            JsonParser parser = new JsonParser();
+
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                handleClientMessage(inputLine.split("\\s"));
-                out.println(inputLine);
+                JsonElement jsonTree = parser.parse(inputLine);
+                if (jsonTree.isJsonObject()) {
+                    JsonObject object = jsonTree.getAsJsonObject();
+                    handleClientMessage(object);
+                } else {
+                    // send error message to client
+                    out.println("{\"error\": \"wrong message format\"");
+                }
+                System.out.println(inputLine); // log requests
             }
 
             in.close();
@@ -77,29 +93,50 @@ public class Server {
             clientSocket.close();
         }
 
-        private void handleClientMessage(String[] args) {
-            if (args[0].equals("CONNECT")) {
-                // request looks like "CONNECT [gameId]"
-
-                connectToGame(Integer.parseInt(args[1]));
-
+        private void handleClientMessage(JsonObject jsonObject) {
+            if (jsonObject.get("command").toString().equals("connect")) {
+                // request looks like "{"command":"connect", "gameId": "gameId"}"
+                connectToGame(Integer.parseInt(jsonObject.get("gameId").toString()));
                 return;
             }
 
-            if (args[0].equals("CREATE")) {
+            if (jsonObject.get("command").toString().equals("create")) {
                 createGame();
+                return;
+            }
+
+            if (jsonObject.get("command").toString().equals("join")) {
+                joinGame();
+                return;
             }
         }
 
         private void createGame() {
-            Game g = new Game(); // probably needs a builder
-            Server.this.games.add(g);
-            connectToGame(g.getGameId());
+            try {
+                this.game = new GameCreator().createGame("SixPointedStar", "main");
+                out.println("{\"status\": \"created\", \"gameId\": \"" + this.game.getGameId() + "\"}");
+
+            } catch (WrongMovementTypeException | WrongBoardTypeException e) {
+                out.println("{\"error\": \"" + e.getMessage() + "\"}");
+                e.printStackTrace();
+            }
         }
 
         private void connectToGame(int gameId) {
             // find the game with id equal to gameId
             this.game = games.stream().filter(g -> g.getGameId() == gameId).findFirst().get();
+            out.println("{\"status\": \"connected\", \"gameId\": \"" + gameId + "\"}");
+        }
+
+        private void joinGame() {
+            try {
+                Player p = this.game.getController().addPlayer();
+                out.println("\"status\": \"joined\", \"startingSide\": "
+                    + p.getStartingSide() + "\", \"color\"" + p.getColor() + "\"");
+            } catch (GameFullException e) {
+                e.printStackTrace();
+                out.println("{\"error\": \"" + e.getMessage() + "\"}");
+            }
         }
     }
 }
