@@ -1,12 +1,17 @@
 package server;
 
+import server.board.Board;
+import server.board.BoardSide;
 import server.creator.GameCreator;
 import server.creator.exception.WrongBoardTypeException;
 import server.creator.exception.WrongMovementTypeException;
+import server.exception.BoardSideUsedException;
+import server.exception.ColorUsedException;
 import server.exception.GameFullException;
 import server.game.Game;
 
 import com.google.gson.*;
+import server.player.Color;
 import server.player.Player;
 
 import java.io.BufferedReader;
@@ -106,7 +111,7 @@ public class Server {
             }
 
             if (jsonObject.get("command").toString().equals("join")) {
-                joinGame();
+                joinGame(jsonObject.get("side").toString(), jsonObject.get("color").toString());
                 return;
             }
         }
@@ -117,7 +122,7 @@ public class Server {
                 out.println("{\"status\": \"created\", \"gameId\": \"" + this.game.getGameId() + "\"}");
 
             } catch (WrongMovementTypeException | WrongBoardTypeException e) {
-                out.println("{\"error\": \"" + e.getMessage() + "\"}");
+                out.println("{\"error\": \"" + e + "\"}");
                 e.printStackTrace();
             }
         }
@@ -128,15 +133,14 @@ public class Server {
             out.println("{\"status\": \"connected\", \"gameId\": \"" + gameId + "\"}");
         }
 
-        private void joinGame() {
+        private void joinGame(String side, String color) {
             try {
-                Player p = this.game.getController().addPlayer();
+                Player p = this.game.getController().addPlayer(side, color);
                 out.println("\"status\": \"joined\", \"startingSide\": "
                     + p.getStartingSide() + "\", \"color\"" + p.getColor() + "\"");
-            } catch (GameFullException e) {
+            } catch (GameFullException | BoardSideUsedException | ColorUsedException e) {
                 e.printStackTrace();
-                out.println("{\"error\": \"" + e.getMessage() + "\"}");
+                out.println("{\"error\": \"" + e + "\"}");
             }
-        }
     }
 }
