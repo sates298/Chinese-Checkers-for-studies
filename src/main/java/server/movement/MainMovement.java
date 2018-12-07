@@ -89,11 +89,11 @@ public class MainMovement extends Movement {
         }
         // '\' jump
         return (pawn.getY() - target.getY() == -2
-                    && pawn.getX() - target.getX() == 2
-                    && pawn.getBoard().isPawn(pawn.getX() - 1, pawn.getY() + 1))
+                    && pawn.getX() - target.getX() == -2
+                    && pawn.getBoard().isPawn(pawn.getX() + 1, pawn.getY() + 1))
                 || (pawn.getY() - target.getY() == 2
-                        && pawn.getX() - target.getX() == -2
-                        && pawn.getBoard().isPawn(pawn.getX() +1 , pawn.getY() - 1));
+                        && pawn.getX() - target.getX() == 2
+                        && pawn.getBoard().isPawn(pawn.getX() - 1 , pawn.getY() - 1));
 
 
     }
