@@ -29,13 +29,13 @@ public class Server {
 
     private ServerSocket serverSocket;
 
-    public Server(){
+    public Server() {
         games = new ArrayList<>();
     }
 
 
     public static Server getInstance() {
-        if(instance == null){
+        if (instance == null) {
             instance = new Server();
         }
 
@@ -49,6 +49,7 @@ public class Server {
             e.printStackTrace(); // delete after testing phase and replace it with smth more user friendly
         }
         while (true) {
+            //todo it is necessary to create infinitely many objects?
             try {
                 new GameClientHandler(serverSocket.accept()).start();
             } catch (IOException e) {
@@ -64,7 +65,7 @@ public class Server {
 
     private class GameClientHandler {
         private Socket clientSocket;
-        private PrintWriter  out;
+        private PrintWriter out;
         private BufferedReader in;
 
         private Game game;
@@ -76,7 +77,7 @@ public class Server {
         public void start() throws IOException {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(
-                new InputStreamReader(clientSocket.getInputStream()));
+                    new InputStreamReader(clientSocket.getInputStream()));
 
             JsonParser parser = new JsonParser();
 
@@ -117,6 +118,7 @@ public class Server {
         }
 
         private void createGame() {
+            // todo improve method to extends
             try {
                 this.game = new GameCreator().createGame("SixPointedStar", "main");
                 out.println("{\"status\": \"created\", \"gameId\": \"" + this.game.getGameId() + "\"}");
@@ -137,10 +139,11 @@ public class Server {
             try {
                 Player p = this.game.getController().addPlayer(side, color);
                 out.println("\"status\": \"joined\", \"startingSide\": "
-                    + p.getStartingSide() + "\", \"color\"" + p.getColor() + "\"");
+                        + p.getStartingSide() + "\", \"color\"" + p.getColor() + "\"");
             } catch (GameFullException | BoardSideUsedException | ColorUsedException e) {
                 e.printStackTrace();
                 out.println("{\"error\": \"" + e + "\"}");
             }
+        }
     }
 }

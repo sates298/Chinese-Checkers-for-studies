@@ -28,6 +28,8 @@ public class GameController {
   public void move(Player player, Pawn pawn, Field target) throws ForbiddenMoveException {
     this.actual.getMovement().move(pawn, target);
   }
+
+  //todo this method will be unused, because it will works the same way as endTurn()
   public void skipTurn(Player player) {
 
   }
