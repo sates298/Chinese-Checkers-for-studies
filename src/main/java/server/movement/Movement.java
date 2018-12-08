@@ -1,19 +1,13 @@
 package server.movement;
 
-import server.board.Board;
+
 import server.exception.ForbiddenMoveException;
 import server.field.Field;
 import server.field.Pawn;
-import server.player.Player;
 
-public abstract class Movement {
-  private Board board;
-  private Player player;
 
-  public void setPlayer(Player player) {
-    this.player = player;
-  }
+public interface Movement {
 
-  public abstract void move(Pawn pawn, Field target) throws ForbiddenMoveException;
-  public abstract boolean checkMove(Pawn pawn, Field target);
+  void move(Pawn pawn, Field target) throws ForbiddenMoveException;
+  boolean checkMove(Pawn pawn, Field target);
 }

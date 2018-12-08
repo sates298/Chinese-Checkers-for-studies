@@ -49,6 +49,7 @@ public class GameController {
         throw new GameFullException();
       }
 
+      // todo check if thrown exception is in correct if
       if (usedColors.indexOf(color) >= 0) {
         throw new BoardSideUsedException();
       }

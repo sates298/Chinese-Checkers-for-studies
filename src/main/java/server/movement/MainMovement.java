@@ -9,10 +9,9 @@ import server.field.Field;
 import server.field.Pawn;
 import server.player.Player;
 
-import java.util.Collections;
 import java.util.List;
 
-public class MainMovement extends Movement {
+public class MainMovement implements Movement {
 
     @Override
     public void move(Pawn pawn, Field target) throws ForbiddenMoveException {
@@ -126,6 +125,7 @@ public class MainMovement extends Movement {
                     }
                 }
             }
+            //should be able to extend project on different number of pawns, so here we should change conditions
             return fieldsMatches == winning.size()
                     && fieldsMatches == player.getPawns().size();
 
