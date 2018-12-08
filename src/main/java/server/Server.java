@@ -23,10 +23,13 @@ public class Server {
     private List<Game> games;
     private static Server instance;
 
+    private List<GameClientHandler> connectedClients;
+
     private ServerSocket serverSocket;
 
     public Server() {
         games = new ArrayList<>();
+        connectedClients = new ArrayList<>();
     }
 
 
@@ -47,7 +50,9 @@ public class Server {
         while (true) {
             // start  new thread when new client connects
             try {
-                new Thread(new GameClientHandler(serverSocket.accept())).start();
+                GameClientHandler newClient = new GameClientHandler(serverSocket.accept());
+                this.connectedClients.add(newClient);
+                new Thread(newClient).start();
             } catch (IOException e) {
                 e.printStackTrace();
             }
