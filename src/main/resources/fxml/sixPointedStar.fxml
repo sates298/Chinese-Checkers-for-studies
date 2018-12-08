@@ -8,23 +8,23 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="666.0" prefWidth="912.0" xmlns="http://javafx.com/javafx/8.0.172-ea"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.SixPointedStarController">
+<AnchorPane prefHeight="670.0" prefWidth="920.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.SixPointedStarController">
 
-    <VBox alignment="CENTER" prefHeight="666.0" prefWidth="912.0">
-        <HBox alignment="CENTER" prefHeight="133.0" prefWidth="912.0" spacing="20.0">
-            <Button mnemonicParsing="false" text="EXIT" onAction="#exit" fx:id="exitButton"/>
-            <Button mnemonicParsing="false" text="END TURN" onAction="#endTurn"/>
-            <Separator orientation="VERTICAL" prefHeight="200.0"/>
-            <Label prefHeight="19.0" prefWidth="80.0" text="Empty 1" fx:id="label1"/>
-            <Label prefHeight="19.0" prefWidth="80.0" text="Empty 2" fx:id="label2"/>
-            <Label prefHeight="19.0" prefWidth="80.0" text="Empty 3" fx:id="label3"/>
-            <Label prefHeight="19.0" prefWidth="80.0" text="Empty 4" fx:id="label4"/>
-            <Label prefHeight="19.0" prefWidth="80.0" text="Empty 5" fx:id="label5"/>
-            <Label prefHeight="19.0" prefWidth="80.0" text="Empty 6" fx:id="label6"/>
+    <VBox alignment="CENTER" prefHeight="670.0" prefWidth="920.0">
+        <HBox alignment="CENTER" prefHeight="70.0" prefWidth="920.0" spacing="20.0">
+            <Button fx:id="startButton" onAction="#drawBoard" text="START"/>
+            <Button fx:id="exitButton"  onAction="#exit" text="EXIT" />
+            <Button mnemonicParsing="false" onAction="#endTurn" text="END TURN" />
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Label fx:id="label1" prefHeight="19.0" prefWidth="80.0" text="Empty 1" />
+            <Label fx:id="label2" prefHeight="19.0" prefWidth="80.0" text="Empty 2" />
+            <Label fx:id="label3" prefHeight="19.0" prefWidth="80.0" text="Empty 3" />
+            <Label fx:id="label4" prefHeight="19.0" prefWidth="80.0" text="Empty 4" />
+            <Label fx:id="label5" prefHeight="19.0" prefWidth="80.0" text="Empty 5" />
+            <Label fx:id="label6" prefHeight="19.0" prefWidth="80.0" text="Empty 6" />
         </HBox>
-        <Separator/>
-        <Pane prefHeight="691.0" prefWidth="912.0" fx:id="pane"/>
+        <Separator />
+        <Pane fx:id="pane" prefHeight="600.0" prefWidth="920.0" />
     </VBox>
 
 </AnchorPane>

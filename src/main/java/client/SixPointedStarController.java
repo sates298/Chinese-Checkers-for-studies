@@ -1,10 +1,15 @@
 package client;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import server.board.Board;
@@ -19,6 +24,9 @@ import server.field.Pawn;
 public class SixPointedStarController {
 
     private Circle[][] board;
+    private final double radius = 15;
+    private final double spacing = 3;
+    private Paint backgroundColor = Color.WHITE;
 
     @FXML
     private Label label1;
@@ -35,6 +43,8 @@ public class SixPointedStarController {
 
     @FXML
     private Button exitButton;
+    @FXML
+    private Button startButton;
 
     @FXML
     private Pane pane;
@@ -47,28 +57,35 @@ public class SixPointedStarController {
 
     @FXML
     public void endTurn(){
-        drawBoard();
     }
 
-
-
+    @FXML
     public void drawBoard(){
+        pane.getChildren().clear();
         //todo this part is only to check correct drawing
         SixPointedStar star = (SixPointedStar) (new SixPointedStarCreator()).createBoard();
         setPawns(star);
         /////////
         convertTableToTable(star);
+        pane.setBackground(new Background(new BackgroundFill(backgroundColor, CornerRadii.EMPTY, Insets.EMPTY)));
 
-        int layoutX , layoutY = 100;
+        double layoutX , layoutY = 40;
+        double shift = radius + spacing/2;
         for(int i=0; i<17; i++){
-            layoutX = 100;
+
+                layoutX = 175 + shift * (9 - i);
+
             for(int j=0; j<17; j++){
                 this.board[j][i].setCenterX(layoutX);
                 this.board[j][i].setCenterY(layoutY);
-                layoutX +=30;
+                layoutX += 2*radius + spacing;
+
             }
-            layoutY += 30;
+            layoutY += 2*radius;
+
         }
+
+        startButton.setVisible(false);
 
     }
 
@@ -79,17 +96,17 @@ public class SixPointedStarController {
         for(int i=0; i< 17; i++){
             for(int j=0; j<17; j++){
                 if(board.getOneField(j, i) instanceof NoField){
-                    this.board[j][i] = new Circle(15);
+                    this.board[j][i] = new Circle(radius);
+                    this.board[j][i].setStroke(backgroundColor);
+                    this.board[j][i].setFill(backgroundColor);
+                    pane.getChildren().add(this.board[j][i]);
+                }else if(board.getOneField(j,i) instanceof EmptyField){
+                    this.board[j][i] = new Circle(radius);
                     this.board[j][i].setStroke(Color.BLACK);
                     this.board[j][i].setFill(Color.WHITE);
                     pane.getChildren().add(this.board[j][i]);
-                }else if(board.getOneField(j,i) instanceof EmptyField){
-                    this.board[j][i] = new Circle(15);
-                    this.board[j][i].setStroke(Color.GREEN);
-                    this.board[j][i].setFill(Color.WHITE);
-                    pane.getChildren().add(this.board[j][i]);
                 }else if(board.getOneField(j, i) instanceof Pawn){
-                    this.board[j][i] = new Circle(15);
+                    this.board[j][i] = new Circle(radius);
                     this.board[j][i].setStroke(Color.BLACK);
                     this.board[j][i].setFill(Color.GREEN);
                     pane.getChildren().add(this.board[j][i]);
@@ -99,7 +116,7 @@ public class SixPointedStarController {
 
     }
 
-    //todo temporary method to check correct drawing
+    //todo temporary method to check the correct drawing
     private void setPawns(SixPointedStar board){
         FieldCreator fieldCreator = new PawnCreator();
 
