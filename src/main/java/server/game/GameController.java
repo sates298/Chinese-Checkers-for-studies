@@ -119,6 +119,7 @@ public class GameController {
         throw new ColorUsedException();
       }
       Player p = new Player(side, color);
+      this.actual.getBoard().setPawns(p);
       this.actual.getPlayers().add(p);
       p.setId(this.actual.getPlayers().indexOf(p));
       return p;

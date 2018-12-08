@@ -2,6 +2,7 @@ package server.board;
 
 import server.field.Field;
 import server.field.Pawn;
+import server.player.Player;
 
 
 public abstract class Board {
@@ -29,8 +30,9 @@ public abstract class Board {
 
     public abstract int sizeY();
     public abstract int sizeX();
+    public abstract void setPawns(Player player);
 
-    public String fieldsToStiring(){
+    public String fieldsToString(){
         StringBuilder builder = new StringBuilder();
         builder.append("[ ");
         for(int i=0; i<sizeY(); i++){
@@ -45,9 +47,9 @@ public abstract class Board {
     }
 
     public boolean isPawn(int x, int y) throws ArrayIndexOutOfBoundsException{
-        if(x >= sizeX() || y >= sizeY()){
+       /* if(x >= sizeX() || y >= sizeY()){
             throw new ArrayIndexOutOfBoundsException();
-        }
+        }*/
         return getOneField(x,y) instanceof Pawn;
     }
 
