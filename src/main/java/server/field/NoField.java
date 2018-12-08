@@ -5,4 +5,11 @@ public class NoField extends Field {
         super(x,y);
     }
 
+    @Override
+    public String toString() {
+        return "{type : NoField" +
+                ", x : " + getX() +
+                ", y : " + getY() +
+                "}";
+    }
 }

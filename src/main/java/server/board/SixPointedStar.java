@@ -18,4 +18,5 @@ public class SixPointedStar extends Board {
     public int sizeX() {
         return 17;
     }
+
 }

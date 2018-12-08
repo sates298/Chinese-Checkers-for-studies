@@ -39,4 +39,13 @@ public abstract class Field {
     public void setY(int y) {
         this.y = y;
     }
+
+
+    @Override
+    public String toString() {
+        return "Field{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

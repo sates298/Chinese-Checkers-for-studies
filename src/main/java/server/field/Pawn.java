@@ -16,4 +16,12 @@ public class Pawn extends Field {
         return owner;
     }
 
+    @Override
+    public String toString() {
+        return "{type : Pawn" +
+                ", x : " + getX() +
+                ", y : " + getY() +
+                ", owner : " + owner.getId() +
+                "}";
+    }
 }

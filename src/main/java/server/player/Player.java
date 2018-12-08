@@ -6,6 +6,7 @@ import server.field.Pawn;
 import java.util.List;
 
 public class Player {
+  private int id;
   private List<Pawn> pawns;
   private BoardSide startingSide;
   private Color color;
@@ -21,6 +22,14 @@ public class Player {
     this.pawns = pawns;
     this.startingSide = side;
     this.color = color;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 
   public BoardSide getStartingSide() {

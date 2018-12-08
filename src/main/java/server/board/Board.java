@@ -36,4 +36,5 @@ public abstract class Board {
         }
         return getOneField(x,y) instanceof Pawn;
     }
+
 }
