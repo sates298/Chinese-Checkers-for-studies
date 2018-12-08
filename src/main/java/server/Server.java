@@ -41,6 +41,14 @@ public class Server {
         return instance;
     }
 
+    private void pushToMany(Game game, String message) {
+        for (GameClientHandler c: connectedClients) {
+            if (c.game == game) {
+                c.out.println(message);
+            }
+        }
+    }
+
     public void start(int port) {
         try {
             serverSocket = new ServerSocket(port);
@@ -133,7 +141,9 @@ public class Server {
                 return;
             }
             if (jsonObject.get("command").getAsString().equals("move")) {
-                move();
+                move(jsonObject.get("playerId").getAsInt(),
+                    jsonObject.get("pawnX").getAsInt(), jsonObject.get("pawnY").getAsInt(),
+                    jsonObject.get("targetX").getAsInt(), jsonObject.get("targetY").getAsInt());
                 return;
             }
             if (jsonObject.get("command").getAsString().equals("endTurn")) {
@@ -186,12 +196,35 @@ public class Server {
             }
         }
 
-        private void move() {
+        private void move(int playerId, int pawnX, int pawnY, int targetX, int targetY) {
+            try {
+                this.game.getController().move(playerId, pawnX, pawnY, targetX, targetY);
+
+                JsonObject jsonObject = new JsonObject();
+
+                jsonObject.addProperty("action", "move");
+                jsonObject.addProperty("status", "successful");
+                jsonObject.addProperty("fromX", pawnX);
+                jsonObject.addProperty("fromY", pawnY);
+                jsonObject.addProperty("toX", targetX);
+                jsonObject.addProperty("toY", targetY);
+
+                pushToMany(this.game, jsonObject.getAsString());
+            } catch (ForbiddenMoveException | ForbiddenActionException e) {
+                e.printStackTrace();
+            }
         }
 
         private void endTurn(int playerId) {
             try {
                 this.game.getController().endTurn(playerId);
+                // push information about whose turn is it to all players
+                JsonObject returnObj = new JsonObject();
+                returnObj.addProperty("currentPlayer",
+                    this.game.getController().getCurrentTurnPlayer().getId());
+
+                Server.this.pushToMany(this.game, returnObj.getAsString());
+
             } catch (ForbiddenActionException e) {
                 e.printStackTrace();
             }

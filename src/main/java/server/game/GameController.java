@@ -13,6 +13,7 @@ import server.player.Player;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class GameController {
@@ -22,6 +23,10 @@ public class GameController {
 
   public GameController(Game actual) {
     this.actual = actual;
+  }
+
+  public Player getCurrentTurnPlayer() {
+    return currentTurnPlayer;
   }
 
   public void startGame() {
@@ -36,8 +41,19 @@ public class GameController {
   public void endGame() {
 
   }
-  public void move(Player player, Pawn pawn, Field target) throws ForbiddenMoveException {
-    this.actual.getMovement().move(pawn, target);
+  public void move(int playerId, int pawnX, int pawnY, int targetX, int targetY) throws ForbiddenMoveException, ForbiddenActionException {
+    if (playerId != this.currentTurnPlayer.getId()) {
+      throw new ForbiddenActionException();
+    }
+    // find pawn and target  by coordinates
+    Optional<Pawn> optionalPawn = this.currentTurnPlayer.getPawns().stream().filter(p -> p.getX() == pawnX && p.getY()== pawnY).findFirst();
+    Field target= this.actual.getBoard().getOneField(targetX, targetY);
+
+    if (optionalPawn.isPresent()) {
+      this.actual.getMovement().move(optionalPawn.get(), target);
+    } else {
+      throw new ForbiddenActionException();
+    }
   }
 
   //todo this method will be unused, because it will work the same way as endTurn()
