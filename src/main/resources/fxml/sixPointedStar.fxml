@@ -24,7 +24,7 @@
             <Label prefHeight="19.0" prefWidth="80.0" text="Empty 6" fx:id="label6"/>
         </HBox>
         <Separator/>
-        <Pane prefHeight="691.0" prefWidth="912.0"/>
+        <Pane prefHeight="691.0" prefWidth="912.0" fx:id="pane"/>
     </VBox>
 
 </AnchorPane>
