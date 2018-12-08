@@ -139,7 +139,7 @@ public class Server {
                 JsonObject returnObj = new JsonObject();
                 returnObj.addProperty("status", "created");
                 returnObj.addProperty("gameId", this.game.getGameId());
-                returnObj.addProperty("board", this.game.getBoard().getFields().toString());
+                returnObj.addProperty("board", this.game.getBoard().getFields().toString()); //todo make correct string representation
                 out.println(returnObj.getAsString());
 
             } catch (WrongMovementTypeException | WrongBoardTypeException e) {
@@ -175,6 +175,15 @@ public class Server {
                 out.println(returnObj.getAsString());
                 e.printStackTrace();
             }
+        }
+
+        private void move() {
+          // todo find way to identify player
+          // todo find way to push information to all players
+        }
+
+        private void endTurn() {
+
         }
     }
 }
