@@ -3,15 +3,11 @@ package server.creator;
 import server.Server;
 import server.creator.boardCreator.BoardCreator;
 import server.creator.boardCreator.SixPointedStarCreator;
-import server.creator.exception.WrongBoardTypeException;
-import server.creator.exception.WrongMovementTypeException;
+import server.exception.WrongBoardTypeException;
+import server.exception.WrongMovementTypeException;
 import server.creator.movementCreator.MainMovementCreator;
 import server.creator.movementCreator.MovementCreator;
 import server.game.Game;
-import server.player.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GameCreator {
     private MovementCreator movementCreator;

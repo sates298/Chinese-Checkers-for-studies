@@ -1,5 +1,6 @@
 package server.game;
 
+
 import server.board.BoardSide;
 import server.board.SixPointedStar;
 import server.board.SixPointedStarSide;
