@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="666.0" prefWidth="912.0" xmlns="http://javafx.com/javafx/8.0.172-ea"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.SixPointedStarController">
+
+    <VBox alignment="CENTER" prefHeight="666.0" prefWidth="912.0">
+        <HBox alignment="CENTER" prefHeight="133.0" prefWidth="912.0" spacing="20.0">
+            <Button mnemonicParsing="false" text="EXIT" onAction="#exit" fx:id="exitButton"/>
+            <Button mnemonicParsing="false" text="END TURN" onAction="#endTurn"/>
+            <Separator orientation="VERTICAL" prefHeight="200.0"/>
+            <Label prefHeight="19.0" prefWidth="80.0" text="Empty 1" fx:id="label1"/>
+            <Label prefHeight="19.0" prefWidth="80.0" text="Empty 2" fx:id="label2"/>
+            <Label prefHeight="19.0" prefWidth="80.0" text="Empty 3" fx:id="label3"/>
+            <Label prefHeight="19.0" prefWidth="80.0" text="Empty 4" fx:id="label4"/>
+            <Label prefHeight="19.0" prefWidth="80.0" text="Empty 5" fx:id="label5"/>
+            <Label prefHeight="19.0" prefWidth="80.0" text="Empty 6" fx:id="label6"/>
+        </HBox>
+        <Separator/>
+        <Pane prefHeight="691.0" prefWidth="912.0"/>
+    </VBox>
+
+</AnchorPane>

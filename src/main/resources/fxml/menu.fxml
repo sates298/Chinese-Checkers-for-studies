@@ -5,7 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane fx:controller="client.Controller" xmlns:fx="http://javafx.com/fxml" >
+<BorderPane fx:controller="client.MenuController" xmlns:fx="http://javafx.com/fxml" >
 
     <top>
         <Label alignment="CENTER" text="WELCOME IN TRYLMA THE GAME!" />
@@ -13,8 +13,8 @@
 
     <center>
         <VBox spacing="20" alignment="CENTER">
-            <Button text="NEW GAME"/>
-            <Button text="CONNECT TO GAME"/>
+            <Button text="NEW GAME" onAction="#temporaryRedirection"/>
+            <Button text="JOIN"/>
             <Button text="EXIT" fx:id="exitButton" onAction="#exit"/>
         </VBox>
     </center>
