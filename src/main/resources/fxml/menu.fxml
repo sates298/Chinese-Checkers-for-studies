@@ -13,8 +13,8 @@
 
     <center>
         <VBox spacing="20" alignment="CENTER">
-            <Button text="NEW GAME" onAction="#temporaryRedirection"/>
-            <Button text="JOIN"/>
+            <Button text="NEW GAME" onAction="#newGame"/>
+            <Button text="JOIN" onAction="#joinToGame"/>
             <Button text="EXIT" fx:id="exitButton" onAction="#exit"/>
         </VBox>
     </center>

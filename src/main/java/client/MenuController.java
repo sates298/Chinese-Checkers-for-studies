@@ -27,6 +27,17 @@ public class MenuController {
     }
 
     @FXML
+    public void joinToGame() throws IOException{
+
+    }
+
+    @FXML
+    public void newGame() throws IOException{
+        temporaryRedirection();
+    }
+
+
+    @FXML
     public void exit(){
         Stage stage = (Stage) exitButton.getScene().getWindow();
         stage.close();
