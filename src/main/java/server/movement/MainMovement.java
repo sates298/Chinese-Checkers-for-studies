@@ -7,10 +7,11 @@ import server.exception.ForbiddenMoveException;
 import server.field.EmptyField;
 import server.field.Field;
 import server.field.Pawn;
+import server.player.Player;
 
 import java.util.List;
 
-public class MainMovement extends Movement {
+public class MainMovement implements Movement {
 
     @Override
     public void move(Pawn pawn, Field target) throws ForbiddenMoveException {
@@ -89,11 +90,11 @@ public class MainMovement extends Movement {
         }
         // '\' jump
         return (pawn.getY() - target.getY() == -2
-                    && pawn.getX() - target.getX() == 2
-                    && pawn.getBoard().isPawn(pawn.getX() - 1, pawn.getY() + 1))
+                    && pawn.getX() - target.getX() == -2
+                    && pawn.getBoard().isPawn(pawn.getX() + 1, pawn.getY() + 1))
                 || (pawn.getY() - target.getY() == 2
-                        && pawn.getX() - target.getX() == -2
-                        && pawn.getBoard().isPawn(pawn.getX() +1 , pawn.getY() - 1));
+                        && pawn.getX() - target.getX() == 2
+                        && pawn.getBoard().isPawn(pawn.getX() - 1 , pawn.getY() - 1));
 
 
     }
@@ -108,7 +109,29 @@ public class MainMovement extends Movement {
         }
 
         return false;
-
     }
+
+    public boolean checkWinCondition(Player player){
+        //Player should has minimum 1 pawn, otherwise this method shouldn't be called
+        Board board = player.getPawns().get(0).getBoard();
+        if(player.getStartingSide() instanceof SixPointedStarSide) {
+            List<Field> winning = ((SixPointedStarSide)player.getStartingSide()).getOppositeArea((SixPointedStar) board);
+            int fieldsMatches = 0;
+
+            for (Field f : winning) {
+                for (Pawn p : player.getPawns()) {
+                    if (p.equals(f)) {
+                        fieldsMatches++;
+                    }
+                }
+            }
+            //should be able to extend project on different number of pawns, so here we should change conditions
+            return fieldsMatches == winning.size()
+                    && fieldsMatches == player.getPawns().size();
+
+        }
+        return false;
+    }
+
 
 }
