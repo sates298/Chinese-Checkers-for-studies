@@ -139,6 +139,7 @@ public class Server {
                 JsonObject returnObj = new JsonObject();
                 returnObj.addProperty("status", "created");
                 returnObj.addProperty("gameId", this.game.getGameId());
+                returnObj.addProperty("board", this.game.getBoard().getFields().toString());
                 out.println(returnObj.getAsString());
 
             } catch (WrongMovementTypeException | WrongBoardTypeException e) {
@@ -155,6 +156,7 @@ public class Server {
             JsonObject returnObj = new JsonObject();
             returnObj.addProperty("status", "connected");
             returnObj.addProperty("gameId", "gameId");
+            returnObj.addProperty("board", this.game.getBoard().getFields().toString());
             out.println(returnObj.getAsString());
         }
 
@@ -165,6 +167,7 @@ public class Server {
                 returnObj.addProperty("status", "joined");
                 returnObj.addProperty("startingSide", p.getStartingSide().toString());
                 returnObj.addProperty("color", p.getColor().toString());
+                returnObj.addProperty("board", this.game.getBoard().getFields().toString());
                 out.println(returnObj.getAsString());
             } catch (GameFullException | BoardSideUsedException | ColorUsedException e) {
                 JsonObject returnObj = new JsonObject();
