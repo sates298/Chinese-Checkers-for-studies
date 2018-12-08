@@ -31,6 +31,8 @@ public class GameController {
     // sort players by starting sides (add values to  starting sides)
     this.actual.getPlayers().sort(Comparator.comparingInt((Player p) -> p.getStartingSide().getNum()));
     this.playerListIterator = this.actual.getPlayers().listIterator();
+    // set player's id to his index in list
+    this.actual.getPlayers().forEach(p -> p.setId(this.actual.getPlayers().indexOf(p)));
     currentTurnPlayer = playerListIterator.next();
   }
 
@@ -41,7 +43,7 @@ public class GameController {
     this.actual.getMovement().move(pawn, target);
   }
 
-  //todo this method will be unused, because it will works the same way as endTurn()
+  //todo this method will be unused, because it will work the same way as endTurn()
   public void skipTurn(Player player) {
     endTurn(player);
 
