@@ -17,6 +17,11 @@ public class MainMovement implements Movement {
     public void move(Pawn pawn, Field target) throws ForbiddenMoveException {
 
         if (checkMove(pawn, target)) {
+            if(checkJump(pawn, target)){
+                pawn.getOwner().setMoveToken(2);
+            }else {
+                pawn.getOwner().setMoveToken(0);
+            }
             int pawnX = pawn.getX();
             int pawnY = pawn.getY();
             pawn.setX(target.getX());
@@ -30,6 +35,7 @@ public class MainMovement implements Movement {
         } else {
             throw new ForbiddenMoveException();
         }
+
     }
 
     @Override
@@ -48,7 +54,7 @@ public class MainMovement implements Movement {
                 || checkJump(pawn, target) ;
     }
 
-    public boolean checkMoveOne(Pawn pawn, Field target) {
+    private boolean checkMoveOne(Pawn pawn, Field target) {
         // this method only checks "atomic" moves
 
         // all following checks assume that we sue flipped cartesian coordinates (ys raise as we go down)
@@ -125,9 +131,8 @@ public class MainMovement implements Movement {
                     }
                 }
             }
-            //should be able to extend project on different number of pawns, so here we should change conditions
-            return fieldsMatches == winning.size()
-                    && fieldsMatches == player.getPawns().size();
+
+            return fieldsMatches == player.getPawns().size();
 
         }
         return false;
