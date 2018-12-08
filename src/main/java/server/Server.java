@@ -103,7 +103,9 @@ public class Server {
                     handleClientMessage(object);
                 } else {
                     // send error message to client
-                    out.println("{\"error\": \"wrong message format\"");
+                    JsonObject returnObj = new JsonObject();
+                    returnObj.addProperty("error", "wrong message format");
+                    out.println(returnObj.getAsString());
                 }
                 System.out.println(inputLine); // log requests
             }
@@ -134,10 +136,16 @@ public class Server {
         private void createGame(String boardType, String movementType) {
             try {
                 this.game = new GameCreator().createGame(boardType, movementType);
-                out.println("{\"status\": \"created\", \"gameId\": \"" + this.game.getGameId() + "\"}");
+                JsonObject returnObj = new JsonObject();
+                returnObj.addProperty("status", "created");
+                returnObj.addProperty("gameId", this.game.getGameId());
+                returnObj.addProperty("board", this.game.getBoard().getFields().toString());
+                out.println(returnObj.getAsString());
 
             } catch (WrongMovementTypeException | WrongBoardTypeException e) {
-                out.println("{\"error\": \"" + e + "\"}");
+                JsonObject returnObj = new JsonObject();
+                returnObj.addProperty("error", e.toString());
+                out.println(returnObj.getAsString());
                 e.printStackTrace();
             }
         }
@@ -145,17 +153,27 @@ public class Server {
         private void connectToGame(int gameId) {
             // find the game with id equal to gameId
             this.game = games.stream().filter(g -> g.getGameId() == gameId).findFirst().get();
-            out.println("{\"status\": \"connected\", \"gameId\": \"" + gameId + "\"}");
+            JsonObject returnObj = new JsonObject();
+            returnObj.addProperty("status", "connected");
+            returnObj.addProperty("gameId", "gameId");
+            returnObj.addProperty("board", this.game.getBoard().getFields().toString());
+            out.println(returnObj.getAsString());
         }
 
         private void joinGame(String side, String color) {
             try {
                 Player p = this.game.getController().addPlayer(side, color);
-                out.println("\"status\": \"joined\", \"startingSide\": "
-                        + p.getStartingSide() + "\", \"color\"" + p.getColor() + "\"");
+                JsonObject returnObj = new JsonObject();
+                returnObj.addProperty("status", "joined");
+                returnObj.addProperty("startingSide", p.getStartingSide().toString());
+                returnObj.addProperty("color", p.getColor().toString());
+                returnObj.addProperty("board", this.game.getBoard().getFields().toString());
+                out.println(returnObj.getAsString());
             } catch (GameFullException | BoardSideUsedException | ColorUsedException e) {
+                JsonObject returnObj = new JsonObject();
+                returnObj.addProperty("error", e.toString());
+                out.println(returnObj.getAsString());
                 e.printStackTrace();
-                out.println("{\"error\": \"" + e + "\"}");
             }
         }
     }
