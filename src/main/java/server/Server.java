@@ -3,11 +3,7 @@ package server;
 import server.board.Board;
 import server.board.BoardSide;
 import server.creator.GameCreator;
-import server.exception.WrongBoardTypeException;
-import server.exception.WrongMovementTypeException;
-import server.exception.BoardSideUsedException;
-import server.exception.ColorUsedException;
-import server.exception.GameFullException;
+import server.exception.*;
 import server.game.Game;
 
 import com.google.gson.*;
@@ -131,6 +127,14 @@ public class Server {
                 joinGame(jsonObject.get("side").getAsString(), jsonObject.get("color").getAsString());
                 return;
             }
+            if (jsonObject.get("command").getAsString().equals("move")) {
+                move();
+                return;
+            }
+            if (jsonObject.get("command").getAsString().equals("endTurn")) {
+                endTurn(jsonObject.get("playerId").getAsInt());
+                return;
+            }
         }
 
         private void createGame(String boardType, String movementType) {
@@ -178,12 +182,14 @@ public class Server {
         }
 
         private void move() {
-          // todo find way to identify player
-          // todo find way to push information to all players
         }
 
-        private void endTurn() {
-
+        private void endTurn(int playerId) {
+            try {
+                this.game.getController().endTurn(playerId);
+            } catch (ForbiddenActionException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

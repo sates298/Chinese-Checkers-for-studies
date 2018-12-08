@@ -4,10 +4,7 @@ package server.game;
 import server.board.BoardSide;
 import server.board.SixPointedStar;
 import server.board.SixPointedStarSide;
-import server.exception.BoardSideUsedException;
-import server.exception.ColorUsedException;
-import server.exception.ForbiddenMoveException;
-import server.exception.GameFullException;
+import server.exception.*;
 import server.field.Field;
 import server.field.Pawn;
 import server.player.Color;
@@ -44,11 +41,14 @@ public class GameController {
   }
 
   //todo this method will be unused, because it will work the same way as endTurn()
-  public void skipTurn(Player player) {
-    endTurn(player);
+  public void skipTurn(int playerId) throws ForbiddenActionException {
+    endTurn(playerId);
 
   }
-  public void endTurn(Player player)  {
+  public void endTurn(int playerId) throws ForbiddenActionException {
+    if (this.currentTurnPlayer.getId() != playerId) {
+      throw new ForbiddenActionException();
+    }
     // set current player to next player in player list
     if (playerListIterator.hasNext()) {
       currentTurnPlayer = playerListIterator.next();
