@@ -11,5 +11,4 @@ public interface Movement {
 
   void move(Pawn pawn, Field target) throws ForbiddenMoveException;
   boolean checkMove(Pawn pawn, Field target);
-  boolean checkWinCondition(Player player);
 }

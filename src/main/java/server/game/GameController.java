@@ -69,7 +69,7 @@ public class GameController {
     }
 
     //forbid current player to move if is not a winner yet
-    if(this.actual.getMovement().checkWinCondition(this.currentTurnPlayer)){
+    if(checkWinCondition()){
       this.currentTurnPlayer.setMoveToken(3);
     }else{
       this.currentTurnPlayer.setMoveToken(0);
@@ -127,4 +127,27 @@ public class GameController {
     // todo improve this method, get rid of nulls, create pawns,
     return null;
   }
+
+
+  private boolean checkWinCondition(){
+    //Player should has minimum 1 pawn, otherwise this method shouldn't be called
+    if(this.currentTurnPlayer.getStartingSide() instanceof SixPointedStarSide) {
+      List<Field> winning =
+              ((SixPointedStarSide)this.currentTurnPlayer.getStartingSide()).getOppositeArea((SixPointedStar) this.actual.getBoard());
+      int fieldsMatches = 0;
+
+      for (Field f : winning) {
+        for (Pawn p : this.currentTurnPlayer.getPawns()) {
+          if (p.equals(f)) {
+            fieldsMatches++;
+          }
+        }
+      }
+
+      return fieldsMatches == this.currentTurnPlayer.getPawns().size();
+
+    }
+    return false;
+  }
+
 }

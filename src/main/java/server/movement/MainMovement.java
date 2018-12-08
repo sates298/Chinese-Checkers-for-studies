@@ -117,26 +117,4 @@ public class MainMovement implements Movement {
         return false;
     }
 
-    public boolean checkWinCondition(Player player){
-        //Player should has minimum 1 pawn, otherwise this method shouldn't be called
-        Board board = player.getPawns().get(0).getBoard();
-        if(player.getStartingSide() instanceof SixPointedStarSide) {
-            List<Field> winning = ((SixPointedStarSide)player.getStartingSide()).getOppositeArea((SixPointedStar) board);
-            int fieldsMatches = 0;
-
-            for (Field f : winning) {
-                for (Pawn p : player.getPawns()) {
-                    if (p.equals(f)) {
-                        fieldsMatches++;
-                    }
-                }
-            }
-
-            return fieldsMatches == player.getPawns().size();
-
-        }
-        return false;
-    }
-
-
 }
