@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fxml.NewGame"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.control.Button?>
+<AnchorPane prefHeight="275.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.NewGameController">
+
+    <VBox prefHeight="275.0" prefWidth="300.0" spacing="20">
+        <Label alignment="CENTER" prefHeight="24.0" prefWidth="130.0" text="Create a New Game!" />
+        <ComboBox fx:id="boardTypeBox" onAction="#setBoard"  promptText="Type of board" />
+        <ComboBox fx:id="movementTypeBox" onAction="#setMovement" promptText="Type of movement" />
+        <ComboBox fx:id="numberOfPlayersBox" onAction="#setNoPlayers" promptText="Number of players" />
+        <ComboBox fx:id="numberOfPawnsBox" onAction="#setNoPawns"  promptText="Number of pawns" />
+        <Button text="CREATE"/>
+    </VBox>
+
+
 
 </AnchorPane>

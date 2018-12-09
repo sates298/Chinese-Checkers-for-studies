@@ -33,6 +33,7 @@ public class SixPointedStar extends Board {
                     created = (Pawn)creator.createField(4 + j, i);
                     p.getPawns().add(created);
                     setOneField(created);
+                    created.setOwner(p);
                 }
             }
         } else if(SixPointedStarSide.LEFT_TOP == p.getStartingSide()){
@@ -41,6 +42,7 @@ public class SixPointedStar extends Board {
                     created = (Pawn)creator.createField(j, 4 + i);
                     p.getPawns().add(created);
                     setOneField(created);
+                    created.setOwner(p);
                 }
             }
         }else if(SixPointedStarSide.RIGHT_TOP == p.getStartingSide()){
@@ -49,6 +51,7 @@ public class SixPointedStar extends Board {
                     created = (Pawn)creator.createField(9 + j, 4 + i);
                     p.getPawns().add(created);
                     setOneField(created);
+                    created.setOwner(p);
                 }
             }
         }else if(SixPointedStarSide.BOTTOM == p.getStartingSide()){
@@ -57,6 +60,7 @@ public class SixPointedStar extends Board {
                     created = (Pawn)creator.createField(9 + j, 13 + i);
                     p.getPawns().add(created);
                     setOneField(created);
+                    created.setOwner(p);
                 }
             }
         }else if(SixPointedStarSide.LEFT_BOTTOM == p.getStartingSide()){
@@ -65,6 +69,7 @@ public class SixPointedStar extends Board {
                     created = (Pawn) creator.createField(4 + j, 9 + i);
                     p.getPawns().add(created);
                     setOneField(created);
+                    created.setOwner(p);
                 }
             }
         }else if(SixPointedStarSide.RIGHT_BOTTOM == p.getStartingSide()){
@@ -73,6 +78,7 @@ public class SixPointedStar extends Board {
                     created = (Pawn)creator.createField(13 + j, 9 + i);
                     p.getPawns().add(created);
                     setOneField(created);
+                    created.setOwner(p);
                 }
             }
         }

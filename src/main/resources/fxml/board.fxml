@@ -8,13 +8,17 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="670.0" prefWidth="920.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.SixPointedStarController">
+<!--
+<AnchorPane prefHeight="670.0" prefWidth="920.0" xmlns="http://javafx.com/javafx/8.0.172-ea"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.BoardController">
+-->
 
-    <VBox alignment="CENTER" prefHeight="670.0" prefWidth="920.0">
+    <VBox alignment="CENTER" prefHeight="670.0" prefWidth="920.0" xmlns="http://javafx.com/javafx/8.0.172-ea"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.BoardController">
         <HBox alignment="CENTER" prefHeight="70.0" prefWidth="920.0" spacing="20.0">
             <Button fx:id="startButton" onAction="#drawBoard" text="START"/>
             <Button fx:id="exitButton"  onAction="#exit" text="EXIT" />
-            <Button mnemonicParsing="false" onAction="#endTurn" text="END TURN" />
+            <Button onAction="#endTurn" text="END TURN" />
             <Separator orientation="VERTICAL" prefHeight="200.0" />
             <Label fx:id="label1" prefHeight="19.0" prefWidth="80.0" text="Empty 1" />
             <Label fx:id="label2" prefHeight="19.0" prefWidth="80.0" text="Empty 2" />
@@ -27,4 +31,4 @@
         <Pane fx:id="pane" prefHeight="600.0" prefWidth="920.0" />
     </VBox>
 
-</AnchorPane>
+<!--</AnchorPane>-->

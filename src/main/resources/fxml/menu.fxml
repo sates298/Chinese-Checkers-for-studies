@@ -1,21 +1,19 @@
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.GridPane?>
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane fx:controller="client.MenuController" xmlns:fx="http://javafx.com/fxml" >
+<BorderPane prefHeight="275" prefWidth="300" fx:controller="client.controller.MenuController" xmlns:fx="http://javafx.com/fxml" >
 
     <top>
-        <Label alignment="CENTER" text="WELCOME IN TRYLMA THE GAME!" />
+        <Label id="head" alignment="CENTER" text="WELCOME IN TRYLMA THE GAME!" />
     </top>
 
     <center>
         <VBox spacing="20" alignment="CENTER">
-            <Button text="NEW GAME" onAction="#newGame"/>
-            <Button text="JOIN" onAction="#joinToGame"/>
-            <Button text="EXIT" fx:id="exitButton" onAction="#exit"/>
+            <Button id="newGameButton" text="NEW GAME" onAction="#newGame"/>
+            <Button id="joinToGameButton" text="JOIN TO GAME" onAction="#joinToGame"/>
+            <Button id="exitButton" text="EXIT" fx:id="exitButton" onAction="#exit"/>
         </VBox>
     </center>
 

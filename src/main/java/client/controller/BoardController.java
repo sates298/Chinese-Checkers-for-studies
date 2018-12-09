@@ -1,6 +1,7 @@
-package client;
+package client.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -21,7 +22,10 @@ import server.field.EmptyField;
 import server.field.NoField;
 import server.field.Pawn;
 
-public class SixPointedStarController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class BoardController implements Initializable {
 
     private Circle[][] board;
     private final double radius = 15;
@@ -129,4 +133,8 @@ public class SixPointedStarController {
     }
 
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        drawBoard();
+    }
 }
