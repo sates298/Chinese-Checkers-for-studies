@@ -12,8 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
-import server.board.Board;
+
 import server.board.SixPointedStar;
 import server.creator.boardCreator.SixPointedStarCreator;
 import server.creator.fieldCreator.FieldCreator;
@@ -25,11 +24,10 @@ import server.field.Pawn;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class BoardController implements Initializable {
+public class BoardController extends AbstractController implements Initializable {
 
     private Circle[][] board;
     private final double radius = 15;
-    private final double spacing = 3;
     private Paint backgroundColor = Color.WHITE;
 
     @FXML
@@ -47,16 +45,13 @@ public class BoardController implements Initializable {
 
     @FXML
     private Button exitButton;
-    @FXML
-    private Button startButton;
 
     @FXML
     private Pane pane;
 
     @FXML
-    public void exit(){
-        Stage stage = (Stage) exitButton.getScene().getWindow();
-        stage.close();
+    public void exitAction(){
+        exit(exitButton);
     }
 
     @FXML
@@ -74,7 +69,8 @@ public class BoardController implements Initializable {
         pane.setBackground(new Background(new BackgroundFill(backgroundColor, CornerRadii.EMPTY, Insets.EMPTY)));
 
         double layoutX , layoutY = 40;
-        double shift = radius + spacing/2;
+        double spacing = 3;
+        double shift = radius + spacing /2;
         for(int i=0; i<17; i++){
 
                 layoutX = 175 + shift * (9 - i);
@@ -88,8 +84,6 @@ public class BoardController implements Initializable {
             layoutY += 2*radius;
 
         }
-
-        startButton.setVisible(false);
 
     }
 

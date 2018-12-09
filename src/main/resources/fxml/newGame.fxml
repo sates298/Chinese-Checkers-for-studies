@@ -1,22 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.Button?>
-<AnchorPane prefHeight="275.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.NewGameController">
 
-    <VBox prefHeight="275.0" prefWidth="300.0" spacing="20">
-        <Label alignment="CENTER" prefHeight="24.0" prefWidth="130.0" text="Create a New Game!" />
-        <ComboBox fx:id="boardTypeBox" onAction="#setBoard"  promptText="Type of board" />
-        <ComboBox fx:id="movementTypeBox" onAction="#setMovement" promptText="Type of movement" />
-        <ComboBox fx:id="numberOfPlayersBox" onAction="#setNoPlayers" promptText="Number of players" />
-        <ComboBox fx:id="numberOfPawnsBox" onAction="#setNoPawns"  promptText="Number of pawns" />
-        <Button text="CREATE"/>
-    </VBox>
+<VBox prefHeight="275.0" prefWidth="300.0" spacing="5" alignment="CENTER"
+      xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="client.controller.NewGameController">
 
+    <Label text="Create a New Game!"/>
 
+    <Label text="Choose type of board : "/>
+    <ComboBox fx:id="boardTypeBox" prefHeight="30.0" prefWidth="155"
+              promptText="Type of board"/>
 
-</AnchorPane>
+    <Label text="Choose type of movement : " />
+    <ComboBox fx:id="movementTypeBox" prefHeight="30.0" prefWidth="155"
+              promptText="Type of movement"/>
+
+    <Label text="Choose number of players : " />
+    <ComboBox fx:id="numberOfPlayersBox" prefHeight="30.0" prefWidth="155.0"
+              promptText="Number of players"/>
+
+    <Label text="Choose number of pawns for one player : " />
+    <ComboBox fx:id="numberOfPawnsBox" prefHeight="30.0" prefWidth="155.0"
+              promptText="Number of pawns"/>
+
+    <Button text="CREATE" onAction="#create"/>
+    <Button text="BACK" onAction="#backToMenu" />
+
+</VBox>
+

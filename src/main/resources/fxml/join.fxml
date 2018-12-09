@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="client.controller.JoinController"
+            prefHeight="275.0" prefWidth="300.0" spacing="20">
+
+    <ComboBox fx:id="boardSideBox" promptText="Board Side"/>
+    <ComboBox fx:id="colorBox" promptText="Color"/>
+    <Button text="JOIN" onAction="#joinToBoard" />
+
+</VBox>
