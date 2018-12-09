@@ -21,18 +21,21 @@ public class SixPointedStarCreator extends BoardCreator {
             }
         }
 
+        //LEFT-TOP
         for(int i=0; i<4; i++){
             for(int j=3; j>=i; j--){
                 star.setOneField(fieldCreator.createField(j, 4 + i));
             }
         }
 
+        //RIGHT-TOP
         for(int i=0; i<4; i++){
             for(int j=3; j>=i; j--){
                 star.setOneField(fieldCreator.createField(9 + j, 4 + i));
             }
         }
 
+        //BOTTOM
         for(int i=0; i<4; i++){
             for(int j=3; j>=i; j--){
                 star.setOneField(fieldCreator.createField(9 + j, 13 + i));

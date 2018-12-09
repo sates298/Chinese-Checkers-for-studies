@@ -3,11 +3,7 @@ package server;
 import server.board.Board;
 import server.board.BoardSide;
 import server.creator.GameCreator;
-import server.exception.WrongBoardTypeException;
-import server.exception.WrongMovementTypeException;
-import server.exception.BoardSideUsedException;
-import server.exception.ColorUsedException;
-import server.exception.GameFullException;
+import server.exception.*;
 import server.game.Game;
 
 import com.google.gson.*;
@@ -27,10 +23,13 @@ public class Server {
     private List<Game> games;
     private static Server instance;
 
+    private List<GameClientHandler> connectedClients;
+
     private ServerSocket serverSocket;
 
     public Server() {
         games = new ArrayList<>();
+        connectedClients = new ArrayList<>();
     }
 
 
@@ -42,6 +41,14 @@ public class Server {
         return instance;
     }
 
+    private void pushToMany(Game game, String message) {
+        for (GameClientHandler c: connectedClients) {
+            if (c.game == game) {
+                c.out.println(message);
+            }
+        }
+    }
+
     public void start(int port) {
         try {
             serverSocket = new ServerSocket(port);
@@ -51,7 +58,9 @@ public class Server {
         while (true) {
             // start  new thread when new client connects
             try {
-                new Thread(new GameClientHandler(serverSocket.accept())).start();
+                GameClientHandler newClient = new GameClientHandler(serverSocket.accept());
+                this.connectedClients.add(newClient);
+                new Thread(newClient).start();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -131,6 +140,16 @@ public class Server {
                 joinGame(jsonObject.get("side").getAsString(), jsonObject.get("color").getAsString());
                 return;
             }
+            if (jsonObject.get("command").getAsString().equals("move")) {
+                move(jsonObject.get("playerId").getAsInt(),
+                    jsonObject.get("pawnX").getAsInt(), jsonObject.get("pawnY").getAsInt(),
+                    jsonObject.get("targetX").getAsInt(), jsonObject.get("targetY").getAsInt());
+                return;
+            }
+            if (jsonObject.get("command").getAsString().equals("endTurn")) {
+                endTurn(jsonObject.get("playerId").getAsInt());
+                return;
+            }
         }
 
         private void createGame(String boardType, String movementType) {
@@ -139,7 +158,7 @@ public class Server {
                 JsonObject returnObj = new JsonObject();
                 returnObj.addProperty("status", "created");
                 returnObj.addProperty("gameId", this.game.getGameId());
-                returnObj.addProperty("board", this.game.getBoard().getFields().toString());
+                returnObj.addProperty("board", this.game.getBoard().fieldsToString()); //todo make correct string representation
                 out.println(returnObj.getAsString());
 
             } catch (WrongMovementTypeException | WrongBoardTypeException e) {
@@ -156,7 +175,7 @@ public class Server {
             JsonObject returnObj = new JsonObject();
             returnObj.addProperty("status", "connected");
             returnObj.addProperty("gameId", "gameId");
-            returnObj.addProperty("board", this.game.getBoard().getFields().toString());
+            returnObj.addProperty("board", this.game.getBoard().fieldsToString());
             out.println(returnObj.getAsString());
         }
 
@@ -167,12 +186,46 @@ public class Server {
                 returnObj.addProperty("status", "joined");
                 returnObj.addProperty("startingSide", p.getStartingSide().toString());
                 returnObj.addProperty("color", p.getColor().toString());
-                returnObj.addProperty("board", this.game.getBoard().getFields().toString());
+                returnObj.addProperty("board", this.game.getBoard().fieldsToString());
                 out.println(returnObj.getAsString());
             } catch (GameFullException | BoardSideUsedException | ColorUsedException e) {
                 JsonObject returnObj = new JsonObject();
                 returnObj.addProperty("error", e.toString());
                 out.println(returnObj.getAsString());
+                e.printStackTrace();
+            }
+        }
+
+        private void move(int playerId, int pawnX, int pawnY, int targetX, int targetY) {
+            try {
+                this.game.getController().move(playerId, pawnX, pawnY, targetX, targetY);
+
+                JsonObject jsonObject = new JsonObject();
+
+                jsonObject.addProperty("action", "move");
+                jsonObject.addProperty("status", "successful");
+                jsonObject.addProperty("fromX", pawnX);
+                jsonObject.addProperty("fromY", pawnY);
+                jsonObject.addProperty("toX", targetX);
+                jsonObject.addProperty("toY", targetY);
+
+                pushToMany(this.game, jsonObject.getAsString());
+            } catch (ForbiddenMoveException | ForbiddenActionException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void endTurn(int playerId) {
+            try {
+                this.game.getController().endTurn(playerId);
+                // push information about whose turn is it to all players
+                JsonObject returnObj = new JsonObject();
+                returnObj.addProperty("currentPlayer",
+                    this.game.getController().getCurrentTurnPlayer().getId());
+
+                Server.this.pushToMany(this.game, returnObj.getAsString());
+
+            } catch (ForbiddenActionException e) {
                 e.printStackTrace();
             }
         }

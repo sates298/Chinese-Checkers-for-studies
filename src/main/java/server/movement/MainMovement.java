@@ -17,6 +17,11 @@ public class MainMovement implements Movement {
     public void move(Pawn pawn, Field target) throws ForbiddenMoveException {
 
         if (checkMove(pawn, target)) {
+            if(checkJump(pawn, target)){
+                pawn.getOwner().setMoveToken(2);
+            }else {
+                pawn.getOwner().setMoveToken(0);
+            }
             int pawnX = pawn.getX();
             int pawnY = pawn.getY();
             pawn.setX(target.getX());
@@ -30,6 +35,7 @@ public class MainMovement implements Movement {
         } else {
             throw new ForbiddenMoveException();
         }
+
     }
 
     @Override
@@ -48,7 +54,7 @@ public class MainMovement implements Movement {
                 || checkJump(pawn, target) ;
     }
 
-    public boolean checkMoveOne(Pawn pawn, Field target) {
+    private boolean checkMoveOne(Pawn pawn, Field target) {
         // this method only checks "atomic" moves
 
         // all following checks assume that we sue flipped cartesian coordinates (ys raise as we go down)
@@ -110,28 +116,5 @@ public class MainMovement implements Movement {
 
         return false;
     }
-
-    public boolean checkWinCondition(Player player){
-        //Player should has minimum 1 pawn, otherwise this method shouldn't be called
-        Board board = player.getPawns().get(0).getBoard();
-        if(player.getStartingSide() instanceof SixPointedStarSide) {
-            List<Field> winning = ((SixPointedStarSide)player.getStartingSide()).getOppositeArea((SixPointedStar) board);
-            int fieldsMatches = 0;
-
-            for (Field f : winning) {
-                for (Pawn p : player.getPawns()) {
-                    if (p.equals(f)) {
-                        fieldsMatches++;
-                    }
-                }
-            }
-            //should be able to extend project on different number of pawns, so here we should change conditions
-            return fieldsMatches == winning.size()
-                    && fieldsMatches == player.getPawns().size();
-
-        }
-        return false;
-    }
-
 
 }
