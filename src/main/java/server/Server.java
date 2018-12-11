@@ -27,6 +27,13 @@ public class Server {
 
     private ServerSocket serverSocket;
 
+    public static void  main  (String[] args) {
+        Server  server = new Server();
+
+        server.start(1234);
+        server.stop();
+    }
+
     public Server() {
         games = new ArrayList<>();
         connectedClients = new ArrayList<>();
@@ -214,10 +221,7 @@ public class Server {
 
                 jsonObject.addProperty("action", "move");
                 jsonObject.addProperty("status", "successful");
-                jsonObject.addProperty("pawnX", pawnX);
-                jsonObject.addProperty("pawnY", pawnY);
-                jsonObject.addProperty("targetX", targetX);
-                jsonObject.addProperty("targetY", targetY);
+                jsonObject.addProperty("board", this.game.getBoard().fieldsToString());
 
                 pushToMany(this.game, jsonObject.getAsString());
             } catch (ForbiddenMoveException | ForbiddenActionException e) {

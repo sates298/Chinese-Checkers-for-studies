@@ -1,7 +1,9 @@
 package client;
 
+import client.controller.BoardController;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import javafx.scene.shape.Circle;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,11 +14,14 @@ import java.net.Socket;
 public class ServerConnector {
   private Socket clientSocket;
 
+  private BoardController boardController;
+
   private PrintWriter out;
   private BufferedReader in;
   private JsonParser parser;
 
-  public ServerConnector(String host, int port) {
+  public ServerConnector(BoardController boardController, String host, int port) {
+    this.boardController = boardController;
     parser = new JsonParser();
     try {
       clientSocket = new Socket(host, port);
@@ -27,22 +32,27 @@ public class ServerConnector {
     }
   }
 
-  private void waitForMessage(int playerId) throws IOException {
-    String nextLine;
-    while ((nextLine = in.readLine()) != null) {
-      JsonObject jsonObject = parser.parse(nextLine).getAsJsonObject();
-      if (jsonObject.get("action").getAsString().equals("move")) {
-        // todo receive information about made move
-      }
-      else if (jsonObject.get("action").getAsString().equals("endTurn")) {
-        // if currentPlayerId == current player's id - break
-        if (jsonObject.get("currentPlayer").getAsInt() == playerId){
-          break;
-        }
-      }
+  // todo check how threads in gui work and if we can invoke methods from these object even though this loop is running
 
+  // wait for server's response and redraw board based on  the response
+  public void play() throws IOException, ServerConnectionException {
+    while (true) {
+      String serverResponse = in.readLine();
+      JsonObject response = parser.parse(serverResponse).getAsJsonObject();
+      if (!response.get("status").getAsString().equals("success")) {
+        throw new ServerConnectionException();
+      }
+      if (response.get("action").getAsString().equals("move")) {
+        // parse the board
+        String boardRepr= response.get("board").getAsString();
+        String[][] board = BoardParser.parseBoard(boardRepr);
+        boardController.drawBoard(board);
+      } else if (response.get("action").getAsString().equals("endTurn")) {
+        // todo set a label for current player or smth
+      }
     }
   }
+
 
   public void endConnection() {
     try {
@@ -54,14 +64,8 @@ public class ServerConnector {
     }
   }
 
-  // todo return needed values
-  // todo review which values are needed in client
-  // we need a way to return multiple values
-  // board representation and playerId is the least we need
-  // can we return just JsonObject?
-  // todo board array parsing
 
-  public void requestCreateGame(String boardType, String movementType) {
+  public void requestCreateGame(String boardType, String movementType) throws ServerConnectionException {
     JsonObject jsonObj = new JsonObject();
     jsonObj.addProperty("command", "create");
     jsonObj.addProperty("boardType", boardType);
@@ -71,18 +75,18 @@ public class ServerConnector {
     try {
       JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
       if (!response.get("status").getAsString().equals("created")) {
-        // todo throw exception or smth
+        throw new ServerConnectionException();
       }
 
       int gameId = response.get("gameId").getAsInt();
       String boardRepr =  response.get("board").getAsString();
-      // return values?
+      boardController.drawBoard(BoardParser.parseBoard(boardRepr));
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  public void requestConnectToGame(int gameId) {
+  public void requestConnectToGame(int gameId) throws ServerConnectionException {
     JsonObject jsonObj = new JsonObject();
     jsonObj.addProperty("command", "connect");
     jsonObj.addProperty("gameId", gameId);
@@ -91,16 +95,16 @@ public class ServerConnector {
     try {
       JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
       if (!response.get("status").getAsString().equals("connected")) {
-        // todo throw exception or smth
+        throw new ServerConnectionException();
       }
       String boardRepr =  response.get("board").getAsString();
-      // return values?
+      boardController.drawBoard(BoardParser.parseBoard(boardRepr));
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  public void requestJoinGame(String startingSide, String color) {
+  public void requestJoinGame(String startingSide, String color) throws ServerConnectionException {
     JsonObject jsonObj = new JsonObject();
     jsonObj.addProperty("command", "join");
     jsonObj.addProperty("startingSide", startingSide);
@@ -110,16 +114,16 @@ public class ServerConnector {
     try {
       JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
       if (!response.get("status").getAsString().equals("joined")) {
-        // todo throw exception or smth
+        throw new ServerConnectionException();
       }
       String boardRepr =  response.get("board").getAsString();
-      // return values?
+      boardController.drawBoard(BoardParser.parseBoard(boardRepr));
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  public void requestStartGame() {
+  public void requestStartGame() throws ServerConnectionException {
     JsonObject jsonObj = new JsonObject();
     jsonObj.addProperty("command", "start");
 
@@ -128,16 +132,17 @@ public class ServerConnector {
     try {
       JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
       if (!response.get("status").getAsString().equals("joined")) {
-        // todo throw exception or smth
+        throw new ServerConnectionException();
       }
-      // return values?
+      // wait for server information
+      play();
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
 
-  public void requestMove(int playerId, int pawnX, int pawnY, int targetX, int targetY) {
+  public void requestMove(int playerId, int pawnX, int pawnY, int targetX, int targetY) throws ServerConnectionException {
     JsonObject jsonObj = new JsonObject();
     jsonObj.addProperty("command", "move");
     jsonObj.addProperty("playerId", playerId);
@@ -146,38 +151,13 @@ public class ServerConnector {
     jsonObj.addProperty("targetX", targetX);
     jsonObj.addProperty("targetY", targetY);
     out.println(jsonObj.getAsString());
-    // read the response
-    try {
-      JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
-      if (!response.get("status").getAsString().equals("connected")) {
-        // todo throw exception or smth
-      }
-      //String boardRepr =  response.get("board").getAsString();
-      // return values?
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
   }
 
-  public void requestEndTurn(int playerId) {
+  public void requestEndTurn(int playerId) throws ServerConnectionException {
     JsonObject jsonObj = new JsonObject();
     jsonObj.addProperty("command", "move");
     jsonObj.addProperty("playerId", playerId);
     out.println(jsonObj.getAsString());
-    // read the response
-    try {
-      JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
-      if (!response.get("status").getAsString().equals("connected")) {
-        // todo throw exception or smth
-      }
-      //String boardRepr =  response.get("board").getAsString();
-      // return values?
-
-      // after finished turn we wait for messages about other players' actions
-      waitForMessage(playerId);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
   }
 
 }

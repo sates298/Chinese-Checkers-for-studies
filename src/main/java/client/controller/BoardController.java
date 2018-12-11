@@ -59,7 +59,7 @@ public class BoardController extends AbstractController implements Initializable
     }
 
     @FXML
-    public void drawBoard(){
+    public void drawBoard(String[][] board){
         pane.getChildren().clear();
         //todo this part is only to check correct drawing
         SixPointedStar star = (SixPointedStar) (new SixPointedStarCreator()).createBoard();
@@ -129,6 +129,6 @@ public class BoardController extends AbstractController implements Initializable
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        drawBoard();
+        //drawBoard();
     }
 }
