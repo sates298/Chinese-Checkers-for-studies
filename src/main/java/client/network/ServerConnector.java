@@ -1,6 +1,8 @@
-package client;
+package client.network;
 
 import client.controller.BoardController;
+import client.network.BoardParser;
+import client.network.ServerConnectionException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 

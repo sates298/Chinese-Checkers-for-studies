@@ -1,4 +1,4 @@
-package client;
+package client.network;
 
 public class ServerConnectionException extends Exception {
 
