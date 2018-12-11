@@ -3,7 +3,6 @@ package client;
 import client.controller.BoardController;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import javafx.scene.shape.Circle;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +19,8 @@ public class ServerConnector {
   private BufferedReader in;
   private JsonParser parser;
 
+  private int playerId;
+
   public ServerConnector(BoardController boardController, String host, int port) {
     this.boardController = boardController;
     parser = new JsonParser();
@@ -35,7 +36,7 @@ public class ServerConnector {
   // todo check how threads in gui work and if we can invoke methods from these object even though this loop is running
 
   // wait for server's response and redraw board based on  the response
-  public void play() throws IOException, ServerConnectionException {
+  public void waitForResponse() throws IOException, ServerConnectionException {
     while (true) {
       String serverResponse = in.readLine();
       JsonObject response = parser.parse(serverResponse).getAsJsonObject();
@@ -48,7 +49,12 @@ public class ServerConnector {
         String[][] board = BoardParser.parseBoard(boardRepr);
         boardController.drawBoard(board);
       } else if (response.get("action").getAsString().equals("endTurn")) {
+        int playerId = response.get("playerId").getAsInt();
         // todo set a label for current player or smth
+        if(playerId == this.playerId){
+          // decide we cannot break continous communication with the server (error messages  etc)
+          //break;
+        }
       }
     }
   }
@@ -116,6 +122,7 @@ public class ServerConnector {
       if (!response.get("status").getAsString().equals("joined")) {
         throw new ServerConnectionException();
       }
+      this.playerId = response.get("playerId").getAsInt();
       String boardRepr =  response.get("board").getAsString();
       boardController.drawBoard(BoardParser.parseBoard(boardRepr));
     } catch (IOException e) {
@@ -135,7 +142,7 @@ public class ServerConnector {
         throw new ServerConnectionException();
       }
       // wait for server information
-      play();
+      waitForResponse();
     } catch (IOException e) {
       e.printStackTrace();
     }
