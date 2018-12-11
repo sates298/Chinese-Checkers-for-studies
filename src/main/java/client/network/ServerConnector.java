@@ -23,6 +23,7 @@ public class ServerConnector {
 
   private int playerId;
 
+
   public ServerConnector(BoardController boardController, String host, int port) {
     this.boardController = boardController;
     parser = new JsonParser();
@@ -35,7 +36,10 @@ public class ServerConnector {
     }
   }
 
-  // todo check how threads in gui work and if we can invoke methods from these object even though this loop is running
+  public PrintWriter getOutputStream() {
+    return out;
+  }
+
 
   // wait for server's response and redraw board based on  the response
   public void waitForResponse() throws IOException, ServerConnectionException {
@@ -151,22 +155,6 @@ public class ServerConnector {
   }
 
 
-  public void requestMove(int playerId, int pawnX, int pawnY, int targetX, int targetY) throws ServerConnectionException {
-    JsonObject jsonObj = new JsonObject();
-    jsonObj.addProperty("command", "move");
-    jsonObj.addProperty("playerId", playerId);
-    jsonObj.addProperty("pawnX", pawnX);
-    jsonObj.addProperty("pawnY", pawnY);
-    jsonObj.addProperty("targetX", targetX);
-    jsonObj.addProperty("targetY", targetY);
-    out.println(jsonObj.getAsString());
-  }
 
-  public void requestEndTurn(int playerId) throws ServerConnectionException {
-    JsonObject jsonObj = new JsonObject();
-    jsonObj.addProperty("command", "move");
-    jsonObj.addProperty("playerId", playerId);
-    out.println(jsonObj.getAsString());
-  }
 
 }
