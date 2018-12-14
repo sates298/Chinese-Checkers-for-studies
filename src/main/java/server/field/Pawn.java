@@ -18,10 +18,12 @@ public class Pawn extends Field {
 
     @Override
     public String toString() {
-        return "{type : Pawn" +
-                ", x : " + getX() +
-                ", y : " + getY() +
-                ", owner : " + owner.getId() +
-                "}";
+        return "{\"type\": \"Pawn\"" +
+                ", \"x\": " + getX() +
+                ", \"y\": " + getY() +
+                ", \"owner\": " + owner.getId() +
+                ", \"color\": \"" + owner.getColor()+
+                "\"}";
+
     }
 }

@@ -8,9 +8,9 @@ public class EmptyField extends Field{
 
     @Override
     public String toString() {
-        return "{type : EmptyField" +
-                ", x : " + getX() +
-                ", y : " + getY() +
+        return "{\"type\": \"EmptyField\"" +
+                ", \"x\": " + getX() +
+                ", \"y\": " + getY() +
                 "}";
     }
 }

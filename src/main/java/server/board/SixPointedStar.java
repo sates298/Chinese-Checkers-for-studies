@@ -31,54 +31,48 @@ public class SixPointedStar extends Board {
             for(int i=0; i<4; i++){
                 for(int j=0; j<=i; j++){
                     created = (Pawn)creator.createField(4 + j, i);
-                    p.getPawns().add(created);
+                    p.setOnePawn(created);
                     setOneField(created);
-                    created.setOwner(p);
                 }
             }
         } else if(SixPointedStarSide.LEFT_TOP == p.getStartingSide()){
             for(int i=0; i<4; i++){
                 for(int j=3; j>=i; j--){
                     created = (Pawn)creator.createField(j, 4 + i);
-                    p.getPawns().add(created);
+                    p.setOnePawn(created);
                     setOneField(created);
-                    created.setOwner(p);
                 }
             }
         }else if(SixPointedStarSide.RIGHT_TOP == p.getStartingSide()){
             for(int i=0; i<4; i++){
                 for(int j=3; j>=i; j--){
                     created = (Pawn)creator.createField(9 + j, 4 + i);
-                    p.getPawns().add(created);
+                    p.setOnePawn(created);
                     setOneField(created);
-                    created.setOwner(p);
                 }
             }
         }else if(SixPointedStarSide.BOTTOM == p.getStartingSide()){
             for(int i=0; i<4; i++){
                 for(int j=3; j>=i; j--){
                     created = (Pawn)creator.createField(9 + j, 13 + i);
-                    p.getPawns().add(created);
+                    p.setOnePawn(created);
                     setOneField(created);
-                    created.setOwner(p);
                 }
             }
         }else if(SixPointedStarSide.LEFT_BOTTOM == p.getStartingSide()){
             for(int i=0; i<4; i++){
                 for(int j=0; j<=i; j++){
                     created = (Pawn) creator.createField(4 + j, 9 + i);
-                    p.getPawns().add(created);
+                    p.setOnePawn(created);
                     setOneField(created);
-                    created.setOwner(p);
                 }
             }
         }else if(SixPointedStarSide.RIGHT_BOTTOM == p.getStartingSide()){
             for(int i=0; i<4; i++){
                 for(int j=0; j<=i; j++){
                     created = (Pawn)creator.createField(13 + j, 9 + i);
-                    p.getPawns().add(created);
+                    p.setOnePawn(created);
                     setOneField(created);
-                    created.setOwner(p);
                 }
             }
         }

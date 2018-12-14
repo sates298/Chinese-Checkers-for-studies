@@ -21,13 +21,6 @@ public class Player {
     this.color = color;
     this.moveToken = 0;
   }
-  public Player(List<Pawn> pawns, BoardSide side, Color color) {
-    pawns.forEach(p -> p.setOwner(this));
-    this.pawns = pawns;
-    this.startingSide = side;
-    this.color = color;
-    this.moveToken = 0;
-  }
 
   public int getId() {
     return id;
@@ -60,6 +53,11 @@ public class Player {
   public void setPawns(List<Pawn> pawns) {
     pawns.forEach(p -> p.setOwner(this));
     this.pawns = pawns;
+  }
+
+  public void setOnePawn(Pawn pawn) {
+    this.pawns.add(pawn);
+    pawn.setOwner(this);
   }
 
   public void setStartingSide(BoardSide startingSide) {

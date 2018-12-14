@@ -46,6 +46,8 @@ public class MainMovement implements Movement {
         }
 
         //later check if board place allow to move
+        // todo !!
+        // I overrided  checkMoveForBoard to use type SixPointedStar  but getBoard still returns Board
         if (!checkMoveForBoard(pawn.getBoard(), pawn, (EmptyField) target)) {
             return false;
         }
@@ -105,16 +107,19 @@ public class MainMovement implements Movement {
 
     }
 
-
-
     private boolean checkMoveForBoard(Board board, Pawn pawn, EmptyField target) {
         if (board instanceof SixPointedStar) {
-            List<Field> temp = ((SixPointedStarSide) pawn.getOwner().getStartingSide()).getOppositeArea((SixPointedStar) board);
-
+            List<Field> temp = ((SixPointedStarSide) pawn.getOwner().getStartingSide()).getOppositeArea((SixPointedStar)board);
             return temp.indexOf(pawn) >= 0 && temp.indexOf(target) >= 0;
         }
 
         return false;
+
     }
 
+    private boolean checkMoveForBoard(SixPointedStar board, Pawn pawn, EmptyField target) {
+        List<Field> temp = ((SixPointedStarSide) pawn.getOwner().getStartingSide()).getOppositeArea(board);
+
+        return temp.indexOf(pawn) >= 0 && temp.indexOf(target) >= 0;
+    }
 }

@@ -112,12 +112,14 @@ public class GameController {
         throw new GameFullException();
       }
 
-      if (usedSides.indexOf(side) >= 0) {
+      // check if side and color are  in  used sides
+      if (usedSides.contains(side)) {
         throw new BoardSideUsedException();
       }
-      if (usedColors.indexOf(color) >= 0) {
+      if (usedColors.contains(color)) {
         throw new ColorUsedException();
       }
+
       Player p = new Player(side, color);
       this.actual.getBoard().setPawns(p);
       this.actual.getPlayers().add(p);

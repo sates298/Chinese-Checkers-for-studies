@@ -1,5 +1,6 @@
 package client.controller;
 
+import client.DrawableField;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -59,13 +60,15 @@ public class BoardController extends AbstractController implements Initializable
     }
 
     @FXML
-    public void drawBoard(String[][] board){
+    public void drawBoard(DrawableField[][] board){
         pane.getChildren().clear();
         //todo this part is only to check correct drawing
         SixPointedStar star = (SixPointedStar) (new SixPointedStarCreator()).createBoard();
         setPawns(star);
         /////////
         convertTableToTable(star);
+
+
         pane.setBackground(new Background(new BackgroundFill(backgroundColor, CornerRadii.EMPTY, Insets.EMPTY)));
 
         double layoutX , layoutY = 40;
@@ -129,6 +132,6 @@ public class BoardController extends AbstractController implements Initializable
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //drawBoard();
+        drawBoard(null);
     }
 }
