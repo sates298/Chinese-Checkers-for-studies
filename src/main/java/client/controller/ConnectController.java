@@ -47,7 +47,7 @@ public class ConnectController extends AbstractController implements Initializab
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         List<Integer> openGames = new ArrayList<>();
-        //openGames.add(1);
+        openGames.add(1);
         //openGames.add(2);
         //todo get List<Integer> gamesId's from serwer
         gameIdBox.getItems().addAll(openGames);

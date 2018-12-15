@@ -64,15 +64,15 @@ public class ServerConnector {
     while (true) {
       String serverResponse = in.readLine();
       JsonObject response = parser.parse(serverResponse).getAsJsonObject();
-      if (!response.get("status").getAsString().equals("success")) {
+      if (!response.get("status").toString().equals("\"success\"")) {
         throw new ServerConnectionException();
       }
-      if (response.get("action").getAsString().equals("move")) {
+      if (response.get("action").getAsString().equals("\"move\"")) {
         // parse the board
-        String boardRepr= response.get("board").getAsString();
+        String boardRepr= response.get("board").toString();
         DrawableField[][] board = BoardParser.parseBoard(boardRepr);
         boardController.drawBoard(board);
-      } else if (response.get("action").getAsString().equals("endTurn")) {
+      } else if (response.get("action").getAsString().equals("\"endTurn\"")) {
         int playerId = response.get("playerId").getAsInt();
         // todo set a label for current player or smth
         if(playerId == this.playerId){
@@ -100,13 +100,15 @@ public class ServerConnector {
     jsonObj.addProperty("command", "create");
     jsonObj.addProperty("boardType", ClientBase.getInstance().getBoardType());
     jsonObj.addProperty("movementType", ClientBase.getInstance().getMovementType());
+    jsonObj.addProperty("numberOfPlayers", numberOfPlayers);
+    jsonObj.addProperty("numberOfPawns", numberOfPawns);
     //System.out.println(jsonObj.toString());
     out.println(jsonObj.toString());
-    System.out.println(jsonObj.toString());
+    //System.out.println(jsonObj.toString());
     // read the response
     try {
       JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
-      System.out.println(response.toString());
+      //System.out.println(response.toString());
       if (!response.get("status").getAsString().equals("created")) {
         throw new ServerConnectionException();
       }
@@ -125,17 +127,18 @@ public class ServerConnector {
     JsonObject jsonObj = new JsonObject();
     jsonObj.addProperty("command", "connect");
     jsonObj.addProperty("gameId", ClientBase.getInstance().getGameId());
-    out.println(jsonObj.getAsString());
+    System.out.println(jsonObj.toString());
+    out.println(jsonObj.toString());
     // read the response
     try {
       JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
-      if (!response.get("status").getAsString().equals("connected")) {
+      if (!response.get("status").toString().equals("\"connected\"")) {
         throw new ServerConnectionException();
       }
-
+      System.out.println("connected");
       //todo save board, not draw
-      String boardRepr =  response.get("board").getAsString();
-      boardController.drawBoard(BoardParser.parseBoard(boardRepr));
+      //String boardRepr =  response.get("board").toString();
+      //boardController.drawBoard(BoardParser.parseBoard(boardRepr));
     } catch (IOException e) {
       e.printStackTrace();
     }

@@ -17,9 +17,6 @@ import java.util.*;
 
 public class JoinController extends AbstractController implements Initializable {
 
-    private String boardSide;
-    private String color;
-
     @FXML
     private ComboBox<String> boardSideBox;
     @FXML
@@ -28,8 +25,8 @@ public class JoinController extends AbstractController implements Initializable 
     @FXML
     public void joinToBoard() throws IOException {
         try {
-            boardSide = boardSideBox.getValue();
-            color = colorBox.getValue();
+            String boardSide = boardSideBox.getValue();
+            String color = colorBox.getValue();
 
             ServerConnector.getInstance().requestJoinGame(boardSide, color);
             //ServerConnector.getInstance().requestStartGame();
@@ -45,8 +42,6 @@ public class JoinController extends AbstractController implements Initializable 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //todo fill both comboBoxes
-
         boardSideBox.getItems().addAll("TOP", "LEFT_TOP", "RIGHT_TOP", "BOTTOM", "LEFT_BOTTOM", "RIGHT_BOTTOM");
         colorBox.getItems().addAll("RED", "GREEN", "BLACK",  "BLUE" , "YELLOW" , "PURPLE");
     }

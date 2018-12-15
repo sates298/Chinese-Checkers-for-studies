@@ -13,6 +13,8 @@ public class Game {
   private Movement movement;
   private GameController controller;
   private List<Player> players;
+  private int numberOfPlayers;
+  private int numberOfPawns;
 
   public Game(){
     this. controller = new GameController(this);
@@ -58,6 +60,22 @@ public class Game {
 
   public void setMovement(Movement movement) {
     this.movement = movement;
+  }
+
+  public int getNumberOfPlayers() {
+    return numberOfPlayers;
+  }
+
+  public void setNumberOfPlayers(int numberOfPlayers) {
+    this.numberOfPlayers = numberOfPlayers;
+  }
+
+  public int getNumberOfPawns() {
+    return numberOfPawns;
+  }
+
+  public void setNumberOfPawns(int numberOfPawns) {
+    this.numberOfPawns = numberOfPawns;
   }
 
 }

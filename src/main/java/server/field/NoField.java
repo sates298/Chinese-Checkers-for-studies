@@ -7,9 +7,9 @@ public class NoField extends Field {
 
     @Override
     public String toString() {
-        return "{\"type\": \"NoField\"" +
-            ", \"x\": " + getX() +
-            ", \"y\": " + getY() +
+        return "{\"type\":\"NoField\"" +
+            ",\"x\":" + getX() +
+            ",\"y\":" + getY() +
             "}";
     }
 }

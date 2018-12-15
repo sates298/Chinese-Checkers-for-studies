@@ -34,15 +34,15 @@ public abstract class Board {
 
     public String fieldsToString(){
         StringBuilder builder = new StringBuilder();
-        builder.append("[ ");
+        builder.append("[");
         for(int i=0; i<sizeY(); i++){
-            builder.append("[ ");
+            builder.append("[");
             for (int j=0; j< sizeX(); j++){
                 builder.append(fields[j][i].toString());
             }
-            builder.append("] , ");
+            builder.append("],");
         }
-        builder.append("] ");
+        builder.append("]");
         return builder.toString();
     }
 

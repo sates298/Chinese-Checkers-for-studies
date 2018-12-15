@@ -2,29 +2,17 @@ package client.controller;
 
 
 import client.ClientBase;
-import client.drawableBoard.SixPointedStarDraw;
+
 import client.network.ServerConnector;
 import client.drawableBoard.DrawableField;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 
-import server.board.SixPointedStar;
-import server.creator.boardCreator.SixPointedStarCreator;
-import server.creator.fieldCreator.FieldCreator;
-import server.creator.fieldCreator.PawnCreator;
-import server.field.EmptyField;
-import server.field.NoField;
-import server.field.Pawn;
+import javafx.scene.layout.Pane;
+
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -65,9 +53,7 @@ public class BoardController extends AbstractController implements Initializable
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //todo i think it will be unused because of ClientBase class
         ServerConnector.getInstance().setBoardController(this);
-
         drawBoard(ClientBase.getInstance().getStartedBoard());
     }
 }
