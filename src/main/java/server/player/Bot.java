@@ -11,4 +11,8 @@ public class Bot extends Player {
     super(side, color);
   }
 
+  public Bot(){
+
+  }
+
 }
