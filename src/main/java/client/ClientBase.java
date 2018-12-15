@@ -7,6 +7,7 @@ import client.drawableBoard.SixPointedStarDraw;
 public class ClientBase {
 
     private int playerId;
+    private int gameId;
     private String boardType;
     private String movementType;
     private Draw boardDraw;
@@ -58,5 +59,13 @@ public class ClientBase {
 
     public void setStartedBoard(DrawableField[][] startedBoard) {
         this.startedBoard = startedBoard;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 }

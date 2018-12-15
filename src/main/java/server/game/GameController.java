@@ -60,10 +60,6 @@ public class GameController {
     }
   }
 
-  //todo this method will be unused, because it will work the same way as endTurn()
-  public void skipTurn(int playerId) throws ForbiddenActionException {
-    endTurn(playerId);
-  }
   public void endTurn(int playerId) throws ForbiddenActionException {
     if (this.currentTurnPlayer.getId() != playerId) {
       throw new ForbiddenActionException();

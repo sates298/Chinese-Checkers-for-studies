@@ -1,5 +1,8 @@
 package client.controller;
 
+import client.ClientBase;
+import client.network.ServerConnectionException;
+import client.network.ServerConnector;
 import javafx.fxml.FXML;
 
 import javafx.fxml.Initializable;
@@ -34,14 +37,19 @@ public class NewGameController extends AbstractController implements Initializab
     @FXML
     public void create() throws IOException{
         try {
-            boardType = boardTypeBox.getValue();
-            movementType = movementTypeBox.getValue();
+            ClientBase.getInstance().setBoardType(boardTypeBox.getValue());
+            ClientBase.getInstance().setMovementType(movementTypeBox.getValue());
             numberOfPlayers = numberOfPlayersBox.getValue();
             numberOfPawns = numberOfPawnsBox.getValue();
-        }catch (Exception e){
+
+            ServerConnector.getInstance().requestCreateGame(numberOfPlayers, numberOfPawns);
+            redirect("fxml/join.fxml", "Join to Game", 300, 275, boardTypeBox);
+
+        }catch (NullPointerException e){
             showAlert("empty combo boxes", Alert.AlertType.WARNING);
+        } catch (ServerConnectionException e) {
+            e.printStackTrace();
         }
-        redirect("fxml/join.fxml", "Join to Game", 300, 275, boardTypeBox);
 
     }
 
@@ -54,8 +62,8 @@ public class NewGameController extends AbstractController implements Initializab
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
 
-        boardTypeBox.getItems().addAll("Six Pointed Star");
-        movementTypeBox.getItems().addAll("Default");
+        boardTypeBox.getItems().addAll("SixPointedStar");
+        movementTypeBox.getItems().addAll("main");
         numberOfPlayersBox.getItems().addAll(2, 3, 4, 6);
         numberOfPawnsBox.getItems().addAll(10);
 

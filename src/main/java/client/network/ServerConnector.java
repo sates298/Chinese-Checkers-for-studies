@@ -95,23 +95,23 @@ public class ServerConnector {
   }
 
 
-  public void requestCreateGame(String boardType, String movementType) throws ServerConnectionException {
+  public void requestCreateGame(int numberOfPlayers, int numberOfPawns) throws ServerConnectionException {
     JsonObject jsonObj = new JsonObject();
     jsonObj.addProperty("command", "create");
-    jsonObj.addProperty("boardType", boardType);
-    jsonObj.addProperty("movementType", movementType);
-    out.println(jsonObj.getAsString());
+    jsonObj.addProperty("boardType", ClientBase.getInstance().getBoardType());
+    jsonObj.addProperty("movementType", ClientBase.getInstance().getMovementType());
+    //System.out.println(jsonObj.toString());
+    out.println(jsonObj.toString());
+    System.out.println(jsonObj.toString());
     // read the response
     try {
       JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
+      System.out.println(response.toString());
       if (!response.get("status").getAsString().equals("created")) {
         throw new ServerConnectionException();
       }
 
-      ClientBase.getInstance().setBoardType(boardType);
-      ClientBase.getInstance().setMovementType(movementType);
-
-      ClientBase.getInstance().setPlayerId(response.get("gameId").getAsInt());
+      ClientBase.getInstance().setGameId(response.get("gameId").getAsInt());
       String boardRepr =  response.get("board").getAsString();
       DrawableField[][] board = BoardParser.parseBoard(boardRepr);
       ClientBase.getInstance().setStartedBoard(board);
@@ -121,10 +121,10 @@ public class ServerConnector {
     }
   }
 
-  public void requestConnectToGame(int gameId) throws ServerConnectionException {
+  public void requestConnectToGame() throws ServerConnectionException {
     JsonObject jsonObj = new JsonObject();
     jsonObj.addProperty("command", "connect");
-    jsonObj.addProperty("gameId", gameId);
+    jsonObj.addProperty("gameId", ClientBase.getInstance().getGameId());
     out.println(jsonObj.getAsString());
     // read the response
     try {
@@ -132,6 +132,8 @@ public class ServerConnector {
       if (!response.get("status").getAsString().equals("connected")) {
         throw new ServerConnectionException();
       }
+
+      //todo save board, not draw
       String boardRepr =  response.get("board").getAsString();
       boardController.drawBoard(BoardParser.parseBoard(boardRepr));
     } catch (IOException e) {
@@ -151,9 +153,10 @@ public class ServerConnector {
       if (!response.get("status").getAsString().equals("joined")) {
         throw new ServerConnectionException();
       }
-      this.playerId = response.get("playerId").getAsInt();
+      ClientBase.getInstance().setPlayerId(response.get("playerId").getAsInt());
       String boardRepr =  response.get("board").getAsString();
-      boardController.drawBoard(BoardParser.parseBoard(boardRepr));
+      ClientBase.getInstance().setStartedBoard(BoardParser.parseBoard(boardRepr));
+     // boardController.drawBoard(BoardParser.parseBoard(boardRepr));
     } catch (IOException e) {
       e.printStackTrace();
     }

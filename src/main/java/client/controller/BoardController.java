@@ -65,7 +65,9 @@ public class BoardController extends AbstractController implements Initializable
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //todo i think it will be unused because of ClientBase class
         ServerConnector.getInstance().setBoardController(this);
-        //drawBoard(null);
+
+        drawBoard(ClientBase.getInstance().getStartedBoard());
     }
 }

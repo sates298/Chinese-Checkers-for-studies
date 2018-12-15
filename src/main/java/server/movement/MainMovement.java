@@ -81,7 +81,6 @@ public class MainMovement implements Movement {
     }
 
     private boolean checkJump(Pawn pawn, Field target) {
-        // todo check if jump are implement correct XD
 
         // vertical jump
         if (pawn.getX() == target.getX()) {

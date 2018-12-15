@@ -1,5 +1,6 @@
 package client.controller;
 
+import client.network.ServerConnectionException;
 import client.network.ServerConnector;
 import javafx.fxml.FXML;
 
@@ -12,7 +13,7 @@ import javafx.scene.control.ComboBox;
 import java.io.IOException;
 import java.net.URL;
 
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class JoinController extends AbstractController implements Initializable {
 
@@ -30,18 +31,24 @@ public class JoinController extends AbstractController implements Initializable 
             boardSide = boardSideBox.getValue();
             color = colorBox.getValue();
 
+            ServerConnector.getInstance().requestJoinGame(boardSide, color);
+            //ServerConnector.getInstance().requestStartGame();
+            redirect("fxml/board.fxml", "Board", 920, 670, colorBox);
+
         } catch (NullPointerException n) {
-            showAlert("empty combo boxes", Alert.AlertType.WARNING);
+            showAlert("empty combo boxes", Alert.AlertType.ERROR);
+        } catch (ServerConnectionException e) {
+            e.printStackTrace();
         }
-        redirect("fxml/board.fxml", "Board", 920, 670, colorBox);
     }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //todo fill both comboBoxes
-        boardSideBox.getItems().addAll();
-        colorBox.getItems().addAll();
+
+        boardSideBox.getItems().addAll("TOP", "LEFT_TOP", "RIGHT_TOP", "BOTTOM", "LEFT_BOTTOM", "RIGHT_BOTTOM");
+        colorBox.getItems().addAll("RED", "GREEN", "BLACK",  "BLUE" , "YELLOW" , "PURPLE");
     }
 
 

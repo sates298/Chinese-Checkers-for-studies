@@ -134,17 +134,23 @@ public class Server {
         private void handleClientMessage(JsonObject jsonObject) {
             if (jsonObject.get("command").getAsString().equals("connect")) {
                 // request looks like "{"command":"connect", "gameId": "gameId"}"
+                System.out.println(jsonObject.getAsString());
                 connectToGame(jsonObject.get("gameId").getAsInt());
                 return;
             }
 
             if (jsonObject.get("command").toString().equals("create")) {
+                //
                 createGame(jsonObject.get("boardType").getAsString(), jsonObject.get("movementType").getAsString());
+                System.out.println(jsonObject.getAsString());
+
                 return;
             }
 
             if (jsonObject.get("command").getAsString().equals("join")) {
-                joinGame(jsonObject.get("side").getAsString(), jsonObject.get("color").getAsString());
+                joinGame(jsonObject.get("side").toString(), jsonObject.get("color").toString());
+                System.out.println(jsonObject.toString());
+
                 return;
             }
             if (jsonObject.get("command").getAsString().equals("move")) {
@@ -169,7 +175,7 @@ public class Server {
                 JsonObject returnObj = new JsonObject();
                 returnObj.addProperty("status", "created");
                 returnObj.addProperty("gameId", this.game.getGameId());
-                returnObj.addProperty("board", this.game.getBoard().fieldsToString()); //todo make correct string representation
+                returnObj.addProperty("board", this.game.getBoard().fieldsToString());
                 out.println(returnObj.getAsString());
 
             } catch (WrongMovementTypeException | WrongBoardTypeException e) {
