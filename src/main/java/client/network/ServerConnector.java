@@ -1,5 +1,6 @@
 package client.network;
 
+import client.DrawableField;
 import client.controller.BoardController;
 import client.network.BoardParser;
 import client.network.ServerConnectionException;
@@ -52,7 +53,7 @@ public class ServerConnector {
       if (response.get("action").getAsString().equals("move")) {
         // parse the board
         String boardRepr= response.get("board").getAsString();
-        String[][] board = BoardParser.parseBoard(boardRepr);
+        DrawableField[][] board = BoardParser.parseBoard(boardRepr);
         boardController.drawBoard(board);
       } else if (response.get("action").getAsString().equals("endTurn")) {
         int playerId = response.get("playerId").getAsInt();
