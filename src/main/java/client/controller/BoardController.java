@@ -29,8 +29,6 @@ import java.util.ResourceBundle;
 public class BoardController extends AbstractController implements Initializable {
 
     private Circle[][] board;
-    private final double radius = 15;
-    private Paint backgroundColor = Color.WHITE;
 
     @FXML
     private Label label1;
@@ -60,6 +58,7 @@ public class BoardController extends AbstractController implements Initializable
     public void endTurn(){
     }
 
+    /*
     @FXML
     public void drawBoard(DrawableField[][] board){
         pane.getChildren().clear();
@@ -91,7 +90,6 @@ public class BoardController extends AbstractController implements Initializable
 
     }
 
-/*
     //todo implement correctly this method when client get info about board from server
     private void convertTableToTable(SixPointedStar board){
         this.board = new Circle[17][17];
@@ -134,6 +132,6 @@ public class BoardController extends AbstractController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ServerConnector.getInstance().setBoardController(this);
-        drawBoard(null);
+        //drawBoard(null);
     }
 }
