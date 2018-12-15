@@ -7,6 +7,7 @@ import server.exception.ForbiddenMoveException;
 import server.field.EmptyField;
 import server.field.Field;
 import server.field.Pawn;
+import server.player.MoveToken;
 import server.player.Player;
 
 import java.util.List;
@@ -18,9 +19,9 @@ public class MainMovement implements Movement {
 
         if (checkMove(pawn, target)) {
             if(checkJump(pawn, target)){
-                pawn.getOwner().setMoveToken(2);
+                pawn.getOwner().setMoveToken(MoveToken.ONLY_JUMP);
             }else {
-                pawn.getOwner().setMoveToken(0);
+                pawn.getOwner().setMoveToken(MoveToken.FORBID);
             }
             int pawnX = pawn.getX();
             int pawnY = pawn.getY();

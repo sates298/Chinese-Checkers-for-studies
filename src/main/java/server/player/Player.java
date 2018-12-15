@@ -12,14 +12,14 @@ public class Player {
   private Color color;
 
   //0 - can't move, 1 - can move, 2 - can jump only, 3 - has won already
-  private int moveToken;
+  private MoveToken moveToken;
 
   public Player() {
   }
   public Player(BoardSide side, Color color) {
     this.startingSide = side;
     this.color = color;
-    this.moveToken = 0;
+    this.moveToken = MoveToken.FORBID;
   }
 
   public int getId() {
@@ -30,11 +30,11 @@ public class Player {
     this.id = id;
   }
 
-  public int getMoveToken() {
+  public MoveToken getMoveToken() {
     return moveToken;
   }
 
-  public void setMoveToken(int moveToken) {
+  public void setMoveToken(MoveToken moveToken) {
     this.moveToken = moveToken;
   }
 

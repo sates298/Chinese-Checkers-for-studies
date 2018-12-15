@@ -8,6 +8,7 @@ import server.exception.*;
 import server.field.Field;
 import server.field.Pawn;
 import server.player.Color;
+import server.player.MoveToken;
 import server.player.Player;
 
 import java.util.Comparator;
@@ -38,14 +39,14 @@ public class GameController {
 
     currentTurnPlayer = playerListIterator.next();
     //allow current player to move
-    currentTurnPlayer.setMoveToken(1);
+    currentTurnPlayer.setMoveToken(MoveToken.ALLOW);
   }
 
   public void endGame() {
 
   }
   public void move(int playerId, int pawnX, int pawnY, int targetX, int targetY) throws ForbiddenMoveException, ForbiddenActionException {
-    if (playerId != this.currentTurnPlayer.getId() || this.currentTurnPlayer.getMoveToken() == 0) {
+    if (playerId != this.currentTurnPlayer.getId() || this.currentTurnPlayer.getMoveToken().getNum() == 0) {
       throw new ForbiddenActionException();
     }
     // find pawn and target  by coordinates
@@ -70,9 +71,9 @@ public class GameController {
 
     //forbid current player to move if is not a winner yet
     if(checkWinCondition()){
-      this.currentTurnPlayer.setMoveToken(3);
+      this.currentTurnPlayer.setMoveToken(MoveToken.WINNER);
     }else{
-      this.currentTurnPlayer.setMoveToken(0);
+      this.currentTurnPlayer.setMoveToken(MoveToken.FORBID);
     }
     Player prev = this.currentTurnPlayer;
 
@@ -91,13 +92,13 @@ public class GameController {
         break;
       }
 
-    } while (currentTurnPlayer.getMoveToken() == 3);
+    } while (currentTurnPlayer.getMoveToken().getNum() == 3);
     //if only one player has move token not equal 3, end game
     if(prev.getId() == this.currentTurnPlayer.getId() ){
       endGame();
     }
     //allow next player to move
-    this.currentTurnPlayer.setMoveToken(1);
+    this.currentTurnPlayer.setMoveToken(MoveToken.ALLOW);
   }
   public Player addPlayer(String sideStr, String colorStr) throws GameFullException, ColorUsedException, BoardSideUsedException {
     // find used color and starting side
