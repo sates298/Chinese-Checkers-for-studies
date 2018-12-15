@@ -1,6 +1,6 @@
 package client.controller;
 
-import client.DrawableField;
+import client.drawableBoard.DrawableField;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -66,7 +66,7 @@ public class BoardController extends AbstractController implements Initializable
         SixPointedStar star = (SixPointedStar) (new SixPointedStarCreator()).createBoard();
         setPawns(star);
         /////////
-        convertTableToTable(star);
+        //convertTableToTable(star);
 
 
         pane.setBackground(new Background(new BackgroundFill(backgroundColor, CornerRadii.EMPTY, Insets.EMPTY)));

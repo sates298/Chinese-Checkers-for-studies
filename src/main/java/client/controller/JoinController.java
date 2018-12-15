@@ -1,5 +1,6 @@
 package client.controller;
 
+import client.network.ServerConnector;
 import javafx.fxml.FXML;
 
 import javafx.fxml.Initializable;
@@ -28,7 +29,8 @@ public class JoinController extends AbstractController implements Initializable 
         try {
             boardSide = boardSideBox.getValue();
             color = colorBox.getValue();
-        }catch(Exception e){
+
+        } catch (NullPointerException n) {
             showAlert("empty combo boxes", Alert.AlertType.WARNING);
         }
         redirect("fxml/board.fxml", "Board", 920, 670, colorBox);
@@ -41,7 +43,6 @@ public class JoinController extends AbstractController implements Initializable 
         boardSideBox.getItems().addAll();
         colorBox.getItems().addAll();
     }
-
 
 
 }

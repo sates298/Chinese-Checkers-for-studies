@@ -1,9 +1,8 @@
 package client.network;
 
-import client.DrawableField;
+import client.drawableBoard.DrawableField;
 import client.controller.BoardController;
-import client.network.BoardParser;
-import client.network.ServerConnectionException;
+import client.drawableBoard.BoardParser;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -91,6 +90,7 @@ public class ServerConnector {
         throw new ServerConnectionException();
       }
 
+      //todo for what this gameId?
       int gameId = response.get("gameId").getAsInt();
       String boardRepr =  response.get("board").getAsString();
       boardController.drawBoard(BoardParser.parseBoard(boardRepr));
