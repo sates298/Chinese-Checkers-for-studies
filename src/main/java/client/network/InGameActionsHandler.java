@@ -2,10 +2,10 @@ package client.network;
 
 import com.google.gson.JsonObject;
 
-public class InGameActions {
+public class InGameActionsHandler {
   private ServerConnector connector;
 
-  public InGameActions(ServerConnector connector) {
+  public InGameActionsHandler(ServerConnector connector) {
     this.connector = connector;
   }
 

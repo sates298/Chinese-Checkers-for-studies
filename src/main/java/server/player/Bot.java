@@ -7,12 +7,8 @@ import server.field.Pawn;
 import java.util.List;
 
 public class Bot extends Player {
-  public Bot(List<Pawn> pawns, BoardSide side, Color color) {
-    super(pawns, side, color);
-  }
-
-  public Bot(){
-
+  public Bot(BoardSide side, Color color) {
+    super(side, color);
   }
 
 }

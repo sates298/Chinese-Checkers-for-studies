@@ -1,17 +1,19 @@
 package client;
 
+import client.network.ServerConnector;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.util.Objects;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        // connect to server
+        ServerConnector.getInstance().makeConnection("localhost", 1234);
         Parent root =
                 FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/menu.fxml")));
         primaryStage.setTitle("Trylma The Game");

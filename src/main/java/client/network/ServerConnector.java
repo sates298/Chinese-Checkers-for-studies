@@ -2,10 +2,9 @@ package client.network;
 
 import client.DrawableField;
 import client.controller.BoardController;
-import client.network.BoardParser;
-import client.network.ServerConnectionException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import server.Server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +13,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ServerConnector {
+  private static ServerConnector instance;
+
   private Socket clientSocket;
 
   private BoardController boardController;
@@ -25,17 +26,29 @@ public class ServerConnector {
   private int playerId;
 
 
-  public ServerConnector(BoardController boardController, String host, int port) {
-    this.boardController = boardController;
+  private ServerConnector() {
     parser = new JsonParser();
-    try {
-      clientSocket = new Socket(host, port);
-      out = new PrintWriter(clientSocket.getOutputStream(), true);
-      in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-    } catch (IOException e) {
-      e.printStackTrace();
+  }
+
+  public static ServerConnector getInstance() {
+    if (instance == null) {
+      instance = new ServerConnector();
+    }
+    return instance;
+  }
+
+  public void setBoardController(BoardController boardController){
+    this.boardController = boardController;
+  }
+
+  public void makeConnection(String host, int port) throws IOException {
+    if (this.clientSocket == null) {
+      this.clientSocket = new Socket(host, port);
+      this.out = new PrintWriter(clientSocket.getOutputStream(), true);
+      this.in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
     }
   }
+
 
   public PrintWriter getOutputStream() {
     return out;

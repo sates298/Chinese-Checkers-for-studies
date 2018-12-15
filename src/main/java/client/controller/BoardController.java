@@ -1,6 +1,7 @@
 package client.controller;
 
 import client.DrawableField;
+import client.network.ServerConnector;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -132,6 +133,7 @@ public class BoardController extends AbstractController implements Initializable
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ServerConnector.getInstance().setBoardController(this);
         drawBoard(null);
     }
 }
