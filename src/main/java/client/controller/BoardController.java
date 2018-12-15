@@ -1,7 +1,7 @@
 package client.controller;
 
-import client.DrawableField;
 import client.network.ServerConnector;
+import client.drawableBoard.DrawableField;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -64,10 +64,10 @@ public class BoardController extends AbstractController implements Initializable
     public void drawBoard(DrawableField[][] board){
         pane.getChildren().clear();
         //todo this part is only to check correct drawing
-        SixPointedStar star = (SixPointedStar) (new SixPointedStarCreator()).createBoard();
-        setPawns(star);
+        //SixPointedStar star = (SixPointedStar) (new SixPointedStarCreator()).createBoard();
+        //setPawns(star);
         /////////
-        convertTableToTable(star);
+        //convertTableToTable(star);
 
 
         pane.setBackground(new Background(new BackgroundFill(backgroundColor, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -91,7 +91,7 @@ public class BoardController extends AbstractController implements Initializable
 
     }
 
-
+/*
     //todo implement correctly this method when client get info about board from server
     private void convertTableToTable(SixPointedStar board){
         this.board = new Circle[17][17];
@@ -129,7 +129,7 @@ public class BoardController extends AbstractController implements Initializable
             }
         }
     }
-
+*/
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

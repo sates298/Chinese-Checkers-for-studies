@@ -1,4 +1,4 @@
-package client;
+package client.drawableBoard;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;

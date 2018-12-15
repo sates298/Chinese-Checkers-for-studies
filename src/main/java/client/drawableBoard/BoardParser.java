@@ -1,6 +1,5 @@
-package client.network;
+package client.drawableBoard;
 
-import client.DrawableField;
 import com.google.gson.Gson;
 
 public class BoardParser {
@@ -18,7 +17,6 @@ public class BoardParser {
             );
       }
     }
-
 
     return fieldTypes;
   }
