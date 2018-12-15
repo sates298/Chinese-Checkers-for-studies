@@ -1,5 +1,8 @@
 package client.controller;
 
+
+import client.ClientBase;
+import client.drawableBoard.SixPointedStarDraw;
 import client.network.ServerConnector;
 import client.drawableBoard.DrawableField;
 import javafx.fxml.FXML;
@@ -27,8 +30,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class BoardController extends AbstractController implements Initializable {
-
-    private Circle[][] board;
 
     @FXML
     private Label label1;
@@ -58,76 +59,9 @@ public class BoardController extends AbstractController implements Initializable
     public void endTurn(){
     }
 
-    /*
-    @FXML
     public void drawBoard(DrawableField[][] board){
-        pane.getChildren().clear();
-        //todo this part is only to check correct drawing
-        //SixPointedStar star = (SixPointedStar) (new SixPointedStarCreator()).createBoard();
-        //setPawns(star);
-        /////////
-        //convertTableToTable(star);
-
-
-        pane.setBackground(new Background(new BackgroundFill(backgroundColor, CornerRadii.EMPTY, Insets.EMPTY)));
-
-        double layoutX , layoutY = 40;
-        double spacing = 3;
-        double shift = radius + spacing /2;
-        for(int i=0; i<17; i++){
-
-                layoutX = 175 + shift * (9 - i);
-
-            for(int j=0; j<17; j++){
-                this.board[j][i].setCenterX(layoutX);
-                this.board[j][i].setCenterY(layoutY);
-                layoutX += 2*radius + spacing;
-
-            }
-            layoutY += 2*radius;
-
-        }
-
+        ClientBase.getInstance().getBoardDraw().drawBoard(this.pane, board);
     }
-
-    //todo implement correctly this method when client get info about board from server
-    private void convertTableToTable(SixPointedStar board){
-        this.board = new Circle[17][17];
-        for(int i=0; i< 17; i++){
-            for(int j=0; j<17; j++){
-                if(board.getOneField(j, i) instanceof NoField){
-                    this.board[j][i] = new Circle(radius);
-                    this.board[j][i].setStroke(backgroundColor);
-                    this.board[j][i].setFill(backgroundColor);
-                    pane.getChildren().add(this.board[j][i]);
-                }else if(board.getOneField(j,i) instanceof EmptyField){
-                    this.board[j][i] = new Circle(radius);
-                    this.board[j][i].setStroke(Color.BLACK);
-                    this.board[j][i].setFill(Color.WHITE);
-                    pane.getChildren().add(this.board[j][i]);
-                }else if(board.getOneField(j, i) instanceof Pawn){
-                    this.board[j][i] = new Circle(radius);
-                    this.board[j][i].setStroke(Color.BLACK);
-                    this.board[j][i].setFill(Color.GREEN);
-                    pane.getChildren().add(this.board[j][i]);
-                }
-            }
-        }
-
-    }
-
-    //todo temporary method to check the correct drawing
-    private void setPawns(SixPointedStar board){
-        FieldCreator fieldCreator = new PawnCreator();
-
-        for(int i = 0; i < 4; ++i) {
-            for(int j = 3; j >= i; --j) {
-                board.setOneField(fieldCreator.createField(j, 4 + i));
-                board.getOneField(j, 4 + i).setBoard(board);
-            }
-        }
-    }
-*/
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

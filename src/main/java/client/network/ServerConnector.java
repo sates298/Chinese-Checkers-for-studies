@@ -1,5 +1,6 @@
 package client.network;
 
+import client.ClientBase;
 import client.drawableBoard.DrawableField;
 import client.controller.BoardController;
 
@@ -107,10 +108,14 @@ public class ServerConnector {
         throw new ServerConnectionException();
       }
 
-      //todo for what this gameId?
-      int gameId = response.get("gameId").getAsInt();
+      ClientBase.getInstance().setBoardType(boardType);
+      ClientBase.getInstance().setMovementType(movementType);
+
+      ClientBase.getInstance().setPlayerId(response.get("gameId").getAsInt());
       String boardRepr =  response.get("board").getAsString();
-      boardController.drawBoard(BoardParser.parseBoard(boardRepr));
+      DrawableField[][] board = BoardParser.parseBoard(boardRepr);
+      ClientBase.getInstance().setStartedBoard(board);
+      //boardController.drawBoard(board);
     } catch (IOException e) {
       e.printStackTrace();
     }
