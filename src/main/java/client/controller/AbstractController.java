@@ -29,6 +29,10 @@ public abstract class AbstractController {
     }
 
     public void showAlert(String message,  Alert.AlertType type){
-
+        Alert alert = new Alert(type);
+        alert.setTitle(type.toString());
+        alert.setHeaderText(type.toString());
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

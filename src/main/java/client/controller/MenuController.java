@@ -1,7 +1,10 @@
 package client.controller;
 
+import client.network.ServerConnectionException;
+import client.network.ServerConnector;
 import javafx.fxml.FXML;
 
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
 
@@ -15,7 +18,12 @@ public class MenuController extends AbstractController {
 
     @FXML
     public void joinToGame() throws IOException {
-        redirect("fxml/connect.fxml", "Connect to Game", 300, 275, exitButton);
+        try {
+            ServerConnector.getInstance().requestBeforeConnectToGame();
+            redirect("fxml/connect.fxml", "Connect to Game", 300, 275, exitButton);
+        } catch (ServerConnectionException e) {
+            showAlert("Don't connect", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML

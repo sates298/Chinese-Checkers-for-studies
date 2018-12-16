@@ -13,9 +13,8 @@ import javafx.scene.control.ComboBox;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ConnectController extends AbstractController implements Initializable {
@@ -26,15 +25,18 @@ public class ConnectController extends AbstractController implements Initializab
     @FXML
     public void connectAction() throws IOException {
         try {
+            if(gameIdBox.getValue() == null){
+                throw new NullPointerException();
+            }
             ClientBase.getInstance().setGameId(gameIdBox.getValue());
             ServerConnector.getInstance().requestConnectToGame();
 
             redirect("fxml/join.fxml", "Join to Game", 300, 275, gameIdBox);
 
         }catch(NullPointerException e){
-            showAlert("empty comboBox", Alert.AlertType.ERROR);
+            showAlert("Nothing has chosen", Alert.AlertType.WARNING);
         } catch (ServerConnectionException e) {
-            showAlert("don't connected", Alert.AlertType.ERROR);
+            showAlert("Don't connect", Alert.AlertType.ERROR);
         }
     }
 
@@ -46,10 +48,11 @@ public class ConnectController extends AbstractController implements Initializab
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        List<Integer> openGames = new ArrayList<>();
-        openGames.add(1);
-        //openGames.add(2);
-        //todo get List<Integer> gamesId's from serwer
-        gameIdBox.getItems().addAll(openGames);
+        List<Integer> ids = ClientBase.getInstance().getOpenedGamesIds();
+        if(ids != null){
+            gameIdBox.getItems().addAll(ids);
+        }
+
+
     }
 }

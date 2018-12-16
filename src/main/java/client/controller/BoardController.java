@@ -48,6 +48,7 @@ public class BoardController extends AbstractController implements Initializable
     @FXML
     public void endTurn(){
         try {
+            //todo somewhere we had to set playerId for client
             ServerConnector.getInstance().getGameHandler().requestEndTurn(
                     ClientBase.getInstance().getPlayerId()
             );

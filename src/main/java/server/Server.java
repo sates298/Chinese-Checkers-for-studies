@@ -148,6 +148,11 @@ public class Server {
                 return;
             }
 
+            if(jsonObject.get("command").toString().equals("\"before connect\"")) {
+                beforeConnectToGame();
+                return;
+            }
+
             if (jsonObject.get("command").toString().equals("\"create\"")) {
 
                 createGame(jsonObject.get("boardType").toString(), jsonObject.get("movementType").toString(),
@@ -195,7 +200,6 @@ public class Server {
 
         private void connectToGame(int gameId){
             // find the game with id equal to gameId
-            System.out.println("weszlo do connect");
             for (Game g: Server.getInstance().getGames()) {
                 System.out.println(g.getGameId());
             }
@@ -211,6 +215,24 @@ public class Server {
                 returnObj.addProperty("status", "is not present");
                 out.println(returnObj.toString());
             }
+        }
+
+        private void beforeConnectToGame(){
+            Integer[] ids = new Integer[Server.getInstance().getGames().size()];
+            for(int i=0; i< Server.getInstance().getGames().size(); i++){
+                ids[i] = Server.getInstance().getGames().get(i).getGameId();
+            }
+            JsonArray jArray = new JsonArray();
+            for(Integer i : ids){
+                jArray.add(i);
+            }
+            if(ids.length == 0) {
+                out.println("null");
+            return;
+            }
+            out.println(jArray.toString());
+
+
         }
 
         private void joinGame(String side, String color) {

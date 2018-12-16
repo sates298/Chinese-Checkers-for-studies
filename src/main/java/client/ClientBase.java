@@ -4,6 +4,9 @@ import client.drawableBoard.Draw;
 import client.drawableBoard.DrawableField;
 import client.drawableBoard.SixPointedStarDraw;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ClientBase {
 
     private int playerId;
@@ -12,6 +15,7 @@ public class ClientBase {
     private String movementType;
     private Draw boardDraw;
     private DrawableField[][] startedBoard;
+    private List<Integer> openedGamesIds;
 
     private static ClientBase instance;
 
@@ -67,5 +71,13 @@ public class ClientBase {
 
     public void setGameId(int gameId) {
         this.gameId = gameId;
+    }
+
+    public List<Integer> getOpenedGamesIds() {
+        return openedGamesIds;
+    }
+
+    public void setOpenedGamesIds(List<Integer> openedGamesIds) {
+        this.openedGamesIds = openedGamesIds;
     }
 }
