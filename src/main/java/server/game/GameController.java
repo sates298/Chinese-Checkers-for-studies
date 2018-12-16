@@ -98,14 +98,15 @@ public class GameController {
   }
   public Player addPlayer(String sideStr, String colorStr) throws GameFullException, ColorUsedException, BoardSideUsedException {
     // find used color and starting side
+
     List<Color> usedColors = this.actual.getPlayers().stream().map(Player::getColor).collect(Collectors.toList());
     List<BoardSide> usedSides = this.actual.getPlayers().stream().map(Player::getStartingSide).collect(Collectors.toList());
 
 
     if (this.actual.getBoard() instanceof SixPointedStar) {
-      BoardSide side = SixPointedStarSide.valueOf(sideStr);
-      Color color = Color.valueOf(colorStr);
-      if (this.actual.getPlayers().size() >= 6) {
+      BoardSide side = SixPointedStarSide.valueOfJson(sideStr);
+      Color color = Color.valueOfJson(colorStr);
+      if (this.actual.getPlayers().size() >= this.actual.getNumberOfPlayers() ) {
         throw new GameFullException();
       }
 
@@ -121,6 +122,7 @@ public class GameController {
       this.actual.getBoard().setPawns(p);
       this.actual.getPlayers().add(p);
       p.setId(this.actual.getPlayers().indexOf(p));
+      System.out.println(p.getColor());
       return p;
 
     }

@@ -3,6 +3,7 @@ package server.player;
 import server.board.BoardSide;
 import server.field.Pawn;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
@@ -17,6 +18,7 @@ public class Player {
   public Player() {
   }
   public Player(BoardSide side, Color color) {
+    this.pawns = new ArrayList<>();
     this.startingSide = side;
     this.color = color;
     this.moveToken = MoveToken.FORBID;

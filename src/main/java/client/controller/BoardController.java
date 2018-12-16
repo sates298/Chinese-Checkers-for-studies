@@ -3,11 +3,13 @@ package client.controller;
 
 import client.ClientBase;
 
+import client.network.ServerConnectionException;
 import client.network.ServerConnector;
 import client.drawableBoard.DrawableField;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
@@ -45,6 +47,13 @@ public class BoardController extends AbstractController implements Initializable
 
     @FXML
     public void endTurn(){
+        try {
+            ServerConnector.getInstance().getGameHandler().requestEndTurn(
+                    ClientBase.getInstance().getPlayerId()
+            );
+        } catch (ServerConnectionException e) {
+            showAlert("connection error", Alert.AlertType.ERROR);
+        }
     }
 
     public void drawBoard(DrawableField[][] board){

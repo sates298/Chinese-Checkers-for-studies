@@ -21,17 +21,21 @@ public class ServerConnector {
 
   private Socket clientSocket;
 
+  private InGameActionsHandler gameHandler;
   private BoardController boardController;
 
   private PrintWriter out;
   private BufferedReader in;
   private JsonParser parser;
 
-  private int playerId;
-
 
   private ServerConnector() {
+    gameHandler = new InGameActionsHandler();
     parser = new JsonParser();
+  }
+
+  public InGameActionsHandler getGameHandler() {
+    return gameHandler;
   }
 
   public static ServerConnector getInstance() {
@@ -75,7 +79,7 @@ public class ServerConnector {
       } else if (response.get("action").getAsString().equals("\"endTurn\"")) {
         int playerId = response.get("playerId").getAsInt();
         // todo set a label for current player or smth
-        if(playerId == this.playerId){
+        if(playerId == ClientBase.getInstance().getPlayerId()){
           // decide we cannot break continous communication with the server (error messages  etc)
           //break;
         }
@@ -149,16 +153,18 @@ public class ServerConnector {
     jsonObj.addProperty("command", "join");
     jsonObj.addProperty("startingSide", startingSide);
     jsonObj.addProperty("color", color);
-    out.println(jsonObj.getAsString());
+    System.out.println(jsonObj.toString());
+    out.println(jsonObj.toString());
     // read the response
     try {
       JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
-      if (!response.get("status").getAsString().equals("joined")) {
+      if (!response.get("status").toString().equals("\"joined\"")) {
         throw new ServerConnectionException();
       }
       ClientBase.getInstance().setPlayerId(response.get("playerId").getAsInt());
-      String boardRepr =  response.get("board").getAsString();
-      ClientBase.getInstance().setStartedBoard(BoardParser.parseBoard(boardRepr));
+      String boardRepr =  response.get("board").toString();
+      //todo parser error again
+      //ClientBase.getInstance().setStartedBoard(BoardParser.parseBoard(boardRepr));
      // boardController.drawBoard(BoardParser.parseBoard(boardRepr));
     } catch (IOException e) {
       e.printStackTrace();

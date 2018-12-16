@@ -18,6 +18,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Server {
     private List<Game> games;
@@ -147,9 +148,8 @@ public class Server {
             }
 
             if (jsonObject.get("command").toString().equals("\"join\"")) {
-                joinGame(jsonObject.get("side").toString(), jsonObject.get("color").toString());
                 System.out.println(jsonObject.toString());
-
+                joinGame(jsonObject.get("startingSide").toString(), jsonObject.get("color").toString());
                 return;
             }
             if (jsonObject.get("command").toString().equals("\"move\"")) {
@@ -186,11 +186,16 @@ public class Server {
             }
         }
 
-        private void connectToGame(int gameId) {
+        private void connectToGame(int gameId){
             // find the game with id equal to gameId
 
-            //todo it's not working
-            this.game = games.stream().filter(g -> g.getGameId() == gameId).findFirst().get();
+            for (Game g: games) {
+                System.out.println(g.getGameId());
+            }
+
+            Optional<Game> optionalGame =  games.stream().filter(g -> g.getGameId() == gameId).findAny();
+            optionalGame.ifPresent(game -> this.game = game);
+
             JsonObject returnObj = new JsonObject();
             returnObj.addProperty("status", "connected");
             returnObj.addProperty("gameId", "gameId");
