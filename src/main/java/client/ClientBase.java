@@ -57,6 +57,10 @@ public class ClientBase {
         this.movementType = movementType;
     }
 
+    public void setBoardDraw(Draw boardDraw) {
+        this.boardDraw = boardDraw;
+    }
+
     public Draw getBoardDraw() {
         return boardDraw;
     }

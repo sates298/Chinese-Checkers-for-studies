@@ -3,6 +3,7 @@ package client.controller;
 
 import client.ClientBase;
 
+import client.drawableBoard.SixPointedStarDraw;
 import client.network.InGameActionsHandler;
 import client.network.ServerConnectionException;
 import client.network.ServerConnector;
@@ -113,6 +114,8 @@ public class BoardController extends AbstractController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ServerConnector.getInstance().setBoardController(this);
+        //todo set correct board draw
+        ClientBase.getInstance().setBoardDraw(new SixPointedStarDraw());
         drawBoard(ClientBase.getInstance().getStartedBoard());
         this.handler = new InGameActionsHandler();
 

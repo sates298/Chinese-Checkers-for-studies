@@ -36,6 +36,7 @@ public class JoinController extends AbstractController implements Initializable 
         } catch (NullPointerException n) {
             showAlert("Nothing has chosen", Alert.AlertType.WARNING);
         } catch (ServerConnectionException e) {
+            //e.printStackTrace();
             showAlert("No connection", Alert.AlertType.ERROR);
         }
     }

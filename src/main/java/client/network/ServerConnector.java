@@ -61,6 +61,17 @@ public class ServerConnector {
     return out;
   }
 
+  public BoardController getBoardController() {
+    return boardController;
+  }
+
+  public BufferedReader getInputStream() {
+    return in;
+  }
+
+  public JsonParser getParser() {
+    return parser;
+  }
 
   // wait for server's response and redraw board based on  the response
   public void waitForResponse() throws IOException, ServerConnectionException {
@@ -180,6 +191,7 @@ public class ServerConnector {
     try {
       JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
       if (!response.get("status").toString().equals("\"joined\"")) {
+        System.out.println(response);
         throw new ServerConnectionException();
       }
       //ClientBase.getInstance().setPlayerId(response.get("playerId").getAsInt());
