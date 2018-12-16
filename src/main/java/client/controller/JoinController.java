@@ -27,7 +27,9 @@ public class JoinController extends AbstractController implements Initializable 
         try {
             String boardSide = boardSideBox.getValue();
             String color = colorBox.getValue();
-
+            if(color == null || boardSide == null){
+                throw new NullPointerException();
+            }
             ServerConnector.getInstance().requestJoinGame(boardSide, color);
             //ServerConnector.getInstance().requestStartGame();
             redirect("fxml/board.fxml", "Board", 920, 670, colorBox);

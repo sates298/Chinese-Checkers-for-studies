@@ -156,7 +156,6 @@ public class Server {
             }
 
             if (jsonObject.get("command").toString().equals("\"join\"")) {
-                System.out.println(jsonObject.toString());
                 joinGame(jsonObject.get("startingSide").toString(), jsonObject.get("color").toString());
                 return;
             }
@@ -196,19 +195,22 @@ public class Server {
 
         private void connectToGame(int gameId){
             // find the game with id equal to gameId
-
-            for (Game g: games) {
+            System.out.println("weszlo do connect");
+            for (Game g: Server.getInstance().getGames()) {
                 System.out.println(g.getGameId());
             }
-
-            Optional<Game> optionalGame =  games.stream().filter(g -> g.getGameId() == gameId).findAny();
-            optionalGame.ifPresent(game -> this.game = game);
-
             JsonObject returnObj = new JsonObject();
-            returnObj.addProperty("status", "connected");
-            returnObj.addProperty("gameId", "gameId");
-            returnObj.addProperty("board", this.game.getBoard().fieldsToString());
-            out.println(returnObj.toString());
+            Optional<Game> optionalGame =  Server.getInstance().getGames().stream().filter(g -> g.getGameId() == gameId).findAny();
+            if(optionalGame.isPresent()){
+                this.game = optionalGame.get();
+                returnObj.addProperty("status", "connected");
+                returnObj.addProperty("gameId", gameId);
+                returnObj.addProperty("board", this.game.getBoard().fieldsToString());
+                out.println(returnObj.toString());
+            }else{
+                returnObj.addProperty("status", "is not present");
+                out.println(returnObj.toString());
+            }
         }
 
         private void joinGame(String side, String color) {
@@ -219,6 +221,7 @@ public class Server {
                 returnObj.addProperty("startingSide", p.getStartingSide().toString());
                 returnObj.addProperty("color", p.getColor().toString());
                 returnObj.addProperty("board", this.game.getBoard().fieldsToString());
+                System.out.println(returnObj.toString());
                 out.println(returnObj.toString());
             } catch (GameFullException | BoardSideUsedException | ColorUsedException e) {
                 JsonObject returnObj = new JsonObject();

@@ -24,6 +24,7 @@ public class SixPointedStarDraw implements Draw {
 
             for(int j=0; j<17; j++){
                 pane.getChildren().add(board[i][j]);
+                board[i][j].setRadius(radius);
                 board[j][i].setCenterX(layoutX);
                 board[j][i].setCenterY(layoutY);
                 layoutX += 2*radius + spacing;

@@ -161,10 +161,9 @@ public class ServerConnector {
       if (!response.get("status").toString().equals("\"joined\"")) {
         throw new ServerConnectionException();
       }
-      ClientBase.getInstance().setPlayerId(response.get("playerId").getAsInt());
-      String boardRepr =  response.get("board").toString();
-      //todo parser error again
-      //ClientBase.getInstance().setStartedBoard(BoardParser.parseBoard(boardRepr));
+      //ClientBase.getInstance().setPlayerId(response.get("playerId").getAsInt());
+      String boardRepr =  response.get("board").getAsString();
+      ClientBase.getInstance().setStartedBoard(BoardParser.parseBoard(boardRepr));
      // boardController.drawBoard(BoardParser.parseBoard(boardRepr));
     } catch (IOException e) {
       e.printStackTrace();
