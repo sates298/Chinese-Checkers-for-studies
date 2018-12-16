@@ -31,13 +31,12 @@ public class JoinController extends AbstractController implements Initializable 
                 throw new NullPointerException();
             }
             ServerConnector.getInstance().requestJoinGame(boardSide, color);
-            //ServerConnector.getInstance().requestStartGame();
             redirect("fxml/board.fxml", "Board", 920, 670, colorBox);
 
         } catch (NullPointerException n) {
             showAlert("Nothing has chosen", Alert.AlertType.WARNING);
         } catch (ServerConnectionException e) {
-            e.printStackTrace();
+            showAlert("No connection", Alert.AlertType.ERROR);
         }
     }
 

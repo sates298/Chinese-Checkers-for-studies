@@ -111,22 +111,21 @@ public class GameController {
       }
 
       // check if side and color are  in  used sides
-    /*  if (usedSides.contains(side)) {
+      if (usedSides.contains(side)) {
         throw new BoardSideUsedException();
       }
       if (usedColors.contains(color)) {
         throw new ColorUsedException();
-      }*/
+      }
 
       Player p = new Player(side, color);
       this.actual.getBoard().setPawns(p);
       this.actual.getPlayers().add(p);
       p.setId(this.actual.getPlayers().indexOf(p));
-      System.out.println(p.getColor());
       return p;
 
     }
-    // todo improve this method, get rid of nulls, create pawns,
+
     return null;
   }
 

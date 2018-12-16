@@ -19,11 +19,6 @@ import java.util.ResourceBundle;
 
 public class NewGameController extends AbstractController implements Initializable {
 
-    private String boardType;
-    private String movementType;
-    private int numberOfPlayers;
-    private int numberOfPawns;
-
 
     @FXML
     private ComboBox<String> boardTypeBox;
@@ -37,27 +32,33 @@ public class NewGameController extends AbstractController implements Initializab
     @FXML
     public void create() throws IOException{
         try {
-            ClientBase.getInstance().setBoardType(boardTypeBox.getValue());
-            ClientBase.getInstance().setMovementType(movementTypeBox.getValue());
-            numberOfPlayers = numberOfPlayersBox.getValue();
-            numberOfPawns = numberOfPawnsBox.getValue();
 
-            ServerConnector.getInstance().requestCreateGame(numberOfPlayers, numberOfPawns);
+            String bType = boardTypeBox.getValue();
+            String mType = movementTypeBox.getValue();
+            int play_no = numberOfPlayersBox.getValue();
+            int pawn_no = numberOfPawnsBox.getValue();
+
+            if(bType == null || mType == null || play_no == 0 || pawn_no == 0){
+                throw new NullPointerException();
+            }
+
+            ClientBase.getInstance().setBoardType(bType);
+            ClientBase.getInstance().setMovementType(mType);
+
+            ServerConnector.getInstance().requestCreateGame(play_no, pawn_no);
             redirect("fxml/join.fxml", "Join to Game", 300, 275, boardTypeBox);
 
         }catch (NullPointerException e){
             showAlert("empty combo boxes", Alert.AlertType.WARNING);
         } catch (ServerConnectionException e) {
-            e.printStackTrace();
+            showAlert("No connection", Alert.AlertType.ERROR);
         }
-
     }
 
     @FXML
     public void backToMenu() throws IOException {
         redirect("fxml/menu.fxml", "Trylma The Game", 300, 275, boardTypeBox);
     }
-
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {

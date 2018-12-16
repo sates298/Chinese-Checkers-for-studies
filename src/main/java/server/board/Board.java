@@ -1,8 +1,6 @@
 package server.board;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import server.field.Field;
 import server.field.Pawn;
 import server.player.Player;
@@ -11,10 +9,6 @@ import server.player.Player;
 public abstract class Board {
 
     private Field[][] fields;
-
-    public Field[][] getFields() {
-        return fields;
-    }
 
     public void setFields(Field[][] fields) {
         this.fields = fields;
@@ -37,7 +31,7 @@ public abstract class Board {
 
     public String fieldsToString(){
         JsonArray parentJsonArray = new JsonArray();
-        // loop through your elements
+
         for (int i=0; i<sizeY(); i++){
             JsonArray childJsonArray = new JsonArray();
             for (int j =0; j<sizeX(); j++){

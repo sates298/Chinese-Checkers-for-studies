@@ -1,13 +1,10 @@
 package server;
 
-import server.board.Board;
-import server.board.BoardSide;
 import server.creator.GameCreator;
 import server.exception.*;
 import server.game.Game;
 
 import com.google.gson.*;
-import server.player.Color;
 import server.player.Player;
 
 import java.io.BufferedReader;
@@ -29,14 +26,6 @@ public class Server {
     private ServerSocket serverSocket;
 
     public static void  main  (String[] args) {
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("something", "test");
-
-        System.out.println(jsonObject.get("something").toString());
-
-
-
         Server  server = new Server();
 
         server.start(1234);
@@ -110,7 +99,7 @@ public class Server {
             try {
                 handleClient();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println(e.toString());
             }
         }
         private void handleClient() throws IOException {

@@ -11,6 +11,7 @@
 <VBox alignment="CENTER" prefHeight="670.0" prefWidth="920.0" xmlns="http://javafx.com/javafx/8.0.172-ea"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.BoardController">
     <HBox alignment="CENTER" prefHeight="70.0" prefWidth="920.0" spacing="20.0">
+        <Button fx:id="startButton" onAction="#startAction" text="START" />
         <Button fx:id="exitButton" onAction="#exitAction" text="EXIT"/>
         <Button onAction="#endTurn" text="END TURN"/>
         <Separator orientation="VERTICAL" prefHeight="200.0"/>

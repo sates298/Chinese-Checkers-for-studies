@@ -1,16 +1,25 @@
 package client.drawableBoard;
 
+import client.ClientBase;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+
 
 public class DrawableField extends Circle {
   private int x;
   private int y;
+  private String type;
 
 
   public DrawableField (String colorName, String type, int x, int y) {
     this.x = x;
     this.y = y;
+    this.type = type;
+
+    this.setOnMouseClicked(event -> {
+
+    });
 
     switch (type) {
       case "\"NoField\"":
@@ -61,4 +70,9 @@ public class DrawableField extends Circle {
   public int getY() {
     return y;
   }
+
+  public String getType() {
+    return type;
+  }
+
 }

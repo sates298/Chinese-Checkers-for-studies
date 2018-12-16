@@ -3,12 +3,15 @@ package client.controller;
 
 import client.ClientBase;
 
+import client.network.InGameActionsHandler;
 import client.network.ServerConnectionException;
 import client.network.ServerConnector;
 import client.drawableBoard.DrawableField;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,6 +23,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class BoardController extends AbstractController implements Initializable {
+
+    private InGameActionsHandler handler;
+
 
     @FXML
     private Label label1;
@@ -36,28 +42,71 @@ public class BoardController extends AbstractController implements Initializable
 
     @FXML
     private Button exitButton;
+    @FXML
+    private Button startButton;
 
     @FXML
     private Pane pane;
 
     @FXML
-    public void exitAction(){
+    public void exitAction() {
         exit(exitButton);
     }
 
     @FXML
-    public void endTurn(){
+    public void startAction() {
         try {
-            //todo somewhere we had to set playerId for client
-            ServerConnector.getInstance().getGameHandler().requestEndTurn(
-                    ClientBase.getInstance().getPlayerId()
-            );
+            ServerConnector.getInstance().requestStartGame();
+
         } catch (ServerConnectionException e) {
-            showAlert("connection error", Alert.AlertType.ERROR);
+            showAlert("Connection Error", Alert.AlertType.ERROR);
         }
     }
 
-    public void drawBoard(DrawableField[][] board){
+    private void paneClicked(DrawableField field) {
+
+
+        if (ClientBase.getInstance().getFirstClicked() != null && field.getType().equals("\"EmptyField\"")) {
+            ClientBase.getInstance().setLastClicked(field);
+            /*try {
+                handler.requestMove(
+                        ClientBase.getInstance().getPlayerId(),
+                        ClientBase.getInstance().getFirstClicked().getX(),
+                        ClientBase.getInstance().getFirstClicked().getY(),
+                        ClientBase.getInstance().getLastClicked().getX(),
+                        ClientBase.getInstance().getLastClicked().getY()
+                );
+            } catch (ServerConnectionException e) {
+                showAlert("Wrong move", Alert.AlertType.INFORMATION);
+            }*/
+
+        } else if (field.getType().equals("\"Pawn\"")) {
+            ClientBase.getInstance().setFirstClicked(field);
+        }
+        System.out.println(ClientBase.getInstance().getFirstClicked().toString() + " and ");
+        System.out.println(ClientBase.getInstance().getLastClicked().toString());
+    }
+
+
+
+
+    @FXML
+    public void endTurn() {
+        try {
+
+            ClientBase.getInstance().setFirstClicked(null);
+            ClientBase.getInstance().setLastClicked(null);
+
+            //todo somewhere we have to set playerId for client
+            handler.requestEndTurn(
+                    ClientBase.getInstance().getPlayerId()
+            );
+        } catch (ServerConnectionException e) {
+            showAlert("Connection Error", Alert.AlertType.ERROR);
+        }
+    }
+
+    public void drawBoard(DrawableField[][] board) {
         ClientBase.getInstance().getBoardDraw().drawBoard(this.pane, board);
     }
 
@@ -65,5 +114,14 @@ public class BoardController extends AbstractController implements Initializable
     public void initialize(URL location, ResourceBundle resources) {
         ServerConnector.getInstance().setBoardController(this);
         drawBoard(ClientBase.getInstance().getStartedBoard());
+        this.handler = new InGameActionsHandler();
+
+        for (Node n : pane.getChildren()) {
+            if (n instanceof DrawableField) {
+                n.setOnMouseClicked(event -> paneClicked((DrawableField) n));
+            }
+        }
+
+
     }
 }

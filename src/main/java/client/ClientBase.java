@@ -17,6 +17,10 @@ public class ClientBase {
     private DrawableField[][] startedBoard;
     private List<Integer> openedGamesIds;
 
+    private DrawableField firstClicked;
+    private DrawableField lastClicked;
+
+
     private static ClientBase instance;
 
     public static ClientBase getInstance() {
@@ -79,5 +83,21 @@ public class ClientBase {
 
     public void setOpenedGamesIds(List<Integer> openedGamesIds) {
         this.openedGamesIds = openedGamesIds;
+    }
+
+    public DrawableField getFirstClicked() {
+        return firstClicked;
+    }
+
+    public void setFirstClicked(DrawableField firstClicked) {
+        this.firstClicked = firstClicked;
+    }
+
+    public DrawableField getLastClicked() {
+        return lastClicked;
+    }
+
+    public void setLastClicked(DrawableField lastClicked) {
+        this.lastClicked = lastClicked;
     }
 }

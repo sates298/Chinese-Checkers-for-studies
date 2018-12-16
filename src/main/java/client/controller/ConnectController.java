@@ -36,7 +36,7 @@ public class ConnectController extends AbstractController implements Initializab
         }catch(NullPointerException e){
             showAlert("Nothing has chosen", Alert.AlertType.WARNING);
         } catch (ServerConnectionException e) {
-            showAlert("Don't connect", Alert.AlertType.ERROR);
+            showAlert("No connection", Alert.AlertType.ERROR);
         }
     }
 

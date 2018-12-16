@@ -9,7 +9,7 @@ import client.drawableBoard.BoardParser;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+
 
 
 import java.io.BufferedReader;
@@ -18,16 +18,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.stream.Collectors;
 
 public class ServerConnector {
   private static ServerConnector instance;
 
   private Socket clientSocket;
 
-  private InGameActionsHandler gameHandler;
+
   private BoardController boardController;
 
   private PrintWriter out;
@@ -36,13 +33,9 @@ public class ServerConnector {
 
 
   private ServerConnector() {
-    gameHandler = new InGameActionsHandler();
     parser = new JsonParser();
   }
 
-  public InGameActionsHandler getGameHandler() {
-    return gameHandler;
-  }
 
   public static ServerConnector getInstance() {
     if (instance == null) {
@@ -206,7 +199,7 @@ public class ServerConnector {
     // read the response
     try {
       JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
-      if (!response.get("status").getAsString().equals("joined")) {
+      if (!response.get("status").getAsString().equals("\"joined\"")) {
         throw new ServerConnectionException();
       }
       // wait for server information
