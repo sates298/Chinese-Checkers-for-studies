@@ -1,6 +1,7 @@
 package server.field;
 
 
+import com.google.gson.JsonObject;
 import server.player.Player;
 
 public class Pawn extends Field {
@@ -18,12 +19,13 @@ public class Pawn extends Field {
 
     @Override
     public String toString() {
-        return "{\"type\":\"Pawn\"" +
-                ",\"x\": " + getX() +
-                ",\"y\":" + getY() +
-                ",\"owner\":" + owner.getId() +
-                ",\"color\":\"" + owner.getColor()+
-                "\"}";
+        JsonObject obj = new JsonObject();
+        obj.addProperty("type", "Pawn");
+        obj.addProperty("x", getX());
+        obj.addProperty("y", getY());
+        obj.addProperty("owner", owner.getId());
+        obj.addProperty("color", owner.getColor().toString());
 
+        return obj.toString();
     }
 }

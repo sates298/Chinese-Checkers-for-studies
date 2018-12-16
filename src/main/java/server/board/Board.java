@@ -1,5 +1,8 @@
 package server.board;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import server.field.Field;
 import server.field.Pawn;
 import server.player.Player;
@@ -33,17 +36,17 @@ public abstract class Board {
     public abstract void setPawns(Player player);
 
     public String fieldsToString(){
-        StringBuilder builder = new StringBuilder();
-        builder.append("[");
-        for(int i=0; i<sizeY(); i++){
-            builder.append("[");
-            for (int j=0; j< sizeX(); j++){
-                builder.append(fields[j][i].toString());
+        JsonArray parentJsonArray = new JsonArray();
+        // loop through your elements
+        for (int i=0; i<sizeY(); i++){
+            JsonArray childJsonArray = new JsonArray();
+            for (int j =0; j<sizeX(); j++){
+                childJsonArray.add(fields[i][j].toString());
             }
-            builder.append("],");
+            parentJsonArray.add(childJsonArray);
         }
-        builder.append("]");
-        return builder.toString();
+
+        return parentJsonArray.toString();
     }
 
     public boolean isPawn(int x, int y) throws ArrayIndexOutOfBoundsException{

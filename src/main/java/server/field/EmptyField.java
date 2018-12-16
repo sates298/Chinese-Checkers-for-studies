@@ -1,5 +1,7 @@
 package server.field;
 
+import com.google.gson.JsonObject;
+
 public class EmptyField extends Field{
 
     public EmptyField(int x, int y){
@@ -8,9 +10,12 @@ public class EmptyField extends Field{
 
     @Override
     public String toString() {
-        return "{\"type\":\"EmptyField\"" +
-                ",\"x\": " + getX() +
-                ",\"y\": " + getY() +
-                "}";
+        JsonObject obj = new JsonObject();
+        obj.addProperty("type", "EmptyField");
+        obj.addProperty("x", getX());
+        obj.addProperty("y", getY());
+        obj.addProperty("color", "null");
+
+        return obj.toString();
     }
 }

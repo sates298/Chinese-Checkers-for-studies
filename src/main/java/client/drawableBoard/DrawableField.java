@@ -4,7 +4,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class DrawableField extends Circle {
-  public DrawableField (String colorName, String type) {
+  private int x;
+  private int y;
+
+
+  public DrawableField (String colorName, String type, int x, int y) {
+    this.x = x;
+    this.y = y;
+
     switch (type) {
       case "\"NoField\"":
         // set stroke and fill to white so invisible
@@ -45,5 +52,13 @@ public class DrawableField extends Circle {
         }
         break;
     }
+  }
+
+  public int getX() {
+    return x;
+  }
+
+  public int getY() {
+    return y;
   }
 }

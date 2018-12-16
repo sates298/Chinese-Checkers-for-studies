@@ -29,6 +29,14 @@ public class Server {
     private ServerSocket serverSocket;
 
     public static void  main  (String[] args) {
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("something", "test");
+
+        System.out.println(jsonObject.get("something").toString());
+
+
+
         Server  server = new Server();
 
         server.start(1234);
