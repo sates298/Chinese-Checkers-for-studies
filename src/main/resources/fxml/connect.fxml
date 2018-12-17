@@ -2,23 +2,24 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+
 <?import javafx.scene.layout.VBox?>
 
-<!--<AnchorPane xmlns="http://javafx.com/javafx/8.0.172-ea"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.JoinToGameController">-->
 
 <?import javafx.scene.control.ComboBox?>
+<?import java.net.URL?>
 <VBox alignment="CENTER" prefHeight="275.0" prefWidth="300.0" spacing="20"
       xmlns="http://javafx.com/javafx/8.0.172-ea"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.ConnectController">
 
-        <Label text="Connect to game" />
-        <ComboBox fx:id="gameIdBox" promptText="Game id" />
-        <Button onAction="#connectAction" text="CONNECT" />
-        <Button onAction="#backToMenu" text="BACK"/>
+    <Label id="connect-label" text="Connect to game"/>
+    <ComboBox fx:id="gameIdBox" promptText="Game id"/>
+    <Button onAction="#connectAction" text="CONNECT"/>
+    <Button onAction="#backToMenu" text="BACK"/>
 
-    </VBox>
+    <stylesheets>
+        <URL value="@../css/connectStyle.css"/>
+    </stylesheets>
 
-<!--</AnchorPane>-->
+</VBox>
+

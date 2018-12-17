@@ -6,30 +6,36 @@
 <?import javafx.scene.layout.VBox?>
 
 
+<?import java.net.URL?>
 <VBox prefHeight="275.0" prefWidth="300.0" spacing="5" alignment="CENTER"
       xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="client.controller.NewGameController">
 
-    <Label text="Create a New Game!"/>
+    <Label id="title-section" text="Create a New Game!"/>
 
-    <Label text="Choose type of board : "/>
+    <Label id="label-section" text="Choose type of board : "/>
     <ComboBox fx:id="boardTypeBox" prefHeight="30.0" prefWidth="155"
               promptText="Type of board"/>
 
-    <Label text="Choose type of movement : " />
+    <Label id="label-section" text="Choose type of movement : " />
     <ComboBox fx:id="movementTypeBox" prefHeight="30.0" prefWidth="155"
               promptText="Type of movement"/>
 
-    <Label text="Choose number of players : " />
+    <Label id="label-section" text="Choose number of players : " />
     <ComboBox fx:id="numberOfPlayersBox" prefHeight="30.0" prefWidth="155.0"
               promptText="Number of players"/>
 
-    <Label text="Choose number of pawns for one player : " />
+    <Label id="label-section" text="Choose number of pawns for one player : " />
     <ComboBox fx:id="numberOfPawnsBox" prefHeight="30.0" prefWidth="155.0"
               promptText="Number of pawns"/>
 
     <Button text="CREATE" onAction="#create"/>
     <Button text="BACK" onAction="#backToMenu" />
+
+    <stylesheets>
+        <URL value="@../css/newGameStyle.css"/>
+    </stylesheets>
+
 
 </VBox>
 
