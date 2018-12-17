@@ -232,6 +232,7 @@ public class Server {
                 returnObj.addProperty("startingSide", p.getStartingSide().toString());
                 returnObj.addProperty("color", p.getColor().toString());
                 returnObj.addProperty("board", this.game.getBoard().fieldsToString());
+                returnObj.addProperty("boardType", this.game.getBoard().getType());
                 System.out.println(returnObj.toString());
                 out.println(returnObj.toString());
             } catch (GameFullException | BoardSideUsedException | ColorUsedException e) {

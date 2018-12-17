@@ -9,7 +9,7 @@ import client.drawableBoard.BoardParser;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
+import com.sun.security.ntlm.Client;
 
 
 import java.io.BufferedReader;
@@ -171,6 +171,8 @@ public class ServerConnector {
       }
       //ClientBase.getInstance().setPlayerId(response.get("playerId").getAsInt());
       String boardRepr =  response.get("board").getAsString();
+      String boardType = response.get("boardType").toString();
+      ClientBase.getInstance().setBoardType(boardType);
       ClientBase.getInstance().setStartedBoard(BoardParser.parseBoard(boardRepr));
      // boardController.drawBoard(BoardParser.parseBoard(boardRepr));
     } catch (IOException e) {

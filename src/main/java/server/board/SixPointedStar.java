@@ -9,7 +9,9 @@ import server.player.Player;
 
 public class SixPointedStar extends Board {
 
+
     public SixPointedStar(){
+        setType("SixPointedStar");
         setFields(new Field[17][17]);
     }
 
@@ -77,4 +79,5 @@ public class SixPointedStar extends Board {
             }
         }
     }
+
 }

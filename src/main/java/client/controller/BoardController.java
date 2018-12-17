@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 
 import java.net.URL;
@@ -65,8 +66,6 @@ public class BoardController extends AbstractController implements Initializable
     }
 
     private void paneClicked(DrawableField field) {
-
-
         if (ClientBase.getInstance().getFirstClicked() != null && field.getType().equals("\"EmptyField\"")) {
             ClientBase.getInstance().setLastClicked(field);
             /*try {
@@ -81,11 +80,18 @@ public class BoardController extends AbstractController implements Initializable
                 showAlert("Wrong move", Alert.AlertType.INFORMATION);
             }*/
 
+            ClientBase.getInstance().getFirstClicked().setFill(
+                    ClientBase.getInstance().getFirstClicked().getMainColor()
+            );
         } else if (field.getType().equals("\"Pawn\"")) {
+            if(ClientBase.getInstance().getFirstClicked() != null){
+                ClientBase.getInstance().getFirstClicked().setFill(
+                        ClientBase.getInstance().getFirstClicked().getMainColor()
+                );
+            }
             ClientBase.getInstance().setFirstClicked(field);
+            field.setFill(Color.CHOCOLATE);
         }
-        System.out.println(ClientBase.getInstance().getFirstClicked().toString() + " and ");
-        System.out.println(ClientBase.getInstance().getLastClicked().toString());
     }
 
 
@@ -114,8 +120,7 @@ public class BoardController extends AbstractController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ServerConnector.getInstance().setBoardController(this);
-        //todo set correct board draw
-        ClientBase.getInstance().setBoardDraw(new SixPointedStarDraw());
+
         drawBoard(ClientBase.getInstance().getStartedBoard());
         this.handler = new InGameActionsHandler();
 
