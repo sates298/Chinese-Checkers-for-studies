@@ -44,7 +44,7 @@ public class ClientBase {
 
     public void setBoardType(String boardType) {
         this.boardType = boardType;
-        if(("SixPointedStar").equals(boardType)){
+        if(("SixPointedStar").equals(boardType) || ("\"SixPointedStar\"").equals(boardType)){
             this.boardDraw = new SixPointedStarDraw();
         }
     }

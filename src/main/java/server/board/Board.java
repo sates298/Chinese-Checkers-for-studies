@@ -8,6 +8,7 @@ import server.player.Player;
 
 public abstract class Board {
 
+    private String type;
     private Field[][] fields;
 
     public void setFields(Field[][] fields) {
@@ -28,6 +29,13 @@ public abstract class Board {
     public abstract int sizeY();
     public abstract int sizeX();
     public abstract void setPawns(Player player);
+    public String getType(){
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String fieldsToString(){
         JsonArray parentJsonArray = new JsonArray();
