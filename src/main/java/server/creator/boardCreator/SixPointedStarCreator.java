@@ -42,12 +42,13 @@ public class SixPointedStarCreator extends BoardCreator {
             }
         }
 
+        /* //done in setOneField
         //set created board for all fields
         for(int i=0; i<17; i++){
             for(int j=0; j<17; j++){
                 star.getOneField(i,j).setBoard(star);
             }
-        }
+        }*/
 
         return star;
     }

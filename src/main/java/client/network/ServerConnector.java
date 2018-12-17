@@ -250,7 +250,7 @@ public class ServerConnector {
           System.out.println("xd");
           System.out.println(serverResponse);
           JsonObject response = ServerConnector.getInstance().getParser().parse(serverResponse).getAsJsonObject();
-          if (!response.get("status").toString().equals("\"success\"")) {
+          if (!response.get("status").toString().equals("\"successful\"")) {
             // cannot throw exception in run :(
             continue;
           }

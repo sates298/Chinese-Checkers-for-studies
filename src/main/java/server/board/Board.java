@@ -16,6 +16,7 @@ public abstract class Board {
     }
 
     public void setOneField(Field field){
+        field.setBoard(this);
         this.fields[field.getX()][field.getY()] = field;
     }
 
