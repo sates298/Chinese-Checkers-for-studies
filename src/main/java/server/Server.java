@@ -284,10 +284,11 @@ public class Server {
         }
 
         private void startGame() {
-            this.game.getController().startGame();
             JsonObject returnObj = new JsonObject();
-            returnObj.addProperty("status", "joined");
-            out.println(returnObj.toString());
+            this.game.getController().startGame();
+            returnObj.addProperty("status", "game started");
+            returnObj.addProperty("board", this.game.getBoard().fieldsToString());
+            pushToMany(this.game, returnObj.toString());
         }
 
         private void move(int playerId, int pawnX, int pawnY, int targetX, int targetY) {

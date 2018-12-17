@@ -211,8 +211,9 @@ public class ServerConnector {
       ClientBase.getInstance().setPlayerId(response.get("playerId").getAsInt());
       ClientBase.getInstance().setBoardType(boardType);
       ClientBase.getInstance().setStartedBoard(BoardParser.parseBoard(boardRepr));
-      System.out.println("maniana");
       ClientBase.getInstance().setPlayersToLabel(parseJsonMap(response.get("playerColorMap").getAsString()));
+
+
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -231,11 +232,10 @@ public class ServerConnector {
       }
       //todo set labels for players
 
-
       // wait for server information
       Waiter waiter = new Waiter();
-//      Platform.runLater(waiter);
       new Thread(waiter).start();
+
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -247,9 +247,16 @@ public class ServerConnector {
       try {
         String serverResponse;
         while ((serverResponse = in.readLine()) != null) {
-          System.out.println("xd");
+          System.out.println("why does it freeze");
+
           System.out.println(serverResponse);
           JsonObject response = ServerConnector.getInstance().getParser().parse(serverResponse).getAsJsonObject();
+
+          if (response.get("status").toString().equals("\"game started\"")) {
+            System.out.println("game started!");
+            // do stuff after game start
+            continue;
+          }
           if (!response.get("status").toString().equals("\"successful\"")) {
             // cannot throw exception in run :(
             continue;
@@ -264,12 +271,13 @@ public class ServerConnector {
             // todo set a label for current player or smth
 
           }
+
         }
-        System.out.println("after loop");
       } catch (IOException ioe) {
         ioe.printStackTrace();
       }
     }
+
   }
 
   private Map<Integer, Paint> parseJsonMap(String jsonMap) {
