@@ -108,4 +108,8 @@ public class ClientBase {
         this.lastClicked = lastClicked;
     }
 
+    public void setPlayersToLabel(Map<Integer, Paint> playersToLabel) {
+        this.playersToLabel = playersToLabel;
+    }
+
 }
