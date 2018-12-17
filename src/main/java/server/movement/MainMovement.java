@@ -49,9 +49,9 @@ public class MainMovement implements Movement {
         //later check if board place allow to move
         // todo !!
         // I overrided  checkMoveForBoard to use type SixPointedStar  but getBoard still returns Board
-        if (!checkMoveForBoard(pawn.getBoard(), pawn, (EmptyField) target)) {
+   /*     if (!checkMoveForBoard(pawn.getBoard(), pawn, (EmptyField) target)) {
             return false;
-        }
+        }*/
 
         return checkMoveOne(pawn, target)
                 || checkJump(pawn, target) ;
