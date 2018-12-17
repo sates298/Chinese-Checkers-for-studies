@@ -233,9 +233,9 @@ public class ServerConnector {
 
 
       // wait for server information
-      System.out.println("last thing printed");
-      Platform.runLater(new Waiter());
-      System.out.println("right?");
+      Waiter waiter = new Waiter();
+//      Platform.runLater(waiter);
+      new Thread(waiter).start();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -244,16 +244,20 @@ public class ServerConnector {
 
   class Waiter implements Runnable {
     public void run() {
+      System.out.println("started thread");
       while (true) {
-        String serverResponse = "";
+        System.out.println("loop iteration");
+        String serverResponse = "no response";
         try {
           serverResponse = in.readLine();
+          System.out.println("after reading line");
         } catch (IOException e) {
           e.printStackTrace();
         }
+        System.out.println(serverResponse);
         JsonObject response = ServerConnector.getInstance().getParser().parse(serverResponse).getAsJsonObject();
         if (!response.get("status").toString().equals("\"success\"")) {
-          // cannot throw exception :(
+          // cannot throw exception in run :(
         }
         if (response.get("action").toString().equals("\"move\"")) {
           // parse the board
