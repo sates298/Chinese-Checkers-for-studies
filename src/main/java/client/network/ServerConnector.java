@@ -209,7 +209,7 @@ public class ServerConnector {
       ClientBase.getInstance().setPlayerId(response.get("playerId").getAsInt());
       ClientBase.getInstance().setBoardType(boardType);
       ClientBase.getInstance().setStartedBoard(BoardParser.parseBoard(boardRepr));
-      //ClientBase.getInstance().setPlayersToLabel(parseJsonMap(response.get("playerIdMap").getAsString()));
+      ClientBase.getInstance().setPlayersToLabel(parseJsonMap(response.get("playerIdMap").getAsString()));
     } catch (IOException e) {
       e.printStackTrace();
     }

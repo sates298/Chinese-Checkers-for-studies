@@ -108,12 +108,12 @@ public class MainMovement implements Movement {
     }
 
     private boolean checkMoveForBoard(Board board, Pawn pawn, EmptyField target) {
-        if (board instanceof SixPointedStar) {
+        //if (board instanceof SixPointedStar) {
             List<Field> temp = ((SixPointedStarSide) pawn.getOwner().getStartingSide()).getOppositeArea((SixPointedStar)board);
             return temp.indexOf(pawn) >= 0 && temp.indexOf(target) >= 0;
-        }
+        //}
 
-        return false;
+        //return false;
 
     }
 
