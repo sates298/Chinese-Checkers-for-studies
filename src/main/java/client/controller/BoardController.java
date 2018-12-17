@@ -57,12 +57,12 @@ public class BoardController extends AbstractController implements Initializable
     public void startAction() {
         try {
             startButton.setVisible(false);
-            for(int i=0; i<ClientBase.getInstance().getPlayersToLabel().size(); i++){
+            /*for(int i=0; i<ClientBase.getInstance().getPlayersToLabel().size(); i++){
                 makeLabel(
                         i,
                         ClientBase.getInstance().getPlayersToLabel().get(i)
                 );
-            }
+            }*/
             ServerConnector.getInstance().requestStartGame();
 
         } catch (ServerConnectionException e) {
