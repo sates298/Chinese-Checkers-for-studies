@@ -3,7 +3,6 @@ package client.controller;
 
 import client.ClientBase;
 
-import client.drawableBoard.SixPointedStarDraw;
 import client.network.InGameActionsHandler;
 import client.network.ServerConnectionException;
 import client.network.ServerConnector;
@@ -129,7 +128,7 @@ public class BoardController extends AbstractController implements Initializable
                 );
             }
             ClientBase.getInstance().setFirstClicked(field);
-            field.setFill(Color.CHOCOLATE);
+            field.setFill(Color.MEDIUMAQUAMARINE);
         }
     }
 
@@ -141,7 +140,6 @@ public class BoardController extends AbstractController implements Initializable
             ClientBase.getInstance().setFirstClicked(null);
             ClientBase.getInstance().setLastClicked(null);
 
-            //todo somewhere we have to set playerId for client
             handler.requestEndTurn(
                     ClientBase.getInstance().getPlayerId()
             );
