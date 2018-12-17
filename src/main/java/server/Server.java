@@ -176,7 +176,6 @@ public class Server {
                 returnObj.addProperty("gameId", this.game.getGameId());
                 returnObj.addProperty("board", this.game.getBoard().fieldsToString());
                 out.println(returnObj.toString());
-                System.out.println(returnObj.toString());
 
             } catch (WrongMovementTypeException | WrongBoardTypeException e) {
                 JsonObject returnObj = new JsonObject();
@@ -188,9 +187,9 @@ public class Server {
 
         private void connectToGame(int gameId) {
             // find the game with id equal to gameId
-            for (Game g : Server.getInstance().getGames()) {
+            /*for (Game g : Server.getInstance().getGames()) {
                 System.out.println(g.getGameId());
-            }
+            }*/
             JsonObject returnObj = new JsonObject();
             Optional<Game> optionalGame = Server.getInstance().getGames().stream().filter(g -> g.getGameId() == gameId).findAny();
             if (optionalGame.isPresent()) {
@@ -230,7 +229,6 @@ public class Server {
                 List<String> allSides = new ArrayList<>();
                 Collections.addAll(allSides, "TOP", "LEFT_TOP", "RIGHT_TOP", "BOTTOM", "LEFT_BOTTOM", "RIGHT_BOTTOM");
                 Collections.addAll(allColors, "RED", "BLUE", "GREEN", "BLACK", "YELLOW", "PURPLE");
-                System.out.println("weszlo");
                 for (Player p : this.game.getPlayers()) {
                     allColors.remove(p.getColor().toString());
                     allSides.remove(p.getStartingSide().toString());
@@ -244,7 +242,6 @@ public class Server {
                 for (String s : allSides) {
                     sidesArray.add(s);
                 }
-                System.out.println(sidesArray.toString());
                 JsonObject returnObj = new JsonObject();
                 if (colorsArray.size() == 0) {
                     returnObj.addProperty("unused colors", "null");
@@ -257,7 +254,6 @@ public class Server {
                 } else {
                     returnObj.add("unused sides", sidesArray);
                 }
-                System.out.println(returnObj.toString());
                 out.println(returnObj.toString());
             }
 
@@ -276,8 +272,6 @@ public class Server {
                 returnObj.addProperty("playerId", p.getId());
                 returnObj.addProperty("playerColorMap",
                         new Gson().toJson(game.getController().getIdColorMap()));
-
-                System.out.println(new Gson().toJson(game.getController().getIdColorMap()));
 
                 System.out.println(returnObj.toString());
                 out.println(returnObj.toString());
@@ -309,6 +303,9 @@ public class Server {
                 pushToMany(this.game, jsonObject.toString());
             } catch (ForbiddenMoveException | ForbiddenActionException e) {
                 e.printStackTrace();
+                JsonObject response = new JsonObject();
+                response.addProperty("status", e.toString());
+                pushToMany(this.game, response.toString());
             }
         }
 

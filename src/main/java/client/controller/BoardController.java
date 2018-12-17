@@ -56,13 +56,16 @@ public class BoardController extends AbstractController implements Initializable
     @FXML
     public void startAction() {
         try {
-            for(int i=0; i<ClientBase.getInstance().getPlayersToLabel().size(); i++){
+
+
+            for (int i = 0; i < ClientBase.getInstance().getPlayersToLabel().size(); i++) {
                 makeLabel(
                         i,
                         ClientBase.getInstance().getPlayersToLabel().get(i)
                 );
             }
             startButton.setVisible(false);
+
             ServerConnector.getInstance().requestStartGame();
         } catch (ServerConnectionException e) {
             startButton.setVisible(true);
@@ -70,8 +73,8 @@ public class BoardController extends AbstractController implements Initializable
         }
     }
 
-    private void makeLabel(int id, Paint color){
-        switch(id){
+    private void makeLabel(int id, Paint color) {
+        switch (id) {
             case 1:
                 label1.setText("PLAYER 1");
                 label1.setTextFill(color);
@@ -163,8 +166,6 @@ public class BoardController extends AbstractController implements Initializable
                 n.setOnMouseClicked(event -> paneClicked((DrawableField) n));
             }
         }
-
-
 
 
     }
