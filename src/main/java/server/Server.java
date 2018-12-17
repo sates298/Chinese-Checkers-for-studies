@@ -131,41 +131,33 @@ public class Server {
         }
 
         private void handleClientMessage(JsonObject jsonObject) {
-            if (jsonObject.get("command").toString().equals("\"connect\"")) {
-                // request looks like "{"command":"connect", "gameId": "gameId"}"
-                connectToGame(jsonObject.get("gameId").getAsInt());
-                return;
-            }
+            switch (jsonObject.get("command").toString()) {
+                case "\"connect\"":
+                    // request looks like "{"command":"connect", "gameId": "gameId"}"
+                    connectToGame(jsonObject.get("gameId").getAsInt());
+                    break;
+                case "\"before connect\"":
+                    beforeConnectToGame();
+                    break;
+                case "\"create\"":
 
-            if(jsonObject.get("command").toString().equals("\"before connect\"")) {
-                beforeConnectToGame();
-                return;
-            }
-
-            if (jsonObject.get("command").toString().equals("\"create\"")) {
-
-                createGame(jsonObject.get("boardType").toString(), jsonObject.get("movementType").toString(),
+                    createGame(jsonObject.get("boardType").toString(), jsonObject.get("movementType").toString(),
                         jsonObject.get("numberOfPlayers").getAsInt(), jsonObject.get("numberOfPawns").getAsInt());
-                return;
-            }
-
-            if (jsonObject.get("command").toString().equals("\"join\"")) {
-                joinGame(jsonObject.get("startingSide").toString(), jsonObject.get("color").toString());
-                return;
-            }
-            if (jsonObject.get("command").toString().equals("\"move\"")) {
-                move(jsonObject.get("playerId").getAsInt(),
-                    jsonObject.get("pawnX").getAsInt(), jsonObject.get("pawnY").getAsInt(),
-                    jsonObject.get("targetX").getAsInt(), jsonObject.get("targetY").getAsInt());
-                return;
-            }
-            if (jsonObject.get("command").toString().equals("\"endTurn\"")) {
-                endTurn(jsonObject.get("playerId").getAsInt());
-                return;
-            }
-            if (jsonObject.get("command").toString().equals("\"start\"")) {
-                startGame();
-                return;
+                    break;
+                case "\"join\"":
+                    joinGame(jsonObject.get("startingSide").toString(), jsonObject.get("color").toString());
+                    break;
+                case "\"move\"":
+                    move(jsonObject.get("playerId").getAsInt(),
+                        jsonObject.get("pawnX").getAsInt(), jsonObject.get("pawnY").getAsInt(),
+                        jsonObject.get("targetX").getAsInt(), jsonObject.get("targetY").getAsInt());
+                    break;
+                case "\"endTurn\"":
+                    endTurn(jsonObject.get("playerId").getAsInt());
+                    break;
+                case "\"start\"":
+                    startGame();
+                    break;
             }
         }
 
@@ -233,6 +225,7 @@ public class Server {
                 returnObj.addProperty("color", p.getColor().toString());
                 returnObj.addProperty("board", this.game.getBoard().fieldsToString());
                 returnObj.addProperty("boardType", this.game.getBoard().getType());
+                returnObj.addProperty("playerId", p.getId());
                 System.out.println(returnObj.toString());
                 out.println(returnObj.toString());
             } catch (GameFullException | BoardSideUsedException | ColorUsedException e) {

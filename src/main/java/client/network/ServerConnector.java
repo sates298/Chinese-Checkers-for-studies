@@ -172,9 +172,9 @@ public class ServerConnector {
       //ClientBase.getInstance().setPlayerId(response.get("playerId").getAsInt());
       String boardRepr =  response.get("board").getAsString();
       String boardType = response.get("boardType").toString();
+      ClientBase.getInstance().setPlayerId(response.get("playerId").getAsInt());
       ClientBase.getInstance().setBoardType(boardType);
       ClientBase.getInstance().setStartedBoard(BoardParser.parseBoard(boardRepr));
-     // boardController.drawBoard(BoardParser.parseBoard(boardRepr));
     } catch (IOException e) {
       e.printStackTrace();
     }
