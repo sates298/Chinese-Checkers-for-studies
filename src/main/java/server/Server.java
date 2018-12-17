@@ -303,6 +303,9 @@ public class Server {
                 pushToMany(this.game, jsonObject.toString());
             } catch (ForbiddenMoveException | ForbiddenActionException e) {
                 e.printStackTrace();
+                JsonObject response = new JsonObject();
+                response.addProperty("status", e.toString());
+                pushToMany(this.game, response.toString());
             }
         }
 
