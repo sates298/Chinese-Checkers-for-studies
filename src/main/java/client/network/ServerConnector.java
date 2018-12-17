@@ -169,7 +169,6 @@ public class ServerConnector {
         System.out.println(response);
         throw new ServerConnectionException();
       }
-      //ClientBase.getInstance().setPlayerId(response.get("playerId").getAsInt());
       String boardRepr =  response.get("board").getAsString();
       String boardType = response.get("boardType").toString();
       ClientBase.getInstance().setPlayerId(response.get("playerId").getAsInt());
@@ -184,13 +183,15 @@ public class ServerConnector {
     JsonObject jsonObj = new JsonObject();
     jsonObj.addProperty("command", "start");
 
-    out.println(jsonObj.getAsString());
+    out.println(jsonObj.toString());
     // read the response
     try {
       JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
-      if (!response.get("status").getAsString().equals("\"joined\"")) {
+      if (!response.get("status").toString().equals("\"joined\"")) {
         throw new ServerConnectionException();
       }
+      //todo set labels for players
+
       // wait for server information
       Waiter waiter = new Waiter();
       waiter.start();
@@ -213,12 +214,12 @@ public class ServerConnector {
         if (!response.get("status").toString().equals("\"success\"")) {
           // cannot throw exception :(
         }
-        if (response.get("action").getAsString().equals("\"move\"")) {
+        if (response.get("action").toString().equals("\"move\"")) {
           // parse the board
           String boardRepr = response.get("board").toString();
           DrawableField[][] board = BoardParser.parseBoard(boardRepr);
           ServerConnector.getInstance().getBoardController().drawBoard(board);
-        } else if (response.get("action").getAsString().equals("\"endTurn\"")) {
+        } else if (response.get("action").toString().equals("\"endTurn\"")) {
           int currentPlayerId = response.get("playerId").getAsInt();
           // todo set a label for current player or smth
 

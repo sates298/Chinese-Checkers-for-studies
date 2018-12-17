@@ -8,7 +8,6 @@ import client.network.InGameActionsHandler;
 import client.network.ServerConnectionException;
 import client.network.ServerConnector;
 import client.drawableBoard.DrawableField;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -19,6 +18,7 @@ import javafx.scene.control.Label;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 
 import java.net.URL;
@@ -27,7 +27,6 @@ import java.util.ResourceBundle;
 public class BoardController extends AbstractController implements Initializable {
 
     private InGameActionsHandler handler;
-
 
     @FXML
     private Label label1;
@@ -58,17 +57,56 @@ public class BoardController extends AbstractController implements Initializable
     @FXML
     public void startAction() {
         try {
+            startButton.setVisible(false);
+            for(int i=0; i<ClientBase.getInstance().getPlayersToLabel().size(); i++){
+                makeLabel(
+                        i,
+                        ClientBase.getInstance().getPlayersToLabel().get(i)
+                );
+            }
             ServerConnector.getInstance().requestStartGame();
 
         } catch (ServerConnectionException e) {
+            startButton.setVisible(true);
             showAlert("Connection Error", Alert.AlertType.ERROR);
+        }
+    }
+
+    private void makeLabel(int id, Paint color){
+        switch(id){
+            case 1:
+                label1.setText("PLAYER 1");
+                label1.setTextFill(color);
+                break;
+            case 2:
+                label2.setText("PLAYER 2");
+                label2.setTextFill(color);
+                break;
+            case 3:
+                label3.setText("PLAYER 3");
+                label3.setTextFill(color);
+                break;
+            case 4:
+                label4.setText("PLAYER 4");
+                label4.setTextFill(color);
+                break;
+            case 5:
+                label5.setText("PLAYER 5");
+                label5.setTextFill(color);
+                break;
+            case 6:
+                label6.setText("PLAYER 6");
+                label6.setTextFill(color);
+                break;
+            default:
+                break;
         }
     }
 
     private void paneClicked(DrawableField field) {
         if (ClientBase.getInstance().getFirstClicked() != null && field.getType().equals("\"EmptyField\"")) {
             ClientBase.getInstance().setLastClicked(field);
-            /*try {
+            try {
                 handler.requestMove(
                         ClientBase.getInstance().getPlayerId(),
                         ClientBase.getInstance().getFirstClicked().getX(),
@@ -76,15 +114,16 @@ public class BoardController extends AbstractController implements Initializable
                         ClientBase.getInstance().getLastClicked().getX(),
                         ClientBase.getInstance().getLastClicked().getY()
                 );
+                ClientBase.getInstance().getFirstClicked().setFill(
+                        ClientBase.getInstance().getFirstClicked().getMainColor()
+                );
             } catch (ServerConnectionException e) {
                 showAlert("Wrong move", Alert.AlertType.INFORMATION);
-            }*/
+            }
 
-            ClientBase.getInstance().getFirstClicked().setFill(
-                    ClientBase.getInstance().getFirstClicked().getMainColor()
-            );
+
         } else if (field.getType().equals("\"Pawn\"")) {
-            if(ClientBase.getInstance().getFirstClicked() != null){
+            if (ClientBase.getInstance().getFirstClicked() != null) {
                 ClientBase.getInstance().getFirstClicked().setFill(
                         ClientBase.getInstance().getFirstClicked().getMainColor()
                 );
@@ -93,8 +132,6 @@ public class BoardController extends AbstractController implements Initializable
             field.setFill(Color.CHOCOLATE);
         }
     }
-
-
 
 
     @FXML
@@ -129,6 +166,8 @@ public class BoardController extends AbstractController implements Initializable
                 n.setOnMouseClicked(event -> paneClicked((DrawableField) n));
             }
         }
+
+
 
 
     }

@@ -3,9 +3,11 @@ package client;
 import client.drawableBoard.Draw;
 import client.drawableBoard.DrawableField;
 import client.drawableBoard.SixPointedStarDraw;
+import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ClientBase {
 
@@ -16,6 +18,7 @@ public class ClientBase {
     private Draw boardDraw;
     private DrawableField[][] startedBoard;
     private List<Integer> openedGamesIds;
+    private Map<Integer, Paint> playersToLabel;
 
     private DrawableField firstClicked;
     private DrawableField lastClicked;
@@ -57,10 +60,6 @@ public class ClientBase {
         this.movementType = movementType;
     }
 
-    public void setBoardDraw(Draw boardDraw) {
-        this.boardDraw = boardDraw;
-    }
-
     public Draw getBoardDraw() {
         return boardDraw;
     }
@@ -79,6 +78,10 @@ public class ClientBase {
 
     public void setGameId(int gameId) {
         this.gameId = gameId;
+    }
+
+    public Map<Integer, Paint> getPlayersToLabel() {
+        return playersToLabel;
     }
 
     public List<Integer> getOpenedGamesIds() {
@@ -104,4 +107,5 @@ public class ClientBase {
     public void setLastClicked(DrawableField lastClicked) {
         this.lastClicked = lastClicked;
     }
+
 }
