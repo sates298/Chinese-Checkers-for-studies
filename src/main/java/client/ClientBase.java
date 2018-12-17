@@ -18,6 +18,8 @@ public class ClientBase {
     private Draw boardDraw;
     private DrawableField[][] startedBoard;
     private List<Integer> openedGamesIds;
+    private List<String> unusedColors;
+    private List<String> unusedSides;
     private Map<Integer, Paint> playersToLabel;
 
     private DrawableField firstClicked;
@@ -31,6 +33,22 @@ public class ClientBase {
             instance = new ClientBase();
         }
         return instance;
+    }
+
+    public List<String> getUnusedColors() {
+        return unusedColors;
+    }
+
+    public void setUnusedColors(List<String> unusedColors) {
+        this.unusedColors = unusedColors;
+    }
+
+    public List<String> getUnusedSides() {
+        return unusedSides;
+    }
+
+    public void setUnusedSides(List<String> unusedSides) {
+        this.unusedSides = unusedSides;
     }
 
     public int getPlayerId() {

@@ -18,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -116,11 +117,11 @@ public class ServerConnector {
     }
   }
 
-  public void requestBeforeConnectToGame() throws ServerConnectionException{
+  public void requestBeforeConnectToGame(){
     JsonObject jsonObj = new JsonObject();
     jsonObj.addProperty("command", "before connect");
-    System.out.println(jsonObj.toString());
     out.println(jsonObj.toString());
+
 
     try {
 
@@ -159,6 +160,36 @@ public class ServerConnector {
     }
   }
 
+  public void requestBeforeJoinGame(){
+    JsonObject jsonObject = new JsonObject();
+    jsonObject.addProperty("command", "before join");
+    out.println(jsonObject.toString());
+
+    try{
+      JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
+      if(response.get("unused colors").toString().equals("\"null\"")){
+        ClientBase.getInstance().setUnusedColors(null);
+        return;
+      }
+      if(response.get("unused sides").toString().equals("\"null\"")){
+        ClientBase.getInstance().setUnusedSides(null);
+        return;
+      }
+
+      Gson gson = new Gson();
+      String[] colors = gson.fromJson(response.get("unused colors"), String[].class);
+      String[] sides = gson.fromJson(response.get("unused sides"), String[].class);
+
+      ClientBase.getInstance().setUnusedColors(Arrays.asList(colors));
+      ClientBase.getInstance().setUnusedSides(Arrays.asList(sides));
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+
+  }
+
   public void requestJoinGame(String startingSide, String color) throws ServerConnectionException {
     JsonObject jsonObj = new JsonObject();
     jsonObj.addProperty("command", "join");
@@ -178,7 +209,7 @@ public class ServerConnector {
       ClientBase.getInstance().setPlayerId(response.get("playerId").getAsInt());
       ClientBase.getInstance().setBoardType(boardType);
       ClientBase.getInstance().setStartedBoard(BoardParser.parseBoard(boardRepr));
-      ClientBase.getInstance().setPlayersToLabel(parseJsonMap(response.get("playerIdMap").getAsString()));
+      //ClientBase.getInstance().setPlayersToLabel(parseJsonMap(response.get("playerIdMap").getAsString()));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -221,7 +252,7 @@ public class ServerConnector {
         }
         if (response.get("action").toString().equals("\"move\"")) {
           // parse the board
-          String boardRepr = response.get("board").toString();
+          String boardRepr = response.get("board").getAsString();
           DrawableField[][] board = BoardParser.parseBoard(boardRepr);
           ServerConnector.getInstance().getBoardController().drawBoard(board);
         } else if (response.get("action").toString().equals("\"endTurn\"")) {

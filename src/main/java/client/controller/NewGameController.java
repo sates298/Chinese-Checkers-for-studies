@@ -46,6 +46,7 @@ public class NewGameController extends AbstractController implements Initializab
             ClientBase.getInstance().setMovementType(mType);
 
             ServerConnector.getInstance().requestCreateGame(play_no, pawn_no);
+            ServerConnector.getInstance().requestBeforeJoinGame();
             redirect("fxml/join.fxml", "Join to Game", 300, 275, boardTypeBox);
 
         }catch (NullPointerException e){

@@ -12,6 +12,7 @@
     <ComboBox fx:id="boardSideBox" promptText="Board Side"/>
     <ComboBox fx:id="colorBox" promptText="Color"/>
     <Button text="JOIN" onAction="#joinToBoard" />
+    <Button text="BACK TO CONNECT" onAction="#backToConnect"/>
 
     <stylesheets>
         <URL value="@../css/joinStyle.css"/>

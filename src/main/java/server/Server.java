@@ -1,5 +1,7 @@
 package server;
 
+import server.board.SixPointedStar;
+import server.board.SixPointedStarSide;
 import server.creator.GameCreator;
 import server.exception.*;
 import server.game.Game;
@@ -14,6 +16,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,8 +28,8 @@ public class Server {
 
     private ServerSocket serverSocket;
 
-    public static void  main  (String[] args) {
-        Server  server = new Server();
+    public static void main(String[] args) {
+        Server server = new Server();
 
         server.start(1235);
         server.stop();
@@ -47,7 +50,7 @@ public class Server {
     }
 
     private void pushToMany(Game game, String message) {
-        for (GameClientHandler c: connectedClients) {
+        for (GameClientHandler c : connectedClients) {
             if (c.game == game) {
                 c.out.println(message);
             }
@@ -71,6 +74,7 @@ public class Server {
             }
         }
     }
+
     public void stop() {
         try {
             serverSocket.close();
@@ -102,6 +106,7 @@ public class Server {
                 System.out.println(e.toString());
             }
         }
+
         private void handleClient() throws IOException {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(
@@ -140,17 +145,19 @@ public class Server {
                     beforeConnectToGame();
                     break;
                 case "\"create\"":
-
                     createGame(jsonObject.get("boardType").toString(), jsonObject.get("movementType").toString(),
-                        jsonObject.get("numberOfPlayers").getAsInt(), jsonObject.get("numberOfPawns").getAsInt());
+                            jsonObject.get("numberOfPlayers").getAsInt(), jsonObject.get("numberOfPawns").getAsInt());
                     break;
                 case "\"join\"":
                     joinGame(jsonObject.get("startingSide").toString(), jsonObject.get("color").toString());
                     break;
+                case "\"before join\"":
+                    beforeJoinGame();
+                    break;
                 case "\"move\"":
                     move(jsonObject.get("playerId").getAsInt(),
-                        jsonObject.get("pawnX").getAsInt(), jsonObject.get("pawnY").getAsInt(),
-                        jsonObject.get("targetX").getAsInt(), jsonObject.get("targetY").getAsInt());
+                            jsonObject.get("pawnX").getAsInt(), jsonObject.get("pawnY").getAsInt(),
+                            jsonObject.get("targetX").getAsInt(), jsonObject.get("targetY").getAsInt());
                     break;
                 case "\"endTurn\"":
                     endTurn(jsonObject.get("playerId").getAsInt());
@@ -179,39 +186,80 @@ public class Server {
             }
         }
 
-        private void connectToGame(int gameId){
+        private void connectToGame(int gameId) {
             // find the game with id equal to gameId
-            for (Game g: Server.getInstance().getGames()) {
+            for (Game g : Server.getInstance().getGames()) {
                 System.out.println(g.getGameId());
             }
             JsonObject returnObj = new JsonObject();
-            Optional<Game> optionalGame =  Server.getInstance().getGames().stream().filter(g -> g.getGameId() == gameId).findAny();
-            if(optionalGame.isPresent()){
+            Optional<Game> optionalGame = Server.getInstance().getGames().stream().filter(g -> g.getGameId() == gameId).findAny();
+            if (optionalGame.isPresent()) {
                 this.game = optionalGame.get();
                 returnObj.addProperty("status", "connected");
                 returnObj.addProperty("gameId", gameId);
                 returnObj.addProperty("board", this.game.getBoard().fieldsToString());
                 out.println(returnObj.toString());
-            }else{
+            } else {
                 returnObj.addProperty("status", "is not present");
                 out.println(returnObj.toString());
             }
         }
 
-        private void beforeConnectToGame(){
+        private void beforeConnectToGame() {
             Integer[] ids = new Integer[Server.getInstance().getGames().size()];
-            for(int i=0; i< Server.getInstance().getGames().size(); i++){
+            for (int i = 0; i < Server.getInstance().getGames().size(); i++) {
                 ids[i] = Server.getInstance().getGames().get(i).getGameId();
             }
             JsonArray jArray = new JsonArray();
-            for(Integer i : ids){
+            for (Integer i : ids) {
                 jArray.add(i);
             }
-            if(ids.length == 0) {
+            if (ids.length == 0) {
                 out.println("null");
-            return;
+                return;
             }
             out.println(jArray.toString());
+
+
+        }
+
+        private void beforeJoinGame() {
+
+            if (this.game.getBoard() instanceof SixPointedStar) {
+                List<String> allColors = new ArrayList<>();
+                List<String> allSides = new ArrayList<>();
+                Collections.addAll(allSides, "TOP", "LEFT_TOP", "RIGHT_TOP", "BOTTOM", "LEFT_BOTTOM", "RIGHT_BOTTOM");
+                Collections.addAll(allColors, "RED", "BLUE", "GREEN", "BLACK", "YELLOW", "PURPLE");
+                System.out.println("weszlo");
+                for (Player p : this.game.getPlayers()) {
+                    allColors.remove(p.getColor().toString());
+                    allSides.remove(p.getStartingSide().toString());
+                }
+
+                JsonArray colorsArray = new JsonArray();
+                JsonArray sidesArray = new JsonArray();
+                for (String s : allColors) {
+                    colorsArray.add(s);
+                }
+                for (String s : allSides) {
+                    sidesArray.add(s);
+                }
+                System.out.println(sidesArray.toString());
+                JsonObject returnObj = new JsonObject();
+                if (colorsArray.size() == 0) {
+                    returnObj.addProperty("unused colors", "null");
+                } else {
+                    returnObj.add("unused colors", colorsArray);
+                }
+
+                if (sidesArray.size() == 0) {
+                    returnObj.addProperty("unused sides", "null");
+                } else {
+                    returnObj.add("unused sides", sidesArray);
+                }
+                System.out.println(returnObj.toString());
+                out.println(returnObj.toString());
+            }
 
 
         }
@@ -227,7 +275,7 @@ public class Server {
                 returnObj.addProperty("boardType", this.game.getBoard().getType());
                 returnObj.addProperty("playerId", p.getId());
                 returnObj.addProperty("playerColorMap",
-                    new Gson().toJson(game.getController().getIdColorMap()));
+                        new Gson().toJson(game.getController().getIdColorMap()));
 
                 System.out.println(new Gson().toJson(game.getController().getIdColorMap()));
 
@@ -240,6 +288,7 @@ public class Server {
                 e.printStackTrace();
             }
         }
+
         private void startGame() {
             this.game.getController().startGame();
             JsonObject returnObj = new JsonObject();
@@ -270,7 +319,7 @@ public class Server {
                 JsonObject returnObj = new JsonObject();
                 returnObj.addProperty("action", "endTurn");
                 returnObj.addProperty("currentPlayer",
-                    this.game.getController().getCurrentTurnPlayer().getId());
+                        this.game.getController().getCurrentTurnPlayer().getId());
 
                 Server.this.pushToMany(this.game, returnObj.toString());
 

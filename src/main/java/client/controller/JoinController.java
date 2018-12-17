@@ -1,5 +1,6 @@
 package client.controller;
 
+import client.ClientBase;
 import client.network.ServerConnectionException;
 import client.network.ServerConnector;
 import javafx.fxml.FXML;
@@ -41,11 +42,25 @@ public class JoinController extends AbstractController implements Initializable 
         }
     }
 
+    @FXML
+    public void backToConnect() throws IOException {
+        ServerConnector.getInstance().requestBeforeConnectToGame();
+        redirect("fxml/connect.fxml", "Connect to Game", 300, 275, boardSideBox);
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        boardSideBox.getItems().addAll("TOP", "LEFT_TOP", "RIGHT_TOP", "BOTTOM", "LEFT_BOTTOM", "RIGHT_BOTTOM");
-        colorBox.getItems().addAll("RED", "GREEN", "BLACK",  "BLUE" , "YELLOW" , "PURPLE");
+        List<String> sides = ClientBase.getInstance().getUnusedSides();
+        List<String> colors = ClientBase.getInstance().getUnusedColors();
+        if(colors != null){
+            colorBox.getItems().addAll(colors);
+        }
+        if(sides != null){
+            boardSideBox.getItems().addAll(sides);
+        }
+
+
     }
 
 

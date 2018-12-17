@@ -30,7 +30,7 @@ public class ConnectController extends AbstractController implements Initializab
             }
             ClientBase.getInstance().setGameId(gameIdBox.getValue());
             ServerConnector.getInstance().requestConnectToGame();
-
+            ServerConnector.getInstance().requestBeforeJoinGame();
             redirect("fxml/join.fxml", "Join to Game", 300, 275, gameIdBox);
 
         }catch(NullPointerException e){
