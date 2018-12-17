@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -229,15 +230,14 @@ public class ServerConnector {
       //todo set labels for players
 
       // wait for server information
-      Waiter waiter = new Waiter();
-      waiter.start();
+      Platform.runLater(new Waiter());
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
 
-  class Waiter extends Thread {
+  class Waiter implements Runnable {
     public void run() {
       while (true) {
         String serverResponse = "";
