@@ -11,10 +11,7 @@ import server.player.Color;
 import server.player.MoveToken;
 import server.player.Player;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameController {
@@ -149,6 +146,15 @@ public class GameController {
 
     }
     return false;
+  }
+
+  public Map<Integer, String> getIdColorMap() {
+    Map<Integer, String> result = new HashMap<>();
+    for (Player p : actual.getPlayers()) {
+      result.put(p.getId(), p.getColor().toString());
+    }
+
+    return result;
   }
 
 }

@@ -28,7 +28,7 @@ public class Server {
     public static void  main  (String[] args) {
         Server  server = new Server();
 
-        server.start(1234);
+        server.start(1235);
         server.stop();
     }
 
@@ -226,6 +226,11 @@ public class Server {
                 returnObj.addProperty("board", this.game.getBoard().fieldsToString());
                 returnObj.addProperty("boardType", this.game.getBoard().getType());
                 returnObj.addProperty("playerId", p.getId());
+                returnObj.addProperty("playerColorMap",
+                    new Gson().toJson(game.getController().getIdColorMap()));
+
+                System.out.println(new Gson().toJson(game.getController().getIdColorMap()));
+
                 System.out.println(returnObj.toString());
                 out.println(returnObj.toString());
             } catch (GameFullException | BoardSideUsedException | ColorUsedException e) {

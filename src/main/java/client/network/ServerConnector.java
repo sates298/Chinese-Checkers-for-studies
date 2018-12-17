@@ -9,7 +9,9 @@ import client.drawableBoard.BoardParser;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.sun.security.ntlm.Client;
+import com.google.gson.reflect.TypeToken;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 
 import java.io.BufferedReader;
@@ -18,6 +20,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ServerConnector {
   private static ServerConnector instance;
@@ -174,6 +178,7 @@ public class ServerConnector {
       ClientBase.getInstance().setPlayerId(response.get("playerId").getAsInt());
       ClientBase.getInstance().setBoardType(boardType);
       ClientBase.getInstance().setStartedBoard(BoardParser.parseBoard(boardRepr));
+      ClientBase.getInstance().setPlayersToLabel(parseJsonMap(response.get("playerIdMap").getAsString()));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -227,4 +232,33 @@ public class ServerConnector {
       }
     }
   }
+
+  private Map<Integer, Paint> parseJsonMap(String jsonMap) {
+    Map<Integer, Paint> result = new HashMap<>();
+
+    Map<String, String> map = new Gson().fromJson(jsonMap, new TypeToken<Map<String, String>>(){}.getType());
+
+    for (Map.Entry<String, String> entry : map.entrySet()) {
+      switch(entry.getValue()) {
+        case "\"GREEN\"":
+          result.put(Integer.parseInt(entry.getKey()), Color.GREEN);
+          break;
+        case "\"BLACK\"":
+          result.put(Integer.parseInt(entry.getKey()), Color.BLACK);
+          break;
+        case "\"BLUE\"":
+          result.put(Integer.parseInt(entry.getKey()), Color.BLUE);
+          break;
+        case "\"YELLOW\"":
+          result.put(Integer.parseInt(entry.getKey()), Color.YELLOW);
+          break;
+        case "\"PURPLE\"":
+          result.put(Integer.parseInt(entry.getKey()), Color.PURPLE);
+          break;
+      }
+
+    }
+    return result;
+  }
+
 }
