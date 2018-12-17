@@ -1,0 +1,14 @@
+.root{
+    -fx-background-color: yellow;
+}
+
+#title-section{
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+
+#label-section{
+    -fx-text-fill: black;
+    -fx-font-size: 15px;
+}
