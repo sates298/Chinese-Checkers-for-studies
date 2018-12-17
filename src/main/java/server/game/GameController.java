@@ -18,6 +18,7 @@ public class GameController {
   private Game actual;
   private Player currentTurnPlayer;
   private ListIterator<Player> playerListIterator;
+  private boolean started;
 
   public GameController(Game actual) {
     this.actual = actual;
@@ -37,6 +38,7 @@ public class GameController {
     currentTurnPlayer = playerListIterator.next();
     //allow current player to move
     currentTurnPlayer.setMoveToken(MoveToken.ALLOW);
+    started = true;
   }
 
   public void endGame() {
@@ -47,7 +49,8 @@ public class GameController {
       throw new ForbiddenActionException();
     }
     // find pawn and target  by coordinates
-    Optional<Pawn> optionalPawn = this.currentTurnPlayer.getPawns().stream().filter(p -> p.getX() == pawnX && p.getY()== pawnY).findFirst();
+    Optional<Pawn> optionalPawn = this.currentTurnPlayer.getPawns().stream()
+        .filter(p -> p.getX() == pawnX && p.getY()== pawnY).findFirst();
     Field target= this.actual.getBoard().getOneField(targetX, targetY);
 
     if (optionalPawn.isPresent()) {
@@ -155,6 +158,10 @@ public class GameController {
     }
 
     return result;
+  }
+
+  public boolean isStarted() {
+    return started;
   }
 
 }

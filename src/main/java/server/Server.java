@@ -297,7 +297,10 @@ public class Server {
         }
 
         private void move(int playerId, int pawnX, int pawnY, int targetX, int targetY) {
+            // if game hasnt started dont send any message so client's buffer is not full
+            if (!this.game.getController().isStarted()) return;
             try {
+
                 this.game.getController().move(playerId, pawnX, pawnY, targetX, targetY);
 
                 JsonObject jsonObject = new JsonObject();
@@ -316,6 +319,8 @@ public class Server {
         }
 
         private void endTurn(int playerId) {
+            // if game hasnt started dont send any message so client's buffer is not full
+            if (!this.game.getController().isStarted()) return;
             try {
                 this.game.getController().endTurn(playerId);
                 // push information about whose turn is it to all players
