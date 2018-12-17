@@ -227,7 +227,7 @@ public class ServerConnector {
     // read the response
     try {
       JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
-      if (!response.get("status").toString().equals("\"joined\"")) {
+      if (!response.get("status").toString().equals("\"game started\"")) {
         throw new ServerConnectionException();
       }
       //todo set labels for players
@@ -247,8 +247,6 @@ public class ServerConnector {
       try {
         String serverResponse;
         while ((serverResponse = in.readLine()) != null) {
-          System.out.println("why does it freeze");
-
           System.out.println(serverResponse);
           JsonObject response = ServerConnector.getInstance().getParser().parse(serverResponse).getAsJsonObject();
 
@@ -265,7 +263,7 @@ public class ServerConnector {
             // parse the board
             String boardRepr = response.get("board").getAsString();
             DrawableField[][] board = BoardParser.parseBoard(boardRepr);
-            ServerConnector.getInstance().getBoardController().drawBoard(board);
+            Platform.runLater( () -> ServerConnector.getInstance().getBoardController().drawBoard(board));
           } else if (response.get("action").toString().equals("\"endTurn\"")) {
             int currentPlayerId = response.get("playerId").getAsInt();
             // todo set a label for current player or smth
