@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.sun.security.ntlm.Client;
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -210,7 +211,8 @@ public class ServerConnector {
       ClientBase.getInstance().setPlayerId(response.get("playerId").getAsInt());
       ClientBase.getInstance().setBoardType(boardType);
       ClientBase.getInstance().setStartedBoard(BoardParser.parseBoard(boardRepr));
-      //ClientBase.getInstance().setPlayersToLabel(parseJsonMap(response.get("playerIdMap").getAsString()));
+      System.out.println("maniana");
+      ClientBase.getInstance().setPlayersToLabel(parseJsonMap(response.get("playerColorMap").getAsString()));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -229,8 +231,11 @@ public class ServerConnector {
       }
       //todo set labels for players
 
+
       // wait for server information
+      System.out.println("last thing printed");
       Platform.runLater(new Waiter());
+      System.out.println("right?");
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -271,19 +276,19 @@ public class ServerConnector {
 
     for (Map.Entry<String, String> entry : map.entrySet()) {
       switch(entry.getValue()) {
-        case "\"GREEN\"":
+        case "GREEN":
           result.put(Integer.parseInt(entry.getKey()), Color.GREEN);
           break;
-        case "\"BLACK\"":
+        case "BLACK":
           result.put(Integer.parseInt(entry.getKey()), Color.BLACK);
           break;
-        case "\"BLUE\"":
+        case "BLUE":
           result.put(Integer.parseInt(entry.getKey()), Color.BLUE);
           break;
-        case "\"YELLOW\"":
+        case "YELLOW":
           result.put(Integer.parseInt(entry.getKey()), Color.YELLOW);
           break;
-        case "\"PURPLE\"":
+        case "PURPLE":
           result.put(Integer.parseInt(entry.getKey()), Color.PURPLE);
           break;
       }
