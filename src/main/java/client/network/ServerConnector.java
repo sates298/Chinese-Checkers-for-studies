@@ -73,31 +73,6 @@ public class ServerConnector {
     return parser;
   }
 
-  // wait for server's response and redraw board based on  the response
-  public void waitForResponse() throws IOException, ServerConnectionException {
-    while (true) {
-      String serverResponse = in.readLine();
-      JsonObject response = parser.parse(serverResponse).getAsJsonObject();
-      if (!response.get("status").toString().equals("\"success\"")) {
-        throw new ServerConnectionException();
-      }
-      if (response.get("action").getAsString().equals("\"move\"")) {
-        // parse the board
-        String boardRepr= response.get("board").toString();
-        DrawableField[][] board = BoardParser.parseBoard(boardRepr);
-        boardController.drawBoard(board);
-      } else if (response.get("action").getAsString().equals("\"endTurn\"")) {
-        int playerId = response.get("playerId").getAsInt();
-        // todo set a label for current player or smth
-        if(playerId == ClientBase.getInstance().getPlayerId()){
-          // decide we cannot break continous communication with the server (error messages  etc)
-          //break;
-        }
-      }
-    }
-  }
-
-
   public void endConnection() {
     try {
       in.close();
@@ -215,13 +190,38 @@ public class ServerConnector {
         throw new ServerConnectionException();
       }
       // wait for server information
-      waitForResponse();
+      Waiter waiter = new Waiter();
+      waiter.start();
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
 
+  class Waiter extends Thread {
+    public void run() {
+      while (true) {
+        String serverResponse = "";
+        try {
+          serverResponse = in.readLine();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        JsonObject response = ServerConnector.getInstance().getParser().parse(serverResponse).getAsJsonObject();
+        if (!response.get("status").toString().equals("\"success\"")) {
+          // cannot throw exception :(
+        }
+        if (response.get("action").getAsString().equals("\"move\"")) {
+          // parse the board
+          String boardRepr = response.get("board").toString();
+          DrawableField[][] board = BoardParser.parseBoard(boardRepr);
+          ServerConnector.getInstance().getBoardController().drawBoard(board);
+        } else if (response.get("action").getAsString().equals("\"endTurn\"")) {
+          int currentPlayerId = response.get("playerId").getAsInt();
+          // todo set a label for current player or smth
 
-
+        }
+      }
+    }
+  }
 }
