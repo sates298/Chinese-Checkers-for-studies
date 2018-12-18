@@ -38,7 +38,7 @@ public class BoardController extends AbstractController implements Initializable
     @FXML
     private Label label5;
     @FXML
-    private Label label6;
+    private Label label0;
 
     @FXML
     private Button exitButton;
@@ -96,8 +96,8 @@ public class BoardController extends AbstractController implements Initializable
                 label5.setTextFill(color);
                 break;
             case 6:
-                label6.setText("PLAYER 6");
-                label6.setTextFill(color);
+                label0.setText("PLAYER 0");
+                label0.setTextFill(color);
                 break;
             default:
                 break;

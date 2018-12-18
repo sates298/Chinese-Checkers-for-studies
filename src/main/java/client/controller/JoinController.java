@@ -35,7 +35,7 @@ public class JoinController extends AbstractController implements Initializable 
             redirect("fxml/board.fxml", "Board", 920, 670, colorBox);
 
         } catch (NullPointerException n) {
-            n.printStackTrace();
+            //n.printStackTrace();
             showAlert("Nothing has chosen", Alert.AlertType.WARNING);
         } catch (ServerConnectionException e) {
             //e.printStackTrace();
