@@ -9,7 +9,6 @@ public class BoardParser {
     public static DrawableField[][] parseBoard(String boardRepresentation) {
         Gson gson = new Gson();
 
-        System.out.println(boardRepresentation);
         String[][] strArray = gson.fromJson(boardRepresentation, String[][].class);
         DrawableField[][] fieldTypes = new DrawableField[strArray.length][strArray.length];
 

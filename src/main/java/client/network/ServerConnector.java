@@ -13,7 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import server.Server;
+
 
 
 import java.io.BufferedReader;
@@ -210,7 +210,6 @@ public class ServerConnector {
       ClientBase.getInstance().setPlayerId(response.get("playerId").getAsInt());
       ClientBase.getInstance().setBoardType(boardType);
       ClientBase.getInstance().setStartedBoard(BoardParser.parseBoard(boardRepr));
-      ClientBase.getInstance().setPlayersToLabel(parseJsonMap(response.get("playerColorMap").getAsString()));
 
       // wait for server information
       Waiter waiter = new Waiter();
@@ -258,28 +257,56 @@ public class ServerConnector {
             continue;
           }
 
-          if (response.get("action").toString().equals("\"move\"")
-              || response.get("action").toString().equals("\"game started\"")) {
-            // parse the board
-            String boardRepr = response.get("board").getAsString();
-            DrawableField[][] board = BoardParser.parseBoard(boardRepr);
-            Platform.runLater( () -> ServerConnector.getInstance().getBoardController().drawBoard(board));
-          } else if (response.get("action").toString().equals("\"endTurn\"")) {
-            System.out.println(response.toString());
-            int currentPlayerId = response.get("currentPlayer").getAsInt();
-            // todo set a label for current player or smth
-            for(int i = 0; i< ClientBase.getInstance().getPlayersToLabel().size(); i++){
-              final int ii=i;
+          switch (response.get("action").toString()) {
+            case "\"move\"": {
+              // parse the board
+              String boardRepr = response.get("board").getAsString();
+              DrawableField[][] board = BoardParser.parseBoard(boardRepr);
+              Platform.runLater(() -> ServerConnector.getInstance().getBoardController().drawBoard(board));
+              break;
+            }
+            case "\"game started\"": {
+              // parse the board
+              String boardRepr = response.get("board").getAsString();
+              DrawableField[][] board = BoardParser.parseBoard(boardRepr);
+              Platform.runLater(() -> ServerConnector.getInstance().getBoardController().drawBoard(board));
+              //set labels
+              ClientBase.getInstance().setPlayersToLabel(parseJsonMap(response.get("playerColorMap").getAsString()));
+              System.out.println(ClientBase.getInstance().getPlayersToLabel().toString());
+              Platform.runLater(() -> ServerConnector.getInstance().getBoardController().fillLabels());
+              //set current player's label bold
+              int currentPlayerId = response.get("currentPlayer").getAsInt();
+              for (int i = 0; i < ClientBase.getInstance().getPlayersToLabel().size(); i++) {
+                final int ii = i;
+                Platform.runLater(() -> ServerConnector.getInstance()
+                        .getBoardController()
+                        .getCorrectLabel(ii)
+                        .setStyle("-fx-font-weight: normal"));
+              }
               Platform.runLater(() -> ServerConnector.getInstance()
                       .getBoardController()
-                      .getCorrectLabel(ii)
-                      .setStyle("-fx-font-weight: normal"));
-            }
-            Platform.runLater(() -> ServerConnector.getInstance()
-                    .getBoardController()
-                    .getCorrectLabel(currentPlayerId)
-                    .setStyle("-fx-font-weight: bold"));
+                      .getCorrectLabel(currentPlayerId)
+                      .setStyle("-fx-font-weight: bold"));
 
+              break;
+            }
+            case "\"endTurn\"": {
+              //set current player's label bold
+              int currentPlayerId = response.get("currentPlayer").getAsInt();
+              for (int i = 0; i < ClientBase.getInstance().getPlayersToLabel().size(); i++) {
+                final int ii = i;
+                Platform.runLater(() -> ServerConnector.getInstance()
+                        .getBoardController()
+                        .getCorrectLabel(ii)
+                        .setStyle("-fx-font-weight: normal"));
+              }
+              Platform.runLater(() -> ServerConnector.getInstance()
+                      .getBoardController()
+                      .getCorrectLabel(currentPlayerId)
+                      .setStyle("-fx-font-weight: bold"));
+
+              break;
+            }
           }
 
         }
@@ -311,6 +338,9 @@ public class ServerConnector {
           break;
         case "PURPLE":
           result.put(Integer.parseInt(entry.getKey()), Color.PURPLE);
+          break;
+        case "RED":
+          result.put(Integer.parseInt(entry.getKey()), Color.RED);
           break;
       }
 

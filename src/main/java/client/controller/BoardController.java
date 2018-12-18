@@ -57,20 +57,22 @@ public class BoardController extends AbstractController implements Initializable
     @FXML
     public void startAction() {
         try {
-
-
-            for (int i = 0; i < ClientBase.getInstance().getPlayersToLabel().size(); i++) {
-                makeLabel(
-                        i,
-                        ClientBase.getInstance().getPlayersToLabel().get(i)
-                );
-            }
             startButton.setVisible(false);
-
             ServerConnector.getInstance().requestStartGame();
+
         } catch (ServerConnectionException e) {
             startButton.setVisible(true);
             showAlert("Connection Error", Alert.AlertType.ERROR);
+        }
+    }
+
+
+    public void fillLabels(){
+        for (int i = 0; i < ClientBase.getInstance().getPlayersToLabel().size(); i++) {
+            makeLabel(
+                    i,
+                    ClientBase.getInstance().getPlayersToLabel().get(i)
+            );
         }
     }
 
@@ -158,7 +160,11 @@ public class BoardController extends AbstractController implements Initializable
     @FXML
     public void endTurn() {
         try {
-
+            if(ClientBase.getInstance().getFirstClicked() != null) {
+                ClientBase.getInstance().getFirstClicked().setFill(
+                        ClientBase.getInstance().getFirstClicked().getMainColor()
+                );
+            }
             ClientBase.getInstance().setFirstClicked(null);
             ClientBase.getInstance().setLastClicked(null);
 
@@ -179,6 +185,9 @@ public class BoardController extends AbstractController implements Initializable
     public void initialize(URL location, ResourceBundle resources) {
         ServerConnector.getInstance().setBoardController(this);
 
+        if(ClientBase.getInstance().getPlayerId() != 0){
+            startButton.setVisible(false);
+        }
         drawBoard(ClientBase.getInstance().getStartedBoard());
         this.handler = new InGameActionsHandler();
     }

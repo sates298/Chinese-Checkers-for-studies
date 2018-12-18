@@ -274,13 +274,11 @@ public class Server {
                 returnObj.addProperty("playerColorMap",
                         new Gson().toJson(game.getController().getIdColorMap()));
 
-                System.out.println(returnObj.toString());
                 out.println(returnObj.toString());
             } catch (GameFullException | BoardSideUsedException | ColorUsedException e) {
                 JsonObject returnObj = new JsonObject();
                 returnObj.addProperty("status", e.toString());
                 out.println(returnObj.toString());
-                e.printStackTrace();
             }
         }
 
@@ -290,6 +288,10 @@ public class Server {
             returnObj.addProperty("action", "game started");
             returnObj.addProperty("status", "successful");
             returnObj.addProperty("board", this.game.getBoard().fieldsToString());
+            returnObj.addProperty("playerColorMap",
+                    new Gson().toJson(game.getController().getIdColorMap()));
+            returnObj.addProperty("currentPlayer",
+                    this.game.getController().getCurrentTurnPlayer().getId());
             pushToMany(this.game, returnObj.toString());
         }
 
@@ -308,10 +310,10 @@ public class Server {
 
                 pushToMany(this.game, jsonObject.toString());
             } catch (ForbiddenMoveException | ForbiddenActionException e) {
-                e.printStackTrace();
                 JsonObject response = new JsonObject();
                 response.addProperty("status", e.toString());
-                pushToMany(this.game, response.toString());
+                out.println(response.toString());
+                //pushToMany(this.game, response.toString());
             }
         }
 
@@ -330,7 +332,9 @@ public class Server {
                 Server.this.pushToMany(this.game, returnObj.toString());
 
             } catch (ForbiddenActionException e) {
-                e.printStackTrace();
+                JsonObject response = new JsonObject();
+                response.addProperty("status", e.toString());
+                out.println(response.toString());
             }
         }
 
