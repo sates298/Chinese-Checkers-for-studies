@@ -14,6 +14,7 @@ public class Player {
 
   //0 - can't move, 1 - can move, 2 - can jump only, 3 - has won already
   private MoveToken moveToken;
+  private Pawn lastMoved;
 
   public Player() {
   }
@@ -68,5 +69,14 @@ public class Player {
 
   public void setColor(Color color) {
     this.color = color;
+  }
+
+
+  public Pawn getLastMoved() {
+    return lastMoved;
+  }
+
+  public void setLastMoved(Pawn lastMoved) {
+    this.lastMoved = lastMoved;
   }
 }

@@ -51,6 +51,7 @@ public class BoardController extends AbstractController implements Initializable
     @FXML
     public void exitAction() {
         exit(exitButton);
+        ServerConnector.getInstance().endConnection();
     }
 
     @FXML
@@ -75,6 +76,10 @@ public class BoardController extends AbstractController implements Initializable
 
     private void makeLabel(int id, Paint color) {
         switch (id) {
+            case 0:
+                label0.setText("PLAYER 0");
+                label0.setTextFill(color);
+                break;
             case 1:
                 label1.setText("PLAYER 1");
                 label1.setTextFill(color);
@@ -95,12 +100,27 @@ public class BoardController extends AbstractController implements Initializable
                 label5.setText("PLAYER 5");
                 label5.setTextFill(color);
                 break;
-            case 6:
-                label0.setText("PLAYER 0");
-                label0.setTextFill(color);
-                break;
             default:
                 break;
+        }
+    }
+
+    public Label getCorrectLabel(int id) {
+        switch (id) {
+            case 0:
+                return label0;
+            case 1:
+                return label1;
+            case 2:
+                return label2;
+            case 3:
+                return label3;
+            case 4:
+                return label4;
+            case 5:
+                return label5;
+            default:
+                return null;
         }
     }
 

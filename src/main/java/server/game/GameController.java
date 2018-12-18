@@ -64,7 +64,8 @@ public class GameController {
     if (this.currentTurnPlayer.getId() != playerId) {
       throw new ForbiddenActionException();
     }
-
+    //reset chosen pawn
+    this.currentTurnPlayer.setLastMoved(null);
     //forbid current player to move if is not a winner yet
     if(checkWinCondition()){
       this.currentTurnPlayer.setMoveToken(MoveToken.WINNER);

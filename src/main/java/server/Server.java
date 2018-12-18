@@ -1,6 +1,5 @@
 package server;
 
-import server.board.SixPointedStar;
 import server.board.SixPointedStarSide;
 import server.creator.GameCreator;
 import server.exception.*;

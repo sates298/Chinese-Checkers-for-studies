@@ -29,14 +29,13 @@ public class MainMovement implements Movement {
             pawn.setY(target.getY());
             target.setX(pawnX);
             target.setY(pawnY);
-
+            pawn.getOwner().setLastMoved(pawn);
             pawn.getBoard().setOneField(pawn);
             pawn.getBoard().setOneField(target);
 
         } else {
             throw new ForbiddenMoveException();
         }
-
     }
 
     @Override
@@ -47,11 +46,9 @@ public class MainMovement implements Movement {
         }
 
         //later check if board place allow to move
-        // todo !!
-        // I overrided  checkMoveForBoard to use type SixPointedStar  but getBoard still returns Board
-   /*     if (!checkMoveForBoard(pawn.getBoard(), pawn, (EmptyField) target)) {
+        if (!checkMoveForBoard(pawn.getBoard(), pawn, (EmptyField) target)) {
             return false;
-        }*/
+        }
 
         return checkMoveOne(pawn, target)
                 || checkJump(pawn, target) ;
@@ -59,6 +56,10 @@ public class MainMovement implements Movement {
 
     private boolean checkMoveOne(Pawn pawn, Field target) {
         // this method only checks "atomic" moves
+
+        if(pawn.getOwner().getMoveToken().getNum() != 1){
+            return false;
+        }
 
         // all following checks assume that we sue flipped cartesian coordinates (ys raise as we go down)
         //forward move
@@ -81,6 +82,10 @@ public class MainMovement implements Movement {
     }
 
     private boolean checkJump(Pawn pawn, Field target) {
+
+        if(!pawn.equals(pawn.getOwner().getLastMoved()) && pawn.getOwner().getLastMoved() != null){
+            return false;
+        }
 
         // vertical jump
         if (pawn.getX() == target.getX()) {
@@ -108,18 +113,14 @@ public class MainMovement implements Movement {
     }
 
     private boolean checkMoveForBoard(Board board, Pawn pawn, EmptyField target) {
-        //if (board instanceof SixPointedStar) {
+        if ("SixPointedStar".equals(board.getType())) {
             List<Field> temp = ((SixPointedStarSide) pawn.getOwner().getStartingSide()).getOppositeArea((SixPointedStar)board);
-            return temp.indexOf(pawn) >= 0 && temp.indexOf(target) >= 0;
-        //}
+            System.out.println(pawn.getOwner().getStartingSide().toString());
+            return !temp.contains(pawn) || temp.contains(target);
+        }
 
-        //return false;
+        return false;
 
     }
 
-    private boolean checkMoveForBoard(SixPointedStar board, Pawn pawn, EmptyField target) {
-        List<Field> temp = ((SixPointedStarSide) pawn.getOwner().getStartingSide()).getOppositeArea(board);
-
-        return temp.indexOf(pawn) >= 0 && temp.indexOf(target) >= 0;
-    }
 }

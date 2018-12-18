@@ -2,7 +2,6 @@ package server.board;
 
 import server.field.Field;
 
-import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,7 +78,7 @@ public enum SixPointedStarSide implements BoardSide {
             List<Field> area = new ArrayList<Field>();
             for (int i = 0; i < 4; i++) {
                 for (int j = 3; j >= i; j--) {
-                    area.add(((SixPointedStar) board).getOneField(9 + j, 13 + i));
+                    area.add( board.getOneField(9 + j, 13 + i));
                 }
             }
 

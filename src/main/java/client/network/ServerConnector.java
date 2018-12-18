@@ -10,10 +10,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.sun.security.ntlm.Client;
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import server.Server;
 
 
 import java.io.BufferedReader;
@@ -261,13 +261,24 @@ public class ServerConnector {
           if (response.get("action").toString().equals("\"move\"")
               || response.get("action").toString().equals("\"game started\"")) {
             // parse the board
-            System.out.println("should redraw");
             String boardRepr = response.get("board").getAsString();
             DrawableField[][] board = BoardParser.parseBoard(boardRepr);
             Platform.runLater( () -> ServerConnector.getInstance().getBoardController().drawBoard(board));
           } else if (response.get("action").toString().equals("\"endTurn\"")) {
-            //int currentPlayerId = response.get("playerId").getAsInt();
+            System.out.println(response.toString());
+            int currentPlayerId = response.get("currentPlayer").getAsInt();
             // todo set a label for current player or smth
+            for(int i = 0; i< ClientBase.getInstance().getPlayersToLabel().size(); i++){
+              final int ii=i;
+              Platform.runLater(() -> ServerConnector.getInstance()
+                      .getBoardController()
+                      .getCorrectLabel(ii)
+                      .setStyle("-fx-font-weight: normal"));
+            }
+            Platform.runLater(() -> ServerConnector.getInstance()
+                    .getBoardController()
+                    .getCorrectLabel(currentPlayerId)
+                    .setStyle("-fx-font-weight: bold"));
 
           }
 
