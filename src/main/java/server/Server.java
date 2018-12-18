@@ -15,10 +15,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.net.SocketException;
+import java.util.*;
 
 public class Server {
     private volatile List<Game> games;
@@ -28,11 +26,14 @@ public class Server {
 
     private ServerSocket serverSocket;
 
-    public static void main(String[] args) {
-        Server server = new Server();
+    static volatile boolean keepAlive = true;
 
-        server.start(1235);
-        server.stop();
+    public static void main(String[] args) {
+        int PORT = 1235;
+        System.out.println(" Server is running on port " + PORT
+            + " to terminate the server, type 'exit' to console and press Enter");
+        Server server = new Server();
+        server.start(PORT);
     }
 
     public Server() {
@@ -63,12 +64,21 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace(); // delete after testing phase and replace it with smth more user friendly
         }
-        while (true) {
+        while (keepAlive) {
+            // this thread waits for 'exit' and if it has any kills  the server
+            new Thread(() -> {
+                while (!new Scanner(System.in).nextLine().equals("exit"));
+                keepAlive = false;
+                this.stop();
+            }).start();
+
             // start  new thread when new client connects
             try {
                 GameClientHandler newClient = new GameClientHandler(serverSocket.accept());
                 this.connectedClients.add(newClient);
                 new Thread(newClient).start();
+            } catch (SocketException se) {
+                System.out.println("server shutdown");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -95,7 +105,7 @@ public class Server {
 
         private Game game;
 
-        public GameClientHandler(Socket client) {
+        GameClientHandler(Socket client) {
             this.clientSocket = client;
         }
 
@@ -115,7 +125,7 @@ public class Server {
             JsonParser parser = new JsonParser();
 
             String inputLine;
-            while ((inputLine = in.readLine()) != null) {
+            while (Server.keepAlive && (inputLine = in.readLine()) != null) {
                 JsonElement jsonTree = parser.parse(inputLine);
                 if (jsonTree.isJsonObject()) {
                     JsonObject object = jsonTree.getAsJsonObject();
