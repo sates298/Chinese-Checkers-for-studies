@@ -21,6 +21,11 @@ public enum SixPointedStarSide implements BoardSide {
             return area;
         }
 
+        @Override
+        public SixPointedStarSide getOppositeSide() {
+            return BOTTOM;
+        }
+
         public List<Field> getOppositeArea(SixPointedStar board) {
             return SixPointedStarSide.BOTTOM.getArea(board);
         }
@@ -38,6 +43,11 @@ public enum SixPointedStarSide implements BoardSide {
             return area;
         }
 
+        @Override
+        public SixPointedStarSide getOppositeSide() {
+            return RIGHT_BOTTOM;
+        }
+
         public List<Field> getOppositeArea(SixPointedStar board) {
             return SixPointedStarSide.RIGHT_BOTTOM.getArea(board);
         }
@@ -51,8 +61,12 @@ public enum SixPointedStarSide implements BoardSide {
                     area.add(((SixPointedStar) board).getOneField(9 + j, 4 + i));
                 }
             }
-
             return area;
+        }
+
+        @Override
+        public SixPointedStarSide getOppositeSide() {
+            return LEFT_BOTTOM;
         }
 
         public List<Field> getOppositeArea(SixPointedStar board) {
@@ -72,6 +86,11 @@ public enum SixPointedStarSide implements BoardSide {
             return area;
         }
 
+        @Override
+        public SixPointedStarSide getOppositeSide() {
+            return TOP;
+        }
+
         public List<Field> getOppositeArea(SixPointedStar board) {
             return SixPointedStarSide.TOP.getArea(board);
         }
@@ -89,6 +108,11 @@ public enum SixPointedStarSide implements BoardSide {
             return area;
         }
 
+        @Override
+        public SixPointedStarSide getOppositeSide() {
+            return RIGHT_TOP;
+        }
+
         public List<Field> getOppositeArea(SixPointedStar board) {
             return SixPointedStarSide.RIGHT_TOP.getArea(board);
         }
@@ -104,6 +128,11 @@ public enum SixPointedStarSide implements BoardSide {
             }
 
             return area;
+        }
+
+        @Override
+        public SixPointedStarSide getOppositeSide() {
+            return LEFT_TOP;
         }
 
         public List<Field> getOppositeArea(SixPointedStar board) {
@@ -143,6 +172,8 @@ public enum SixPointedStarSide implements BoardSide {
                 return null;
         }
     }
+
+    public abstract SixPointedStarSide getOppositeSide();
 
     public abstract List<Field> getOppositeArea(SixPointedStar board);
 

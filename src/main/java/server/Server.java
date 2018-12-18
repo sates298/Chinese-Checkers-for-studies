@@ -224,7 +224,7 @@ public class Server {
 
         private void beforeJoinGame() {
 
-            if (this.game.getBoard() instanceof SixPointedStar) {
+            if (this.game.getBoard().getType().equals("SixPointedStar")) {
                 List<String> allColors = new ArrayList<>();
                 List<String> allSides = new ArrayList<>();
                 Collections.addAll(allSides, "TOP", "LEFT_TOP", "RIGHT_TOP", "BOTTOM", "LEFT_BOTTOM", "RIGHT_BOTTOM");
@@ -233,6 +233,8 @@ public class Server {
                     allColors.remove(p.getColor().toString());
                     allSides.remove(p.getStartingSide().toString());
                 }
+
+                fillSidesArrayBeforeJoin(allSides);
 
                 JsonArray colorsArray = new JsonArray();
                 JsonArray sidesArray = new JsonArray();
@@ -330,6 +332,63 @@ public class Server {
 
             } catch (ForbiddenActionException e) {
                 e.printStackTrace();
+            }
+        }
+
+        private void fillSidesArrayBeforeJoin(List<String> sides){
+            if(this.game.getBoard().getType().equals("SixPointedStar")){
+                int number = this.game.getNumberOfPlayers();
+                switch (number){
+                    case 2:
+                        if(this.game.getPlayers().size() == 1){
+                            sides.clear();
+                            sides.add(
+                                    ((SixPointedStarSide)this.game.getPlayers()
+                                            .get(0).getStartingSide())
+                                            .getOppositeSide().toString()
+                            );
+                        }
+                        break;
+                    case 3:
+                        //todo how has to it looks like?
+                        break;
+                    case 4:
+                        if(this.game.getPlayers().size() == 2){
+                            Player p0 = this.game.getPlayers().get(0);
+                            Player p1 = this.game.getPlayers().get(1);
+                            if(p0.getStartingSide() != ((SixPointedStarSide) p1.getStartingSide()).getOppositeSide()) {
+                                sides.clear();
+                                Collections.addAll(
+                                        sides,
+                                        ((SixPointedStarSide) p0.getStartingSide())
+                                                .getOppositeSide().toString(),
+                                        ((SixPointedStarSide) p1.getStartingSide())
+                                                .getOppositeSide().toString()
+                                );
+                            }
+                        }else if(this.game.getPlayers().size() == 3){
+                            sides.clear();
+                            Player p0 = this.game.getPlayers().get(0);
+                            Player p1 = this.game.getPlayers().get(1);
+                            Player p2 = this.game.getPlayers().get(2);
+                            if(p0.getStartingSide() == ((SixPointedStarSide) p1.getStartingSide()).getOppositeSide()){
+                                sides.add(
+                                        ((SixPointedStarSide)p2.getStartingSide()).getOppositeSide().toString()
+                                );
+                            }else if(p2.getStartingSide() == ((SixPointedStarSide) p1.getStartingSide()).getOppositeSide()){
+                                sides.add(
+                                        ((SixPointedStarSide)p0.getStartingSide()).getOppositeSide().toString()
+                                );
+                            }else {
+                                sides.add(
+                                        ((SixPointedStarSide)p1.getStartingSide()).getOppositeSide().toString()
+                                );
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
