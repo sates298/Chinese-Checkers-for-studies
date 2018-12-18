@@ -73,7 +73,7 @@ public class MainMovement implements Movement {
                     || pawn.getX() - target.getX() == -1;
         }
         // horizontal move
-        if (target.getY() == target.getY()) {
+        if (target.getY() == pawn.getY()) {
             return pawn.getX() - target.getX() == 1
                     || pawn.getX() - target.getX() == -1;
         }
