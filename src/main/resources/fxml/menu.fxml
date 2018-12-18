@@ -10,7 +10,7 @@
         <VBox spacing="20" alignment="CENTER">
             <Label id="head" alignment="CENTER" text="WELCOME IN TRYLMA THE GAME!" />
             <Button id="newGameButton" text="NEW GAME" onAction="#newGame"/>
-            <Button id="joinToGameButton" text="JOIN TO GAME" onAction="#joinToGame"/>
+            <Button id="joinToGameButton" text="JOIN GAME" onAction="#joinToGame"/>
             <Button id="exitButton" text="EXIT" fx:id="exitButton" onAction="#exitAction"/>
         </VBox>
     </center>

@@ -226,21 +226,6 @@ public class ServerConnector {
     jsonObj.addProperty("command", "start");
 
     out.println(jsonObj.toString());
-    // read the response
-//    try {
-//      JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
-//      if (!response.get("status").toString().equals("\"game started\"")) {
-//        throw new ServerConnectionException();
-//      }
-//      //todo set labels for players
-//
-//      // wait for server information
-//      Waiter waiter = new Waiter();
-//      new Thread(waiter).start();
-//
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    }
   }
 
 
@@ -265,11 +250,13 @@ public class ServerConnector {
               Platform.runLater(() -> ServerConnector.getInstance().getBoardController().drawBoard(board));
               break;
             }
+
             case "\"game started\"": {
               // parse the board
               String boardRepr = response.get("board").getAsString();
               DrawableField[][] board = BoardParser.parseBoard(boardRepr);
               Platform.runLater(() -> ServerConnector.getInstance().getBoardController().drawBoard(board));
+
               //set labels
               ClientBase.getInstance().setPlayersToLabel(parseJsonMap(response.get("playerColorMap").getAsString()));
               System.out.println(ClientBase.getInstance().getPlayersToLabel().toString());
@@ -290,8 +277,8 @@ public class ServerConnector {
 
               break;
             }
-            case "\"endTurn\"": {
-              //set current player's label bold
+            case "\"endTurn\"":
+
               int currentPlayerId = response.get("currentPlayer").getAsInt();
               for (int i = 0; i < ClientBase.getInstance().getPlayersToLabel().size(); i++) {
                 final int ii = i;
@@ -304,6 +291,13 @@ public class ServerConnector {
                       .getBoardController()
                       .getCorrectLabel(currentPlayerId)
                       .setStyle("-fx-font-weight: bold"));
+              break;
+            case "\"join\"": {
+              DrawableField[][] board = BoardParser.parseBoard(response.get("board").getAsString());
+              Platform.runLater(() -> ServerConnector.getInstance().getBoardController().drawBoard(board));
+
+              ClientBase.getInstance().setPlayersToLabel(parseJsonMap(response.get("playerColorMap").getAsString()));
+              Platform.runLater(() -> ServerConnector.getInstance().getBoardController().drawBoard(board));
 
               break;
             }
