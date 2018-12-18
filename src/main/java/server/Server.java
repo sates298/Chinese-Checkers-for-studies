@@ -276,6 +276,16 @@ public class Server {
 
                 System.out.println(returnObj.toString());
                 out.println(returnObj.toString());
+
+                JsonObject allPlayersResponse = new JsonObject();
+                allPlayersResponse.addProperty("status", "successful");
+                allPlayersResponse.addProperty("action", "join");
+                allPlayersResponse.addProperty("board", this.game.getBoard().fieldsToString());
+                allPlayersResponse.addProperty("playerColorMap",
+                    new Gson().toJson(game.getController().getIdColorMap()));
+
+                pushToMany(this.game, allPlayersResponse.toString());
+
             } catch (GameFullException | BoardSideUsedException | ColorUsedException e) {
                 JsonObject returnObj = new JsonObject();
                 returnObj.addProperty("status", e.toString());
