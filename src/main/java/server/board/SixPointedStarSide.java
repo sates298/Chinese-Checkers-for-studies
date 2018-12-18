@@ -1,8 +1,11 @@
 package server.board;
 
 import server.field.Field;
+import server.game.Game;
+import server.player.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public enum SixPointedStarSide implements BoardSide {
@@ -171,6 +174,7 @@ public enum SixPointedStarSide implements BoardSide {
                 return null;
         }
     }
+
 
     public abstract SixPointedStarSide getOppositeSide();
 
