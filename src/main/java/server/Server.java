@@ -30,7 +30,7 @@ public class Server {
     public static void main(String[] args) {
         int PORT = 1235;
         System.out.println(" Server is running on port " + PORT
-            + " to terminate the server, type anything to console and press Enter");
+            + " to terminate the server, type 'exit' to console and press Enter");
         Server server = new Server();
         server.start(PORT);
     }
@@ -64,12 +64,11 @@ public class Server {
             e.printStackTrace(); // delete after testing phase and replace it with smth more user friendly
         }
         while (keepAlive) {
-            // this thread waits for any input and if it has any kills  the server
+            // this thread waits for 'exit' and if it has any kills  the server
             new Thread(() -> {
-                if (new Scanner(System.in).hasNext()) {
-                    keepAlive = false;
-                    this.stop();
-                }
+                while (!new Scanner(System.in).nextLine().equals("exit"));
+                keepAlive = false;
+                this.stop();
             }).start();
 
             // start  new thread when new client connects
