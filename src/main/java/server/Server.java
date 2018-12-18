@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class Server {
-    private List<Game> games;
+    private volatile List<Game> games;
     private static Server instance;
 
     private List<GameClientHandler> connectedClients;
@@ -264,7 +264,7 @@ public class Server {
             try {
                 Player p = this.game.getController().addPlayer(side, color);
                 JsonObject returnObj = new JsonObject();
-                returnObj.addProperty("status", "joined");
+                returnObj.addProperty("status", "successful");
                 returnObj.addProperty("startingSide", p.getStartingSide().toString());
                 returnObj.addProperty("color", p.getColor().toString());
                 returnObj.addProperty("board", this.game.getBoard().fieldsToString());
@@ -286,7 +286,8 @@ public class Server {
         private void startGame() {
             JsonObject returnObj = new JsonObject();
             this.game.getController().startGame();
-            returnObj.addProperty("status", "game started");
+            returnObj.addProperty("action", "game started");
+            returnObj.addProperty("status", "successful");
             returnObj.addProperty("board", this.game.getBoard().fieldsToString());
             pushToMany(this.game, returnObj.toString());
         }
@@ -320,6 +321,7 @@ public class Server {
                 this.game.getController().endTurn(playerId);
                 // push information about whose turn is it to all players
                 JsonObject returnObj = new JsonObject();
+                returnObj.addProperty("status", "successful");
                 returnObj.addProperty("action", "endTurn");
                 returnObj.addProperty("currentPlayer",
                         this.game.getController().getCurrentTurnPlayer().getId());

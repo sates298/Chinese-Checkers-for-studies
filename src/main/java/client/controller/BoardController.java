@@ -152,6 +152,7 @@ public class BoardController extends AbstractController implements Initializable
 
     public void drawBoard(DrawableField[][] board) {
         ClientBase.getInstance().getBoardDraw().drawBoard(this.pane, board);
+        setEvents();
     }
 
     @Override
@@ -160,13 +161,13 @@ public class BoardController extends AbstractController implements Initializable
 
         drawBoard(ClientBase.getInstance().getStartedBoard());
         this.handler = new InGameActionsHandler();
+    }
 
+    private void setEvents() {
         for (Node n : pane.getChildren()) {
             if (n instanceof DrawableField) {
                 n.setOnMouseClicked(event -> paneClicked((DrawableField) n));
             }
         }
-
-
     }
 }

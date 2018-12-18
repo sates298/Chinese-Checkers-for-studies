@@ -22,7 +22,7 @@ public class InGameActionsHandler {
 
   public void requestEndTurn(int playerId) throws ServerConnectionException {
     JsonObject jsonObj = new JsonObject();
-    jsonObj.addProperty("command", "move");
+    jsonObj.addProperty("command", "endTurn");
     jsonObj.addProperty("playerId", playerId);
     this.connector.getOutputStream().println(jsonObj.toString());
   }

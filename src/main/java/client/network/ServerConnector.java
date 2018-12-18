@@ -20,7 +20,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -202,7 +201,7 @@ public class ServerConnector {
     // read the response
     try {
       JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
-      if (!response.get("status").toString().equals("\"joined\"")) {
+      if (!response.get("status").toString().equals("\"successful\"")) {
         System.out.println(response);
         throw new ServerConnectionException();
       }
@@ -212,6 +211,10 @@ public class ServerConnector {
       ClientBase.getInstance().setBoardType(boardType);
       ClientBase.getInstance().setStartedBoard(BoardParser.parseBoard(boardRepr));
       ClientBase.getInstance().setPlayersToLabel(parseJsonMap(response.get("playerColorMap").getAsString()));
+
+      // wait for server information
+      Waiter waiter = new Waiter();
+      new Thread(waiter).start();
 
 
     } catch (IOException e) {
@@ -225,20 +228,20 @@ public class ServerConnector {
 
     out.println(jsonObj.toString());
     // read the response
-    try {
-      JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
-      if (!response.get("status").toString().equals("\"game started\"")) {
-        throw new ServerConnectionException();
-      }
-      //todo set labels for players
-
-      // wait for server information
-      Waiter waiter = new Waiter();
-      new Thread(waiter).start();
-
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+//    try {
+//      JsonObject response = parser.parse(in.readLine()).getAsJsonObject();
+//      if (!response.get("status").toString().equals("\"game started\"")) {
+//        throw new ServerConnectionException();
+//      }
+//      //todo set labels for players
+//
+//      // wait for server information
+//      Waiter waiter = new Waiter();
+//      new Thread(waiter).start();
+//
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
   }
 
 
@@ -250,22 +253,20 @@ public class ServerConnector {
           System.out.println(serverResponse);
           JsonObject response = ServerConnector.getInstance().getParser().parse(serverResponse).getAsJsonObject();
 
-          if (response.get("status").toString().equals("\"game started\"")) {
-            System.out.println("game started!");
-            // do stuff after game start
-            continue;
-          }
           if (!response.get("status").toString().equals("\"successful\"")) {
-            // cannot throw exception in run :(
+            System.out.println("continuing");
             continue;
           }
-          if (response.get("action").toString().equals("\"move\"")) {
+
+          if (response.get("action").toString().equals("\"move\"")
+              || response.get("action").toString().equals("\"game started\"")) {
             // parse the board
+            System.out.println("should redraw");
             String boardRepr = response.get("board").getAsString();
             DrawableField[][] board = BoardParser.parseBoard(boardRepr);
             Platform.runLater( () -> ServerConnector.getInstance().getBoardController().drawBoard(board));
           } else if (response.get("action").toString().equals("\"endTurn\"")) {
-            int currentPlayerId = response.get("playerId").getAsInt();
+            //int currentPlayerId = response.get("playerId").getAsInt();
             // todo set a label for current player or smth
 
           }
