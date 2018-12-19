@@ -7,6 +7,7 @@ import server.exception.*;
 import server.game.Game;
 
 import com.google.gson.*;
+import server.player.Color;
 import server.player.Player;
 
 import java.io.BufferedReader;
@@ -50,7 +51,7 @@ public class Server {
         return instance;
     }
 
-    private void pushToMany(Game game, String message) {
+    public void pushToMany(Game game, String message) {
         for (GameClientHandler c : connectedClients) {
             if (c.game == game) {
                 c.out.println(message);
@@ -240,24 +241,21 @@ public class Server {
         private void beforeJoinGame() {
 
             if (this.game.getBoard().getType().equals("SixPointedStar")) {
-                List<String> allColors = new ArrayList<>();
-                List<String> allSides = new ArrayList<>();
-                Collections.addAll(allColors, "RED", "BLUE", "GREEN", "BLACK", "YELLOW", "PURPLE");
-                for (Player p : this.game.getPlayers()) {
-                    allColors.remove(p.getColor().toString());
-                }
-
-                fillSidesArrayBeforeJoin(allSides);
-
                 JsonArray colorsArray = new JsonArray();
                 JsonArray sidesArray = new JsonArray();
-                for (String s : allColors) {
-                    colorsArray.add(s);
+
+                List<BoardSide> enabledSides = this.game.getController().getEnabledSides();
+                for(BoardSide side : enabledSides){
+                    sidesArray.add(side.toString());
                 }
-                for (String s : allSides) {
-                    sidesArray.add(s);
+
+                List<Color> enabledColors = this.game.getController().getEnabledColors();
+                for(Color color : enabledColors){
+                    colorsArray.add(color.toString());
                 }
+
                 JsonObject returnObj = new JsonObject();
+
                 if (colorsArray.size() == 0) {
                     returnObj.addProperty("unused colors", "null");
                 } else {
@@ -271,8 +269,6 @@ public class Server {
                 }
                 out.println(returnObj.toString());
             }
-
-
         }
 
         private void joinGame(String side, String color) {
@@ -359,16 +355,6 @@ public class Server {
                 JsonObject response = new JsonObject();
                 response.addProperty("status", e.toString());
                 out.println(response.toString());
-            }
-        }
-
-
-
-        private void fillSidesArrayBeforeJoin(List<String> sides){
-            List<BoardSide> enabledSides = this.game.getController().getEnabledSides();
-            //sides.clear();
-            for(BoardSide side : enabledSides){
-                sides.add(side.toString());
             }
         }
     }

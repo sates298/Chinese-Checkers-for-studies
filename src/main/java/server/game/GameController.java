@@ -7,9 +7,13 @@ import server.board.SixPointedStarSide;
 import server.exception.*;
 import server.field.Field;
 import server.field.Pawn;
+import server.movement.MainMovement;
+import server.player.Bot;
 import server.player.Color;
 import server.player.MoveToken;
 import server.player.Player;
+import server.player.botAlgorithm.BotAlgorithmTemplate;
+import server.player.botAlgorithm.BotMainMovementOnSPStarAlgorithm;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,6 +33,13 @@ public class GameController {
     }
 
     public void startGame() {
+        //add bots to game
+        int diff = this.actual.getNumberOfPlayers() - this.actual.getPlayers().size();
+        while (diff > 0) {
+            addBot();
+            diff--;
+        }
+
         // sort players by starting sides (add values to  starting sides)
         this.actual.getPlayers().sort(Comparator.comparingInt((Player p) -> p.getStartingSide().getNum()));
         this.playerListIterator = this.actual.getPlayers().listIterator();
@@ -132,6 +143,29 @@ public class GameController {
         return null;
     }
 
+    private void addBot() {
+        List<BoardSide> sides = getEnabledSides();
+        List<Color> colors = getEnabledColors();
+        if(sides == null || colors == null){
+            return;
+        }
+        BotAlgorithmTemplate botAlgorithm;
+        if("SixPointedStar".equals(this.actual.getBoard().getType())){
+            if(this.actual.getMovement() instanceof MainMovement){
+                botAlgorithm = new BotMainMovementOnSPStarAlgorithm();
+            }else{
+                return;
+            }
+        }else{
+            return;
+        }
+
+        Bot bot = new Bot(sides.get(0), colors.get(0), this.actual, botAlgorithm);
+        this.actual.getBoard().setPawns(bot);
+        this.actual.getPlayers().add(bot);
+        bot.setId(this.actual.getPlayers().indexOf(bot));
+    }
+
 
     private boolean checkWinCondition() {
         //Player should has minimum 1 pawn, otherwise this method shouldn't be called
@@ -167,6 +201,14 @@ public class GameController {
         return started;
     }
 
+    public List<Color> getEnabledColors() {
+        List<Color> enabled = new ArrayList<>();
+        Collections.addAll(enabled, Color.RED, Color.GREEN, Color.PURPLE, Color.BLACK, Color.YELLOW, Color.BLUE);
+        for (Player p : this.actual.getPlayers()) {
+            enabled.remove(p.getColor());
+        }
+        return enabled;
+    }
 
     public List<BoardSide> getEnabledSides() {
         List<BoardSide> result = new ArrayList<>();
@@ -230,8 +272,6 @@ public class GameController {
                             );
                         }
                     }
-
-
                     break;
                 case 4:
                     if (this.actual.getPlayers().size() == 1) {
@@ -242,7 +282,7 @@ public class GameController {
                                 SixPointedStarSide.RIGHT_TOP, SixPointedStarSide.RIGHT_BOTTOM);
                         result.remove(
                                 this.actual.getPlayers()
-                                .get(0).getStartingSide()
+                                        .get(0).getStartingSide()
                         );
                     } else if (this.actual.getPlayers().size() == 2) {
                         result.clear();

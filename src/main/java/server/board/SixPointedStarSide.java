@@ -1,5 +1,6 @@
 package server.board;
 
+import server.field.EmptyField;
 import server.field.Field;
 import server.game.Game;
 import server.player.Player;
@@ -13,10 +14,10 @@ public enum SixPointedStarSide implements BoardSide {
     TOP(0) {
         @Override
         public List<Field> getArea(Board board) {
-            List<Field> area = new ArrayList<Field>();
+            List<Field> area = new ArrayList<>();
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j <= i; j++) {
-                    area.add(((SixPointedStar) board).getOneField(4 + j, i));
+                    area.add( board.getOneField(4 + j, i));
                 }
             }
 
@@ -28,6 +29,11 @@ public enum SixPointedStarSide implements BoardSide {
             return BOTTOM;
         }
 
+        @Override
+        public Field getFarthest() {
+            return new EmptyField(4, 0);
+        }
+
         public List<Field> getOppositeArea(SixPointedStar board) {
             return SixPointedStarSide.BOTTOM.getArea(board);
         }
@@ -35,10 +41,10 @@ public enum SixPointedStarSide implements BoardSide {
     LEFT_TOP(5) {
         @Override
         public List<Field> getArea(Board board) {
-            List<Field> area = new ArrayList<Field>();
+            List<Field> area = new ArrayList<>();
             for (int i = 0; i < 4; i++) {
                 for (int j = 3; j >= i; j--) {
-                    area.add(((SixPointedStar) board).getOneField(j, 4 + i));
+                    area.add(board.getOneField(j, 4 + i));
                 }
             }
 
@@ -50,6 +56,11 @@ public enum SixPointedStarSide implements BoardSide {
             return RIGHT_BOTTOM;
         }
 
+        @Override
+        public Field getFarthest() {
+            return new EmptyField(0, 4);
+        }
+
         public List<Field> getOppositeArea(SixPointedStar board) {
             return SixPointedStarSide.RIGHT_BOTTOM.getArea(board);
         }
@@ -57,10 +68,10 @@ public enum SixPointedStarSide implements BoardSide {
     RIGHT_TOP(1) {
         @Override
         public List<Field> getArea(Board board) {
-            List<Field> area = new ArrayList<Field>();
+            List<Field> area = new ArrayList<>();
             for (int i = 0; i < 4; i++) {
                 for (int j = 3; j >= i; j--) {
-                    area.add(((SixPointedStar) board).getOneField(9 + j, 4 + i));
+                    area.add(board.getOneField(9 + j, 4 + i));
                 }
             }
             return area;
@@ -71,6 +82,11 @@ public enum SixPointedStarSide implements BoardSide {
             return LEFT_BOTTOM;
         }
 
+        @Override
+        public Field getFarthest() {
+            return new EmptyField(12, 4);
+        }
+
         public List<Field> getOppositeArea(SixPointedStar board) {
             return SixPointedStarSide.LEFT_BOTTOM.getArea(board);
         }
@@ -78,7 +94,7 @@ public enum SixPointedStarSide implements BoardSide {
     BOTTOM(3) {
         @Override
         public List<Field> getArea(Board board) {
-            List<Field> area = new ArrayList<Field>();
+            List<Field> area = new ArrayList<>();
             for (int i = 0; i < 4; i++) {
                 for (int j = 3; j >= i; j--) {
                     area.add( board.getOneField(9 + j, 13 + i));
@@ -93,6 +109,11 @@ public enum SixPointedStarSide implements BoardSide {
             return TOP;
         }
 
+        @Override
+        public Field getFarthest() {
+            return new EmptyField(12, 16);
+        }
+
         public List<Field> getOppositeArea(SixPointedStar board) {
             return SixPointedStarSide.TOP.getArea(board);
         }
@@ -100,10 +121,10 @@ public enum SixPointedStarSide implements BoardSide {
     LEFT_BOTTOM(4) {
         @Override
         public List<Field> getArea(Board board) {
-            List<Field> area = new ArrayList<Field>();
+            List<Field> area = new ArrayList<>();
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j <= i; j++) {
-                    area.add(((SixPointedStar) board).getOneField(4 + j, 9 + i));
+                    area.add(board.getOneField(4 + j, 9 + i));
                 }
             }
 
@@ -115,6 +136,11 @@ public enum SixPointedStarSide implements BoardSide {
             return RIGHT_TOP;
         }
 
+        @Override
+        public Field getFarthest() {
+            return new EmptyField(4, 12);
+        }
+
         public List<Field> getOppositeArea(SixPointedStar board) {
             return SixPointedStarSide.RIGHT_TOP.getArea(board);
         }
@@ -122,10 +148,10 @@ public enum SixPointedStarSide implements BoardSide {
     RIGHT_BOTTOM(2) {
         @Override
         public List<Field> getArea(Board board) {
-            List<Field> area = new ArrayList<Field>();
+            List<Field> area = new ArrayList<>();
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j <= i; j++) {
-                    area.add(((SixPointedStar) board).getOneField(13 + j, 9 + i));
+                    area.add(board.getOneField(13 + j, 9 + i));
                 }
             }
 
@@ -135,6 +161,11 @@ public enum SixPointedStarSide implements BoardSide {
         @Override
         public SixPointedStarSide getOppositeSide() {
             return LEFT_TOP;
+        }
+
+        @Override
+        public Field getFarthest() {
+            return new EmptyField(16, 12);
         }
 
         public List<Field> getOppositeArea(SixPointedStar board) {
@@ -177,7 +208,7 @@ public enum SixPointedStarSide implements BoardSide {
 
 
     public abstract SixPointedStarSide getOppositeSide();
-
+    public abstract Field getFarthest();
     public abstract List<Field> getOppositeArea(SixPointedStar board);
 
 
