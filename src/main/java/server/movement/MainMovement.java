@@ -45,6 +45,9 @@ public class MainMovement implements Movement {
             return false;
         }
 
+        if(pawn.getOwner().getMoveToken().getNum() == 0){
+            return false;
+        }
         //later check if board place allow to move
         if (!checkMoveForBoard(pawn.getBoard(), pawn, (EmptyField) target)) {
             return false;

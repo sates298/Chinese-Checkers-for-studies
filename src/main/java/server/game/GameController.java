@@ -61,8 +61,6 @@ public class GameController {
 
     public void move(int playerId, int pawnX, int pawnY, int targetX, int targetY) throws ForbiddenMoveException, ForbiddenActionException {
         if (playerId != this.currentTurnPlayer.getId() || this.currentTurnPlayer.getMoveToken().getNum() == 0) {
-            System.out.println("bum" + currentTurnPlayer.getId());
-            System.exit(1);
             throw new ForbiddenActionException();
         }
         // find pawn and target  by coordinates
@@ -92,7 +90,6 @@ public class GameController {
         }
         Player prev = this.currentTurnPlayer;
 
-        System.out.println("weszło do nextturn" + currentTurnPlayer.getId());
         // set current player to next player who has moveToken not equal 3 in player list
         do {
             if (playerListIterator.hasNext()) {
@@ -103,7 +100,6 @@ public class GameController {
                 playerListIterator = this.actual.getPlayers().listIterator();
 
                 currentTurnPlayer = playerListIterator.next();
-                System.out.println("iterator" + currentTurnPlayer.getId());
             }
             //if only one player (or no one) has move token not equal 3, end game
             if (prev.getId() == this.currentTurnPlayer.getId()) {
@@ -117,10 +113,6 @@ public class GameController {
             endGame();
         }
         //allow next player to move
-        if(this.currentTurnPlayer instanceof Bot){
-            System.out.println("bocik dostaje allow" + currentTurnPlayer.getId());
-        }
-
         this.currentTurnPlayer.setMoveToken(MoveToken.ALLOW);
 
         if(this.currentTurnPlayer instanceof Bot){

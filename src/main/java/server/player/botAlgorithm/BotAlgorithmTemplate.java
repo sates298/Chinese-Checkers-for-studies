@@ -10,11 +10,14 @@ import java.util.Random;
 
 public abstract class BotAlgorithmTemplate {
     public void play(Bot b) {
+        //first stage
         prepareMove(b);
+        //second and third stage in loop
         while(b.getTargets().size() > 0) {
-            checkMoves(b);
             chooseAndExecuteMove(b);
+            checkMoves(b);
         }
+        //last stage
         endBotTurn(b);
     }
 
