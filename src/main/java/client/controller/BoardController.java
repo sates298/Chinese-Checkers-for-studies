@@ -50,8 +50,8 @@ public class BoardController extends AbstractController implements Initializable
 
     @FXML
     public void exitAction() {
-        exit(exitButton);
         ServerConnector.getInstance().endConnection();
+        exit(exitButton);
     }
 
     @FXML

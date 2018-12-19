@@ -26,7 +26,7 @@ public class Server {
 
     private ServerSocket serverSocket;
 
-    static volatile boolean keepAlive = true;
+    private static volatile boolean keepAlive = true;
 
     public static void main(String[] args) {
         int PORT = 1235;
@@ -67,9 +67,14 @@ public class Server {
         while (keepAlive) {
             // this thread waits for 'exit' and if it has any kills  the server
             new Thread(() -> {
-                while (!new Scanner(System.in).nextLine().equals("exit"));
-                keepAlive = false;
-                this.stop();
+                Scanner s = new Scanner(System.in);
+                while (true) {
+                    if(s.hasNext()  && s.nextLine().equals("exit")) {
+                        keepAlive = false;
+                        Server.this.stop();
+                        break;
+                    }
+                }
             }).start();
 
             // start  new thread when new client connects
@@ -140,8 +145,8 @@ public class Server {
                 System.out.println(inputLine); // log requests
             }
 
-            in.close();
             out.close();
+            in.close();
             clientSocket.close();
         }
 

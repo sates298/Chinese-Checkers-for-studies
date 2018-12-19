@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +37,8 @@ public class ServerConnector {
   private PrintWriter out;
   private BufferedReader in;
   private JsonParser parser;
+
+  private boolean alive = true;
 
 
   private ServerConnector() {
@@ -71,18 +74,14 @@ public class ServerConnector {
     return boardController;
   }
 
-  public BufferedReader getInputStream() {
-    return in;
-  }
-
   public JsonParser getParser() {
     return parser;
   }
 
   public void endConnection() {
     try {
-      in.close();
       out.close();
+      in.close();
       clientSocket.close();
     } catch (IOException e) {
       e.printStackTrace();
@@ -304,6 +303,9 @@ public class ServerConnector {
           }
 
         }
+      } catch(SocketException se) {
+        // this exception is thrown when sockets are closed
+        
       } catch (IOException ioe) {
         ioe.printStackTrace();
       }
