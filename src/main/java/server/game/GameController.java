@@ -50,6 +50,9 @@ public class GameController {
         //allow current player to move
         currentTurnPlayer.setMoveToken(MoveToken.ALLOW);
         started = true;
+        if(this.currentTurnPlayer instanceof Bot){
+            ((Bot) this.currentTurnPlayer).playTurn();
+        }
     }
 
     public void endGame() {
@@ -108,6 +111,11 @@ public class GameController {
         }
         //allow next player to move
         this.currentTurnPlayer.setMoveToken(MoveToken.ALLOW);
+
+        if(this.currentTurnPlayer instanceof Bot){
+            ((Bot) this.currentTurnPlayer).playTurn();
+        }
+
     }
 
     public Player addPlayer(String sideStr, String colorStr) throws GameFullException, ColorUsedException, BoardSideUsedException {
@@ -146,7 +154,7 @@ public class GameController {
     private void addBot() {
         List<BoardSide> sides = getEnabledSides();
         List<Color> colors = getEnabledColors();
-        if(sides == null || colors == null){
+        if(sides.size() == 0 || colors.size() == 0){
             return;
         }
         BotAlgorithmTemplate botAlgorithm;

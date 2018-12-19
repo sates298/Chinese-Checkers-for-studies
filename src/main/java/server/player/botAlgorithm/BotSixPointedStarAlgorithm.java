@@ -14,7 +14,7 @@ public abstract class BotSixPointedStarAlgorithm extends BotAlgorithmTemplate {
 
     public void chooseAndExecuteMove(Bot b){
         //find the best target that has the shortest distance to winning corner
-        if(b.getChosenPawn() == null) return;
+        if(b.getChosenPawn() == null || b.getTargets().size() == 0) return;
 
         Map<EmptyField, Double> targets = new LinkedHashMap<>();
 
@@ -24,6 +24,7 @@ public abstract class BotSixPointedStarAlgorithm extends BotAlgorithmTemplate {
 
         List<Map.Entry<EmptyField, Double>> list = new ArrayList<>(targets.entrySet());
         list.sort(Map.Entry.comparingByValue());
+        Collections.reverse(list);
 
         EmptyField chosenTarget = list.get(0).getKey();
 
@@ -36,6 +37,9 @@ public abstract class BotSixPointedStarAlgorithm extends BotAlgorithmTemplate {
                     chosenTarget.getX(),
                     chosenTarget.getY()
             );
+
+            b.getLastPositions().add(chosenTarget);
+
         } catch (ForbiddenMoveException | ForbiddenActionException e) {
             System.out.println("bot:" + b.getId() + " " + e.toString());
         }

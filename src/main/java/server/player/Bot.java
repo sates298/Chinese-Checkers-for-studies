@@ -4,6 +4,7 @@ package server.player;
 import server.board.BoardSide;
 import server.field.EmptyField;
 
+import server.field.Field;
 import server.field.Pawn;
 import server.game.Game;
 import server.player.botAlgorithm.BotAlgorithmTemplate;
@@ -18,16 +19,18 @@ public class Bot extends Player {
   private List<EmptyField> targets;
   private Pawn chosenPawn;
   private boolean isMovable;
+  private List<Field> lastPositions;
   private BotAlgorithmTemplate botTurn;
   private BotSender sender;
   private Game game;
 
   public Bot(BoardSide side, Color color, Game game, BotAlgorithmTemplate algorithm) {
     super(side, color);
-    targets = new ArrayList<>();
-    isMovable = false;
-    sender = new BotSender(this);
-    botTurn = algorithm;
+    this.lastPositions = new ArrayList<>();
+    this.targets = new ArrayList<>();
+    this.isMovable = false;
+    this.sender = new BotSender(this);
+    this.botTurn = algorithm;
     this.game = game;
   }
 
@@ -63,4 +66,7 @@ public class Bot extends Player {
     return targets;
   }
 
+  public List<Field> getLastPositions() {
+    return lastPositions;
+  }
 }

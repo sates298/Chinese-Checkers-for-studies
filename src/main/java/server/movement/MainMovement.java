@@ -115,7 +115,6 @@ public class MainMovement implements Movement {
     private boolean checkMoveForBoard(Board board, Pawn pawn, EmptyField target) {
         if ("SixPointedStar".equals(board.getType())) {
             List<Field> temp = ((SixPointedStarSide) pawn.getOwner().getStartingSide()).getOppositeArea((SixPointedStar)board);
-            System.out.println(pawn.getOwner().getStartingSide().toString());
             return !temp.contains(pawn) || temp.contains(target);
         }
 

@@ -11,7 +11,10 @@ import java.util.Random;
 public abstract class BotAlgorithmTemplate {
     public void play(Bot b) {
         prepareMove(b);
-        chooseAndExecuteMove(b);
+        while(b.getTargets().size() > 0) {
+            checkMoves(b);
+            chooseAndExecuteMove(b);
+        }
         endBotTurn(b);
     }
 
@@ -46,6 +49,7 @@ public abstract class BotAlgorithmTemplate {
             b.getGame().getController().endTurn(b.getId());
             b.getSender().sendToPlayers();
             b.setMovable(false);
+            b.getLastPositions().clear();
         } catch (ForbiddenActionException e) {
             System.out.println("bot:" + b.getId() + " " + e.toString());
         }
