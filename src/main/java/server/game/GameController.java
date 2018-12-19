@@ -61,6 +61,8 @@ public class GameController {
 
     public void move(int playerId, int pawnX, int pawnY, int targetX, int targetY) throws ForbiddenMoveException, ForbiddenActionException {
         if (playerId != this.currentTurnPlayer.getId() || this.currentTurnPlayer.getMoveToken().getNum() == 0) {
+            System.out.println(playerId + " current : " + this.currentTurnPlayer.getId());
+            System.out.println(this.currentTurnPlayer.getMoveToken().toString());
             throw new ForbiddenActionException();
         }
         // find pawn and target  by coordinates
@@ -85,6 +87,7 @@ public class GameController {
         if (checkWinCondition()) {
             this.currentTurnPlayer.setMoveToken(MoveToken.WINNER);
         } else {
+
             this.currentTurnPlayer.setMoveToken(MoveToken.FORBID);
         }
         Player prev = this.currentTurnPlayer;
@@ -177,23 +180,7 @@ public class GameController {
 
     private boolean checkWinCondition() {
         //Player should has minimum 1 pawn, otherwise this method shouldn't be called
-        if (this.currentTurnPlayer.getStartingSide() instanceof SixPointedStarSide) {
-            List<Field> winning =
-                    ((SixPointedStarSide) this.currentTurnPlayer.getStartingSide()).getOppositeArea((SixPointedStar) this.actual.getBoard());
-            int fieldsMatches = 0;
-
-            for (Field f : winning) {
-                for (Pawn p : this.currentTurnPlayer.getPawns()) {
-                    if (p.equals(f)) {
-                        fieldsMatches++;
-                    }
-                }
-            }
-
-            return fieldsMatches == this.currentTurnPlayer.getPawns().size();
-
-        }
-        return false;
+        return this.actual.getBoard().checkWin(this.currentTurnPlayer);
     }
 
     public Map<Integer, String> getIdColorMap() {

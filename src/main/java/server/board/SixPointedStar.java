@@ -6,6 +6,8 @@ import server.field.Field;
 import server.field.Pawn;
 import server.player.Player;
 
+import java.util.List;
+
 
 public class SixPointedStar extends Board {
 
@@ -80,4 +82,20 @@ public class SixPointedStar extends Board {
         }
     }
 
+    @Override
+    public boolean checkWin(Player player) {
+        List<Field> winning =
+                ((SixPointedStarSide) player.getStartingSide()).getOppositeArea((SixPointedStar) player.getPawns().get(0).getBoard());
+        int fieldsMatches = 0;
+
+        for (Field f : winning) {
+            for (Pawn p : player.getPawns()) {
+                if (p.equals(f)) {
+                    fieldsMatches++;
+                }
+            }
+        }
+
+        return fieldsMatches == player.getPawns().size();
+    }
 }

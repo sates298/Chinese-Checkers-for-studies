@@ -50,8 +50,11 @@ public abstract class BotAlgorithmTemplate {
             b.getSender().sendToPlayers();
             b.setMovable(false);
             b.getLastPositions().clear();
+            Thread.sleep(1000);
         } catch (ForbiddenActionException e) {
-            System.out.println("bot:" + b.getId() + " " + e.toString());
+            System.out.println("bot:"  + " " + e.toString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

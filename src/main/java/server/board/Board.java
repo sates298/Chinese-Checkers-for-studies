@@ -30,6 +30,7 @@ public abstract class Board {
     public abstract int sizeY();
     public abstract int sizeX();
     public abstract void setPawns(Player player);
+    public abstract boolean checkWin(Player player);
     public String getType(){
         return type;
     }
