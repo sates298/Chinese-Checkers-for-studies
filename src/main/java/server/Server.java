@@ -21,9 +21,9 @@ import java.util.*;
 
 public class Server {
     private volatile List<Game> games;
-    private static Server instance;
+    private volatile static Server instance;
 
-    private List<GameClientHandler> connectedClients;
+    private volatile List<GameClientHandler> connectedClients;
 
     private ServerSocket serverSocket;
 
@@ -45,14 +45,19 @@ public class Server {
 
     public static Server getInstance() {
         if (instance == null) {
-            instance = new Server();
+            synchronized (Server.class) {
+                if (instance == null) {
+                    instance = new Server();
+                }
+            }
         }
 
         return instance;
     }
 
     public void pushToMany(Game game, String message) {
-        for (GameClientHandler c : connectedClients) {
+        System.out.println(Server.getInstance().connectedClients);
+        for (GameClientHandler c : Server.getInstance().connectedClients) {
             if (c.game == game) {
                 c.out.println(message);
             }
@@ -81,7 +86,7 @@ public class Server {
             // start  new thread when new client connects
             try {
                 GameClientHandler newClient = new GameClientHandler(serverSocket.accept());
-                this.connectedClients.add(newClient);
+                Server.getInstance().connectedClients.add(newClient);
                 new Thread(newClient).start();
             } catch (SocketException se) {
                 System.out.println("server shutdown");

@@ -18,6 +18,7 @@ public class BotSender {
 
     private void sendEndTurn(){
         JsonObject returnObj = new JsonObject();
+        returnObj.addProperty("player", "bot");
         returnObj.addProperty("status", "successful");
         returnObj.addProperty("action", "endTurn");
         returnObj.addProperty("currentPlayer",
@@ -28,6 +29,7 @@ public class BotSender {
 
     private void sendMove(){
         JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("player", "bot");
         jsonObject.addProperty("action", "move");
         jsonObject.addProperty("status", "successful");
         jsonObject.addProperty("board", this.actual.getGame().getBoard().fieldsToString());
