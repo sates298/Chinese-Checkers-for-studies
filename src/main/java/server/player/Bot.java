@@ -38,8 +38,8 @@ public class Bot extends Player {
     botTurn.play(this);
   }
 
-  public BotSender getSender() {
-    return sender;
+  public void sendToPlayers(){
+    this.sender.sendToPlayers();
   }
 
   public Game getGame() {

@@ -50,7 +50,7 @@ public abstract class BotAlgorithmTemplate {
     private void endBotTurn(Bot b){
         try {
             b.getGame().getController().endTurn(b.getId());
-            b.getSender().sendToPlayers();
+            b.sendToPlayers();
             b.setMovable(false);
             b.getLastPositions().clear();
             Thread.sleep(1000);

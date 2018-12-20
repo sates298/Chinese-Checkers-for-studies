@@ -56,7 +56,7 @@ public class GameController {
     }
 
     public void endGame() {
-
+        System.out.println("games end");
     }
 
     public void move(int playerId, int pawnX, int pawnY, int targetX, int targetY) throws ForbiddenMoveException, ForbiddenActionException {
