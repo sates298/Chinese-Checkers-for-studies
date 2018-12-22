@@ -13,9 +13,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         // connect to server
-        ServerConnector.getInstance().makeConnection("localhost", 1235);
         Parent root =
-                FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/menu.fxml")));
+                FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/chooseServer.fxml")));
         primaryStage.setTitle("Trylma The Game");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
