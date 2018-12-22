@@ -1,6 +1,7 @@
 package server.game;
 
 
+import server.Server;
 import server.board.BoardSide;
 import server.board.SixPointedStar;
 import server.board.SixPointedStarSide;
@@ -54,9 +55,10 @@ public class GameController {
             ((Bot) this.currentTurnPlayer).playTurn();
         }
     }
-//todo implement endGame() method
+//todo implement endGame() method and send message to client
     public void endGame() {
-        System.out.println("games end");
+        this.started = false;
+        Server.getInstance().getGames().remove(actual);
     }
 
     public void move(int playerId, int pawnX, int pawnY, int targetX, int targetY) throws ForbiddenMoveException, ForbiddenActionException {

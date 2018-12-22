@@ -53,24 +53,14 @@ public class Player {
     return color;
   }
 
-  public void setPawns(List<Pawn> pawns) {
-    pawns.forEach(p -> p.setOwner(this));
-    this.pawns = pawns;
-  }
-
   public void setOnePawn(Pawn pawn) {
     this.pawns.add(pawn);
     pawn.setOwner(this);
   }
 
-  public void setStartingSide(BoardSide startingSide) {
-    this.startingSide = startingSide;
-  }
-
   public void setColor(Color color) {
     this.color = color;
   }
-
 
   public Pawn getLastMoved() {
     return lastMoved;
