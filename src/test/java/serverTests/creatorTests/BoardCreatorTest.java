@@ -17,8 +17,8 @@ import static junit.framework.Assert.assertTrue;
 
 public class BoardCreatorTest {
 
-    Board board;
-    BoardCreator creator;
+    private Board board;
+    private BoardCreator creator;
 
     @After
     public void tearDown(){

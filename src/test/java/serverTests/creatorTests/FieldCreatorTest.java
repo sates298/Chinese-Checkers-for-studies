@@ -14,8 +14,8 @@ import server.field.Pawn;
 import static junit.framework.Assert.assertTrue;
 
 public class FieldCreatorTest {
-    Field actual;
-    FieldCreator creator;
+    private Field actual;
+    private FieldCreator creator;
 
     @After
     public void tearDown() throws Exception{
