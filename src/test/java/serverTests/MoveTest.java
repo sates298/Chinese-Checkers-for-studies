@@ -50,7 +50,7 @@ public class MoveTest {
         enemyPawn.getX(), enemyPawn.getY());
   }
   @Test(expected = ForbiddenMoveException.class)
-  public void testCanNotMoveOToNoField() throws ForbiddenMoveException, ForbiddenActionException {
+  public void testCanNotMoveToNoField() throws ForbiddenMoveException, ForbiddenActionException {
     Pawn friendlyPawn = p1.getPawns().get(0);
     this.testedGame.getBoard().setOneField(new NoField(friendlyPawn.getX()+1, friendlyPawn.getY()));
     this.testedGame.getController().move(p1.getId(), friendlyPawn.getX(), friendlyPawn.getY(),
@@ -87,19 +87,120 @@ public class MoveTest {
         friendlyPawn.getX(), friendlyPawn.getY() - 1);
   }
   @Test
-  public void testCanMoveDiagonallyForward() throws ForbiddenMoveException, ForbiddenActionException {
+  public void testCanMoveOneFieldDiagonallyForward() throws ForbiddenMoveException, ForbiddenActionException {
     Pawn friendlyPawn = p1.getPawns().get(5);
     this.testedGame.getBoard().setOneField(new EmptyField(friendlyPawn.getX()-1, friendlyPawn.getY() - 1));
     this.testedGame.getController().move(p1.getId(), friendlyPawn.getX(), friendlyPawn.getY(),
         friendlyPawn.getX()-1, friendlyPawn.getY() - 1);
   }
   @Test
-  public void testCanMoveDiagonallyBackwards() throws ForbiddenMoveException, ForbiddenActionException {
+  public void testCanMoveOneFieldDiagonallyBackwards() throws ForbiddenMoveException, ForbiddenActionException {
     Pawn friendlyPawn = p1.getPawns().get(5);
     this.testedGame.getBoard().setOneField(new EmptyField(friendlyPawn.getX()+1, friendlyPawn.getY() + 1));
     this.testedGame.getController().move(p1.getId(), friendlyPawn.getX(), friendlyPawn.getY(),
         friendlyPawn.getX()+1, friendlyPawn.getY() + 1);
   }
+
+  @Test
+  public void testCanJumpHorizontallyRight() throws ForbiddenMoveException, ForbiddenActionException {
+    Pawn friendlyPawn = p1.getPawns().get(5);
+    Pawn jumpedOver = new Pawn(friendlyPawn.getX()+1, friendlyPawn.getY());
+    this.testedGame.getBoard().setOneField(jumpedOver);
+    this.testedGame.getBoard().setOneField(new EmptyField(friendlyPawn.getX()+2, friendlyPawn.getY()));
+    this.testedGame.getController().move(p1.getId(), friendlyPawn.getX(), friendlyPawn.getY(),
+        friendlyPawn.getX()+2, friendlyPawn.getY());
+
+  }
+
+  @Test
+  public void testCanJumpHorizontallyLeft() throws ForbiddenMoveException, ForbiddenActionException {
+    Pawn friendlyPawn = p1.getPawns().get(5);
+    Pawn jumpedOver = new Pawn(friendlyPawn.getX()-1, friendlyPawn.getY());
+    this.testedGame.getBoard().setOneField(jumpedOver);
+    this.testedGame.getBoard().setOneField(new EmptyField(friendlyPawn.getX()-2, friendlyPawn.getY()));
+    this.testedGame.getController().move(p1.getId(), friendlyPawn.getX(), friendlyPawn.getY(),
+        friendlyPawn.getX()-2, friendlyPawn.getY());
+
+  }
+
+  @Test
+  public void testCanJumpForwards() throws ForbiddenMoveException, ForbiddenActionException {
+    Pawn friendlyPawn = p1.getPawns().get(5);
+    Pawn jumpedOver = new Pawn(friendlyPawn.getX(), friendlyPawn.getY()-1);
+    this.testedGame.getBoard().setOneField(jumpedOver);
+    this.testedGame.getBoard().setOneField(new EmptyField(friendlyPawn.getX(), friendlyPawn.getY()-2));
+    this.testedGame.getController().move(p1.getId(), friendlyPawn.getX(), friendlyPawn.getY(),
+        friendlyPawn.getX(), friendlyPawn.getY()-2);
+
+  }
+  @Test
+  public void testCanJumpBackwards() throws ForbiddenMoveException, ForbiddenActionException {
+    Pawn friendlyPawn = p1.getPawns().get(5);
+    Pawn jumpedOver = new Pawn(friendlyPawn.getX(), friendlyPawn.getY()+1);
+    this.testedGame.getBoard().setOneField(jumpedOver);
+    this.testedGame.getBoard().setOneField(new EmptyField(friendlyPawn.getX(), friendlyPawn.getY()+2));
+    this.testedGame.getController().move(p1.getId(), friendlyPawn.getX(), friendlyPawn.getY(),
+        friendlyPawn.getX(), friendlyPawn.getY()+2);
+  }
+  @Test
+  public void testCanJumpDiagonallyForwards() throws ForbiddenMoveException, ForbiddenActionException {
+    Pawn friendlyPawn = p1.getPawns().get(5);
+    Pawn jumpedOver = new Pawn(friendlyPawn.getX()-1, friendlyPawn.getY()-1);
+    this.testedGame.getBoard().setOneField(jumpedOver);
+    this.testedGame.getBoard().setOneField(new EmptyField(friendlyPawn.getX()-2, friendlyPawn.getY()-2));
+    this.testedGame.getController().move(p1.getId(), friendlyPawn.getX(), friendlyPawn.getY(),
+        friendlyPawn.getX()-2, friendlyPawn.getY()-2);
+  }
+  @Test
+  public void testCanJumpDiagonallyBackwards() throws ForbiddenMoveException, ForbiddenActionException {
+    Pawn friendlyPawn = p1.getPawns().get(5);
+    Pawn jumpedOver = new Pawn(friendlyPawn.getX()-1, friendlyPawn.getY()-1);
+    this.testedGame.getBoard().setOneField(jumpedOver);
+    this.testedGame.getBoard().setOneField(new EmptyField(friendlyPawn.getX()+2, friendlyPawn.getY()+2));
+    this.testedGame.getController().move(p1.getId(), friendlyPawn.getX(), friendlyPawn.getY(),
+        friendlyPawn.getX()+2, friendlyPawn.getY()+2);
+  }
+
+  @Test
+  public void testCanMultiJump() throws ForbiddenMoveException, ForbiddenActionException {
+    Pawn friendlyPawn = p1.getPawns().get(5);
+    Pawn jumpedOver1 = new Pawn(friendlyPawn.getX(), friendlyPawn.getY()-1);
+    Pawn jumpedOver2 = new Pawn(friendlyPawn.getX(), friendlyPawn.getY()-3);
+    this.testedGame.getBoard().setOneField(friendlyPawn);
+    this.testedGame.getBoard().setOneField(jumpedOver1);
+    this.testedGame.getBoard().setOneField(new EmptyField(friendlyPawn.getX(), friendlyPawn.getY()-2));
+
+
+    this.testedGame.getController().move(p1.getId(), friendlyPawn.getX(), friendlyPawn.getY(),
+        friendlyPawn.getX(), friendlyPawn.getY()-2);
+    this.testedGame.getController().move(p1.getId(), friendlyPawn.getX(), friendlyPawn.getY(),
+        friendlyPawn.getX(), friendlyPawn.getY()+2);
+  }
+  @Test(expected = ForbiddenMoveException.class)
+  public void testCannotMoveWithTwoPawnsInOneRound() throws ForbiddenMoveException, ForbiddenActionException {
+    Pawn friendlyPawn = p1.getPawns().get(5);
+    Pawn anotherPawn = p1.getPawns().get(4);
+    Pawn jumpedOver = new Pawn(friendlyPawn.getX()-1, friendlyPawn.getY()-1);
+    this.testedGame.getBoard().setOneField(jumpedOver);
+    this.testedGame.getBoard().setOneField(new EmptyField(friendlyPawn.getX()+2, friendlyPawn.getY()+2));
+    this.testedGame.getController().move(p1.getId(), friendlyPawn.getX(), friendlyPawn.getY(),
+        friendlyPawn.getX()+2, friendlyPawn.getY()+2);
+    this.testedGame.getBoard().setOneField(new EmptyField(anotherPawn.getX()+1, anotherPawn.getY()));
+    this.testedGame.getController().move(p1.getId(), anotherPawn.getX(), anotherPawn.getY(),
+        anotherPawn.getX()+1, anotherPawn.getY());
+  }
+  @Test(expected = ForbiddenActionException.class)
+  public void testCannotMoveAfterSingularMove() throws ForbiddenMoveException, ForbiddenActionException {
+    Pawn friendlyPawn = p1.getPawns().get(0);
+    this.testedGame.getBoard().setOneField(new EmptyField(friendlyPawn.getX()+1, friendlyPawn.getY()));
+    this.testedGame.getController().move(p1.getId(), friendlyPawn.getX(), friendlyPawn.getY(),
+        friendlyPawn.getX()+1, friendlyPawn.getY());
+    this.testedGame.getController().move(p1.getId(), friendlyPawn.getX(), friendlyPawn.getY(),
+        friendlyPawn.getX()-1, friendlyPawn.getY());
+  }
+
+
+
 
   @After
   public void cleanup() {
