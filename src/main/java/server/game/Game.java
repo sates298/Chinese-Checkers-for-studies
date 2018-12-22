@@ -18,7 +18,7 @@ public class Game {
 
   public Game(){
     this. controller = new GameController(this);
-    this.players = new ArrayList<Player>();
+    this.players = new ArrayList<>();
 
   }
 

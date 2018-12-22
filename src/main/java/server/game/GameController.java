@@ -54,7 +54,7 @@ public class GameController {
             ((Bot) this.currentTurnPlayer).playTurn();
         }
     }
-
+//todo implement endGame() method
     public void endGame() {
         System.out.println("games end");
     }
