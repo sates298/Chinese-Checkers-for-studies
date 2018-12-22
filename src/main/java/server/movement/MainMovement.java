@@ -20,7 +20,7 @@ public class MainMovement implements Movement {
         if (checkMove(pawn, target)) {
             if(checkJump(pawn, target)){
                 pawn.getOwner().setMoveToken(MoveToken.ONLY_JUMP);
-            }else {
+            } else {
                 pawn.getOwner().setMoveToken(MoveToken.FORBID);
             }
             int pawnX = pawn.getX();
@@ -60,7 +60,7 @@ public class MainMovement implements Movement {
     private boolean checkMoveOne(Pawn pawn, Field target) {
         // this method only checks "atomic" moves
 
-        if(pawn.getOwner().getMoveToken().getNum() != 1){
+        if (pawn.getOwner().getMoveToken().getNum() != 1){
             return false;
         }
 
@@ -86,7 +86,7 @@ public class MainMovement implements Movement {
 
     private boolean checkJump(Pawn pawn, Field target) {
 
-        if(!pawn.equals(pawn.getOwner().getLastMoved()) && pawn.getOwner().getLastMoved() != null){
+        if (!pawn.equals(pawn.getOwner().getLastMoved()) && pawn.getOwner().getLastMoved() != null){
             return false;
         }
 

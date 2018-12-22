@@ -321,7 +321,7 @@ public class Server {
         }
 
         private void move(int playerId, int pawnX, int pawnY, int targetX, int targetY) {
-            // if game hasnt started dont send any message so client's buffer is not full
+            // if game hasn't started don't send any message so client's buffer is not full
             if (!this.game.getController().isStarted()) return;
             try {
 

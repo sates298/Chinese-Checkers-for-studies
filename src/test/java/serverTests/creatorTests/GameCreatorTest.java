@@ -47,14 +47,22 @@ public class GameCreatorTest {
     public void createGameTest() throws WrongMovementTypeException, WrongBoardTypeException {
         boardType = "\"SixPointedStar\"";
         moveType = "\"main\"";
-        creator.createGame(boardType, moveType, 2, 10);
-        Game game = Server.getInstance().getGames().get(0);
-        assertTrue(1 == game.getGameId() &&
+        Game game = creator.createGame(boardType, moveType, 2, 10);
+        // checking game id that way won't work because in other tests we have to create other games
+        // so in this test id cannot be expected
+        assertTrue(//1 == game.getGameId() &&
                 game.getBoard() instanceof SixPointedStar &&
                 game.getPlayers().size() == 0 &&
                 game.getMovement() instanceof MainMovement &&
                 game.getNumberOfPawns() == 10 &&
                 game.getNumberOfPlayers() == 2);
+    }
+    @Test
+    public void testIsCreatedGameAddedToServer() throws WrongMovementTypeException, WrongBoardTypeException {
+        boardType = "\"SixPointedStar\"";
+        moveType = "\"main\"";
+        Game g= creator.createGame(boardType, moveType, 2, 10);
+        assertTrue(Server.getInstance().getGames().contains(g));
     }
 
 }
