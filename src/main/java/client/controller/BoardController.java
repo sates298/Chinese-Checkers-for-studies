@@ -39,6 +39,8 @@ public class BoardController extends AbstractController implements Initializable
     private Label label5;
     @FXML
     private Label label0;
+    @FXML
+    private Label gameId;
 
     @FXML
     private Button exitButton;
@@ -184,7 +186,7 @@ public class BoardController extends AbstractController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ServerConnector.getInstance().setBoardController(this);
-
+        this.gameId.setText("Game's id : " + ClientBase.getInstance().getGameId());
         if(ClientBase.getInstance().getPlayerId() != 0){
             startButton.setVisible(false);
         }

@@ -13,7 +13,7 @@ public abstract class BotAlgorithmTemplate {
         //first stage
         prepareMove(b);
         //second and third stage in loop
-        while(b.getTargets().size() > 0) {
+        while (b.getTargets().size() > 0) {
             chooseAndExecuteMove(b);
             checkMoves(b);
         }
@@ -21,10 +21,10 @@ public abstract class BotAlgorithmTemplate {
         endBotTurn(b);
     }
 
-    private void prepareMove(Bot b){
-        List<Pawn>  list = new ArrayList<>();
-        while(!b.isMovable()){
-            if(list.size() == b.getPawns().size()){
+    private void prepareMove(Bot b) {
+        List<Pawn> list = new ArrayList<>();
+        while (!b.isMovable()) {
+            if (list.size() == b.getPawns().size()) {
                 b.setChosenPawn(null);
                 break;
             }
@@ -37,17 +37,20 @@ public abstract class BotAlgorithmTemplate {
         List<Pawn> pawns = b.getPawns();
         Random rand = new Random();
         int index = rand.nextInt(b.getPawns().size());
+
         b.setChosenPawn(pawns.get(index));
+
         //save pawn if it hasn't chosen before
-        if(!list.contains(b.getChosenPawn())){
+        if (!list.contains(b.getChosenPawn())) {
             list.add(b.getChosenPawn());
         }
     }
 
     public abstract void checkMoves(Bot b);
+
     public abstract void chooseAndExecuteMove(Bot b);
 
-    private void endBotTurn(Bot b){
+    private void endBotTurn(Bot b) {
         try {
             b.getGame().getController().endTurn(b.getId());
             b.sendToPlayers();
@@ -55,7 +58,7 @@ public abstract class BotAlgorithmTemplate {
             b.getLastPositions().clear();
             Thread.sleep(1000);
         } catch (ForbiddenActionException e) {
-            System.out.println("bot:"  + " " + e.toString());
+            System.out.println("bot:" + " " + e.toString());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
