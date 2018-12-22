@@ -11,13 +11,11 @@ import server.field.Field;
 import server.field.NoField;
 import server.field.Pawn;
 
-
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
-public class fieldCreatorTest {
-    Field actual;
-    FieldCreator creator;
+public class FieldCreatorTest {
+    private Field actual;
+    private FieldCreator creator;
 
     @After
     public void tearDown() throws Exception{
@@ -29,26 +27,29 @@ public class fieldCreatorTest {
     public void noFieldCreatorTest(){
         creator = new NoFieldCreator();
         actual = creator.createField(5, 3);
-        assertEquals(5, actual.getX());
-        assertEquals(3, actual.getY());
-        assertTrue(actual instanceof NoField);
+        assertTrue(actual instanceof NoField &&
+                5 == actual.getX() &&
+                3 == actual.getY()
+        );
     }
 
     @Test
     public void emptyFieldCreatorTest(){
         creator = new EmptyFieldCreator();
         actual = creator.createField(4, 5);
-        assertEquals(4, actual.getX());
-        assertEquals(5, actual.getY());
-        assertTrue(actual instanceof EmptyField);
+        assertTrue(actual instanceof EmptyField &&
+                4 == actual.getX() &&
+                5 == actual.getY()
+        );
     }
 
     @Test
     public void pawnCreatorTest(){
         creator = new PawnCreator();
         actual = creator.createField(1, 2);
-        assertEquals(4, actual.getX());
-        assertEquals(5, actual.getY());
-        assertTrue(actual instanceof Pawn);
+        assertTrue(actual instanceof Pawn &&
+                1 == actual.getX() &&
+                2 == actual.getY()
+        );
     }
 }
