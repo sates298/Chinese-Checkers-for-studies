@@ -24,7 +24,7 @@ public class FieldCreatorTest {
     }
 
     @Test
-    public void noFieldCreatorTest(){
+    public void testNoFieldCreator(){
         creator = new NoFieldCreator();
         actual = creator.createField(5, 3);
         assertTrue(actual instanceof NoField &&
@@ -34,7 +34,7 @@ public class FieldCreatorTest {
     }
 
     @Test
-    public void emptyFieldCreatorTest(){
+    public void testEmptyFieldCreator(){
         creator = new EmptyFieldCreator();
         actual = creator.createField(4, 5);
         assertTrue(actual instanceof EmptyField &&
@@ -44,7 +44,7 @@ public class FieldCreatorTest {
     }
 
     @Test
-    public void pawnCreatorTest(){
+    public void testPawnCreator(){
         creator = new PawnCreator();
         actual = creator.createField(1, 2);
         assertTrue(actual instanceof Pawn &&

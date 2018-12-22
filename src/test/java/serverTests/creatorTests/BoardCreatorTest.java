@@ -27,7 +27,7 @@ public class BoardCreatorTest {
     }
 
     @Test
-    public void sixPointedStarBoardCreatorTest(){
+    public void testSixPointedStarBoardCreator(){
         creator = new SixPointedStarCreator();
         board = creator.createBoard();
         int[] fields_no = howManyFields();

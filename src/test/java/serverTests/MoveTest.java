@@ -14,8 +14,8 @@ import server.player.Player;
 public class MoveTest {
   private Game testedGame;
   private GameCreator gameCreator;
-  Player p1;
-  Player p2;
+  private Player p1;
+  private Player p2;
 
 
   @Before

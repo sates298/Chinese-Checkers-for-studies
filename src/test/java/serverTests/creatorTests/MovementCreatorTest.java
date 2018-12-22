@@ -20,7 +20,7 @@ public class MovementCreatorTest {
     }
 
     @Test
-    public void mainMovementCreatorTest(){
+    public void testMainMovementCreator(){
         creator = new MainMovementCreator();
         move = creator.createMovement();
         assertTrue(move instanceof MainMovement);
