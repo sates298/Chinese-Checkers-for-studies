@@ -1,8 +1,14 @@
 package serverTests;
 
 import org.junit.Test;
+import org.mockito.Mock;
+import server.Server;
+import server.board.SixPointedStarSide;
+import server.exception.ForbiddenMoveException;
+import server.player.Player;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 public class GameControllerTest {
 
