@@ -1,0 +1,17 @@
+.root{
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, reflect, lightblue , red, yellow, green, greenyellow);
+}
+#head{
+    -fx-text-fill: black ;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+#serverField {
+    -fx-min-width: 70px;
+    -fx-max-width: 70px;
+}
+
+#warningLabel {
+    -fx-text-fill: red;
+}
