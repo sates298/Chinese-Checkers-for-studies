@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import server.Server;
+import server.board.BoardSide;
 import server.board.SixPointedStarSide;
 import server.creator.GameCreator;
 import server.exception.*;
@@ -14,6 +15,7 @@ import server.field.NoField;
 import server.field.Pawn;
 import server.game.Game;
 import server.player.Bot;
+import server.player.Color;
 import server.player.MoveToken;
 import server.player.Player;
 
@@ -25,10 +27,11 @@ import static org.mockito.Mockito.mock;
 public class GameControllerTest {
 
     private Game game;
+    private GameCreator creator;
 
     @Before
     public void prepareTestingGame() throws WrongMovementTypeException, WrongBoardTypeException {
-        GameCreator creator = new GameCreator();
+        this.creator = new GameCreator();
         this.game = creator.createGame("\"SixPointedStar\"",
                 "\"main\"",
                 2, 10);
@@ -120,8 +123,8 @@ public class GameControllerTest {
         Player p = this.game.getController().addPlayer("\"TOP\"", "\"BLUE\"");
         List<Field> list = SixPointedStarSide.TOP.getArea(game.getBoard());
         boolean isTheSame = false;
-        for (Field f : list) {
-            isTheSame = p.getPawns().contains(f);
+        for (Pawn pawn : p.getPawns()) {
+            isTheSame = list.contains(pawn);
             if (!isTheSame) {
                 break;
             }
@@ -149,17 +152,229 @@ public class GameControllerTest {
     }
 
 
-//
-//    @Test
-//    public void getIdColorMap() {
-//    }
-//
-//    @Test
-//    public void getEnabledColors() {
-//    }
-//
-//    @Test
-//    public void getEnabledSides() {
-//    }
+    // test getIdColorMap() method
+    @Test
+    public void getIdColorMap() {
+    }
+
+    //block of methods giving free colors or sides
+    @Test
+    public void testGetEnabledColorsForNonFirstPlayer() throws BoardSideUsedException, GameFullException, ColorUsedException {
+        this.game.getController().addPlayer("\"TOP\"", "\"BLUE\"");
+        this.game.getController().addPlayer("\"BOTTOM\"", "\"RED\"");
+        List<Color> testColors = this.game.getController().getEnabledColors();
+        assertTrue(testColors.size() == 4 &&
+                testColors.contains(Color.BLACK) &&
+                testColors.contains(Color.GREEN) &&
+                testColors.contains(Color.YELLOW) &&
+                testColors.contains(Color.PURPLE)
+        );
+    }
+
+    @Test
+    public void testGetEnabledColorsForFirstPlayer(){
+        List<Color> testColors = this.game.getController().getEnabledColors();
+        assertEquals(6, testColors.size());
+    }
+
+    @Test
+    public void testGetEnabledSidesForFirstPlayer(){
+        List<BoardSide> testSides = this.game.getController().getEnabledSides();
+        assertEquals(6, testSides.size());
+    }
+
+    @Test
+    public void testGetEnabledSidesForNonFirstFromSixPlayers() throws Exception {
+        this.game.getController().endGame();
+        this.game = creator.createGame("\"SixPointedStar\"",
+                "\"main\"",
+                6, 10);
+        this.game.getController().addPlayer("\"TOP\"", "\"BLUE\"");
+        this.game.getController().addPlayer("\"BOTTOM\"", "\"RED\"");
+        this.game.getController().addPlayer("\"LEFT_TOP\"", "\"PURPLE\"");
+
+        List<BoardSide> testSides = this.game.getController().getEnabledSides();
+        assertTrue(testSides.size() == 3 &&
+                testSides.contains(SixPointedStarSide.RIGHT_TOP) &&
+                testSides.contains(SixPointedStarSide.RIGHT_BOTTOM) &&
+                testSides.contains(SixPointedStarSide.LEFT_BOTTOM)
+        );
+    }
+
+    @Test
+    public void testGetEnabledSidesForSecondFromTwoPlayers() throws BoardSideUsedException, GameFullException, ColorUsedException {
+        this.game.getController().addPlayer("\"TOP\"", "\"BLUE\"");
+        List<BoardSide> testSides = this.game.getController().getEnabledSides();
+        assertTrue(testSides.size() == 1 &&
+                testSides.contains(SixPointedStarSide.BOTTOM)
+        );
+    }
+
+    @Test
+    public void testGetEnabledSidesForSecondFromThreePlayers1TOP() throws Exception{
+        this.game.getController().endGame();
+        this.game = creator.createGame("\"SixPointedStar\"",
+                "\"main\"",
+                3, 10);
+        this.game.getController().addPlayer("\"TOP\"", "\"BLUE\"");
+
+        List<BoardSide> testSides = this.game.getController().getEnabledSides();
+        assertTrue(testSides.size() == 2 &&
+                testSides.contains(SixPointedStarSide.RIGHT_BOTTOM) &&
+                testSides.contains(SixPointedStarSide.LEFT_BOTTOM));
+    }
+
+    @Test
+    public void testGetEnabledSidesForSecondFromThreePlayers1BOTTOM() throws Exception{
+        this.game.getController().endGame();
+        this.game = creator.createGame("\"SixPointedStar\"",
+                "\"main\"",
+                3, 10);
+        this.game.getController().addPlayer("\"BOTTOM\"", "\"BLUE\"");
+
+        List<BoardSide> testSides = this.game.getController().getEnabledSides();
+        assertTrue(testSides.size() == 2 &&
+                testSides.contains(SixPointedStarSide.RIGHT_TOP) &&
+                testSides.contains(SixPointedStarSide.LEFT_TOP));
+    }
+
+    @Test
+    public void testGetEnabledSidesForSecondFromThreePlayers1LEFT_TOP() throws Exception{
+        this.game.getController().endGame();
+        this.game = creator.createGame("\"SixPointedStar\"",
+                "\"main\"",
+                3, 10);
+        this.game.getController().addPlayer("\"LEFT_TOP\"", "\"BLUE\"");
+
+        List<BoardSide> testSides = this.game.getController().getEnabledSides();
+        assertTrue(testSides.size() == 2 &&
+                testSides.contains(SixPointedStarSide.RIGHT_TOP) &&
+                testSides.contains(SixPointedStarSide.BOTTOM));
+    }
+
+    @Test
+    public void testGetEnabledSidesForSecondFromThreePlayers1RIGHT_TOP() throws Exception{
+        this.game.getController().endGame();
+        this.game = creator.createGame("\"SixPointedStar\"",
+                "\"main\"",
+                3, 10);
+        this.game.getController().addPlayer("\"RIGHT_TOP\"", "\"BLUE\"");
+
+        List<BoardSide> testSides = this.game.getController().getEnabledSides();
+        assertTrue(testSides.size() == 2 &&
+                testSides.contains(SixPointedStarSide.BOTTOM) &&
+                testSides.contains(SixPointedStarSide.LEFT_TOP));
+    }
+
+    @Test
+    public void testGetEnabledSidesForSecondFromThreePlayers1LEFT_BOTTOM() throws Exception{
+        this.game.getController().endGame();
+        this.game = creator.createGame("\"SixPointedStar\"",
+                "\"main\"",
+                3, 10);
+        this.game.getController().addPlayer("\"LEFT_BOTTOM\"", "\"BLUE\"");
+
+        List<BoardSide> testSides = this.game.getController().getEnabledSides();
+        assertTrue(testSides.size() == 2 &&
+                testSides.contains(SixPointedStarSide.RIGHT_BOTTOM) &&
+                testSides.contains(SixPointedStarSide.TOP));
+    }
+
+    @Test
+    public void testGetEnabledSidesForSecondFromThreePlayers1RIGHT_BOTTOM() throws Exception{
+        this.game.getController().endGame();
+        this.game = creator.createGame("\"SixPointedStar\"",
+                "\"main\"",
+                3, 10);
+        this.game.getController().addPlayer("\"RIGHT_BOTTOM\"", "\"BLUE\"");
+
+        List<BoardSide> testSides = this.game.getController().getEnabledSides();
+        assertTrue(testSides.size() == 2 &&
+                testSides.contains(SixPointedStarSide.TOP) &&
+                testSides.contains(SixPointedStarSide.LEFT_BOTTOM));
+    }
+
+    @Test
+    public void testGetEnabledSidesForLastFromThreePlayers() throws Exception{
+        this.game.getController().endGame();
+        this.game = creator.createGame("\"SixPointedStar\"",
+                "\"main\"",
+                3, 10);
+        this.game.getController().addPlayer("\"RIGHT_BOTTOM\"", "\"BLUE\"");
+        this.game.getController().addPlayer("\"LEFT_BOTTOM\"", "\"RED\"");
+
+        List<BoardSide> testSides = this.game.getController().getEnabledSides();
+        assertTrue(testSides.size() == 1 &&
+                testSides.contains(SixPointedStarSide.TOP)
+        );
+    }
+
+    @Test
+    public void testGetEnabledSidesForSecondFromFourPlayers() throws Exception{
+        this.game.getController().endGame();
+        this.game = creator.createGame("\"SixPointedStar\"",
+                "\"main\"",
+                4, 10);
+        this.game.getController().addPlayer("\"TOP\"", "\"BLUE\"");
+
+        List<BoardSide> testSides = this.game.getController().getEnabledSides();
+        assertTrue(testSides.size() == 5 &&
+                testSides.contains(SixPointedStarSide.RIGHT_TOP) &&
+                testSides.contains(SixPointedStarSide.RIGHT_TOP) &&
+                testSides.contains(SixPointedStarSide.LEFT_BOTTOM) &&
+                testSides.contains(SixPointedStarSide.RIGHT_BOTTOM) &&
+                testSides.contains(SixPointedStarSide.BOTTOM)
+        );
+    }
+
+    @Test
+    public void testGetEnabledSidesForThirdFromFourPlayersFirstBothNonOpposite() throws Exception {
+        this.game.getController().endGame();
+        this.game = creator.createGame("\"SixPointedStar\"",
+                "\"main\"",
+                4, 10);
+        this.game.getController().addPlayer("\"TOP\"", "\"BLUE\"");
+        this.game.getController().addPlayer("\"LEFT_TOP\"", "\"RED\"");
+
+        List<BoardSide> testSides = this.game.getController().getEnabledSides();
+        assertTrue(testSides.size() == 2 &&
+                testSides.contains(SixPointedStarSide.RIGHT_BOTTOM) &&
+                testSides.contains(SixPointedStarSide.BOTTOM)
+        );
+    }
+
+    @Test
+    public void testGetEnabledSidesForThirdFromFourPlayersFirstBothOpposite() throws Exception {
+        this.game.getController().endGame();
+        this.game = creator.createGame("\"SixPointedStar\"",
+                "\"main\"",
+                4, 10);
+        this.game.getController().addPlayer("\"TOP\"", "\"BLUE\"");
+        this.game.getController().addPlayer("\"BOTTOM\"", "\"RED\"");
+
+        List<BoardSide> testSides = this.game.getController().getEnabledSides();
+        assertTrue(testSides.size() == 4 &&
+                testSides.contains(SixPointedStarSide.RIGHT_BOTTOM) &&
+                testSides.contains(SixPointedStarSide.LEFT_BOTTOM) &&
+                testSides.contains(SixPointedStarSide.RIGHT_TOP) &&
+                testSides.contains(SixPointedStarSide.LEFT_TOP)
+        );
+    }
+
+    @Test
+    public void testGetEnabledSidesForLastFromFourPlayers() throws Exception{
+        this.game.getController().endGame();
+        this.game = creator.createGame("\"SixPointedStar\"",
+                "\"main\"",
+                4, 10);
+        this.game.getController().addPlayer("\"TOP\"", "\"BLUE\"");
+        this.game.getController().addPlayer("\"BOTTOM\"", "\"RED\"");
+        this.game.getController().addPlayer("\"LEFT_BOTTOM\"", "\"GREEN\"");
+
+        List<BoardSide> testSides = this.game.getController().getEnabledSides();
+        assertTrue(testSides.size() == 1 &&
+                testSides.contains(SixPointedStarSide.RIGHT_TOP)
+        );
+    }
 
 }

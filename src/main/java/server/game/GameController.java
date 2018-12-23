@@ -51,11 +51,12 @@ public class GameController {
         //allow current player to move
         currentTurnPlayer.setMoveToken(MoveToken.ALLOW);
         started = true;
-        if(this.currentTurnPlayer instanceof Bot){
+        if (this.currentTurnPlayer instanceof Bot) {
             ((Bot) this.currentTurnPlayer).playTurn();
         }
     }
-//todo implement endGame() method and send message to client
+
+    //todo implement endGame() method and send message to client
     public void endGame() {
         this.started = false;
         Server.getInstance().getGames().remove(actual);
@@ -117,7 +118,7 @@ public class GameController {
         //allow next player to move
         this.currentTurnPlayer.setMoveToken(MoveToken.ALLOW);
 
-        if(this.currentTurnPlayer instanceof Bot){
+        if (this.currentTurnPlayer instanceof Bot) {
             ((Bot) this.currentTurnPlayer).playTurn();
         }
 
@@ -159,17 +160,17 @@ public class GameController {
     private void addBot() {
         List<BoardSide> sides = getEnabledSides();
         List<Color> colors = getEnabledColors();
-        if(sides.size() == 0 || colors.size() == 0){
+        if (sides.size() == 0 || colors.size() == 0) {
             return;
         }
         BotAlgorithmTemplate botAlgorithm;
-        if("SixPointedStar".equals(this.actual.getBoard().getType())){
-            if(this.actual.getMovement() instanceof MainMovement){
+        if ("SixPointedStar".equals(this.actual.getBoard().getType())) {
+            if (this.actual.getMovement() instanceof MainMovement) {
                 botAlgorithm = new BotMainMovementOnSPStarAlgorithm();
-            }else{
+            } else {
                 return;
             }
-        }else{
+        } else {
             return;
         }
 
@@ -211,12 +212,11 @@ public class GameController {
         List<BoardSide> result = new ArrayList<>();
 
         if (actual.getBoard().getType().equals("SixPointedStar")) {
-            if (this.actual.getPlayers().size() == 0) {
-                Collections.addAll(result,
-                        SixPointedStarSide.TOP, SixPointedStarSide.LEFT_TOP,
-                        SixPointedStarSide.BOTTOM, SixPointedStarSide.LEFT_BOTTOM,
-                        SixPointedStarSide.RIGHT_TOP, SixPointedStarSide.RIGHT_BOTTOM);
-            }
+
+            Collections.addAll(result,
+                    SixPointedStarSide.TOP, SixPointedStarSide.LEFT_TOP,
+                    SixPointedStarSide.BOTTOM, SixPointedStarSide.LEFT_BOTTOM,
+                    SixPointedStarSide.RIGHT_TOP, SixPointedStarSide.RIGHT_BOTTOM);
 
             switch (this.actual.getNumberOfPlayers()) {
                 case 2:
@@ -282,10 +282,10 @@ public class GameController {
                                         .get(0).getStartingSide()
                         );
                     } else if (this.actual.getPlayers().size() == 2) {
-                        result.clear();
                         Player p0 = this.actual.getPlayers().get(0);
                         Player p1 = this.actual.getPlayers().get(1);
                         if (p0.getStartingSide() != ((SixPointedStarSide) p1.getStartingSide()).getOppositeSide()) {
+                            result.clear();
                             Collections.addAll(
                                     result,
                                     ((SixPointedStarSide) p0.getStartingSide())
@@ -293,33 +293,27 @@ public class GameController {
                                     ((SixPointedStarSide) p1.getStartingSide())
                                             .getOppositeSide()
                             );
+                        } else {
+                            result.remove(p0.getStartingSide());
+                            result.remove(p1.getStartingSide());
                         }
                     } else if (this.actual.getPlayers().size() == 3) {
                         result.clear();
                         Player p0 = this.actual.getPlayers().get(0);
                         Player p1 = this.actual.getPlayers().get(1);
                         Player p2 = this.actual.getPlayers().get(2);
-                        if (p0.getStartingSide() == ((SixPointedStarSide) p1.getStartingSide()).getOppositeSide()) {
-                            result.add(
-                                    ((SixPointedStarSide) p2.getStartingSide()).getOppositeSide()
-                            );
-                        } else if (p2.getStartingSide() == ((SixPointedStarSide) p1.getStartingSide()).getOppositeSide()) {
-                            result.add(
-                                    ((SixPointedStarSide) p0.getStartingSide()).getOppositeSide()
-                            );
-                        } else {
-                            result.add(
-                                    ((SixPointedStarSide) p1.getStartingSide()).getOppositeSide()
-                            );
+                        Collections.addAll(result,
+                                ((SixPointedStarSide)p0.getStartingSide()).getOppositeSide(),
+                                ((SixPointedStarSide)p1.getStartingSide()).getOppositeSide(),
+                                ((SixPointedStarSide)p2.getStartingSide()).getOppositeSide()
+                        );
+
+                        for (Player p : this.actual.getPlayers()) {
+                            result.remove(p.getStartingSide());
                         }
                     }
                     break;
                 case 6:
-                    result.clear();
-                    Collections.addAll(result,
-                            SixPointedStarSide.TOP, SixPointedStarSide.LEFT_TOP,
-                            SixPointedStarSide.BOTTOM, SixPointedStarSide.LEFT_BOTTOM,
-                            SixPointedStarSide.RIGHT_TOP, SixPointedStarSide.RIGHT_BOTTOM);
                     for (Player p : this.actual.getPlayers()) {
                         result.remove(p.getStartingSide());
                     }
