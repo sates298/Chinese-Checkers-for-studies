@@ -20,6 +20,7 @@ import server.player.MoveToken;
 import server.player.Player;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -154,7 +155,17 @@ public class GameControllerTest {
 
     // test getIdColorMap() method
     @Test
-    public void getIdColorMap() {
+    public void testGetIdColorMap() throws BoardSideUsedException, GameFullException, ColorUsedException {
+        this.game.getController().addPlayer("\"TOP\"", "\"BLUE\"");
+        this.game.getController().addPlayer("\"BOTTOM\"", "\"RED\"");
+
+        Map<Integer, String> testMap = this.game.getController().getIdColorMap();
+        assertTrue(testMap.size() == 2 &&
+                testMap.containsKey(0) &&
+                "BLUE".equals(testMap.get(0)) &&
+                testMap.containsKey(1) &&
+                "RED".equals(testMap.get(1))
+        );
     }
 
     //block of methods giving free colors or sides
