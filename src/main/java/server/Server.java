@@ -33,7 +33,7 @@ public class Server {
         int PORT = 1235;
         System.out.println(" Server is running on port " + PORT
             + " to terminate the server, type 'exit' to console and press Enter");
-        Server server = new Server();
+        Server server = Server.getInstance();
         server.start(PORT);
     }
 

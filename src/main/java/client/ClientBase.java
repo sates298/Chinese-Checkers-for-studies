@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ClientBase {
+    private static ClientBase instance;
 
     private int playerId;
     private int gameId;
@@ -26,7 +27,6 @@ public class ClientBase {
     private DrawableField lastClicked;
 
 
-    private static ClientBase instance;
 
     public static ClientBase getInstance() {
         if(instance == null){
