@@ -21,10 +21,12 @@ public class GameCreatorTest {
     @After
     public void tearDown(){
         Server.getInstance().getGames().clear();
+        creator = null;
     }
 
     @Before
     public void setUp(){
+        Server.getInstance().getGames().clear();
         creator = new GameCreator();
     }
 
