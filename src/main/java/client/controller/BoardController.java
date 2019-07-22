@@ -20,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -51,8 +52,10 @@ public class BoardController extends AbstractController implements Initializable
     private Pane pane;
 
     @FXML
-    public void exitAction() {
+    public void exitAction() throws IOException {
+
         ServerConnector.getInstance().endConnection();
+
         exit(exitButton);
     }
 
@@ -69,7 +72,7 @@ public class BoardController extends AbstractController implements Initializable
     }
 
 
-    public void fillLabels(){
+    public void fillLabels() {
         for (int i = 0; i < ClientBase.getInstance().getPlayersToLabel().size(); i++) {
             makeLabel(
                     i,
@@ -162,7 +165,7 @@ public class BoardController extends AbstractController implements Initializable
     @FXML
     public void endTurn() {
         try {
-            if(ClientBase.getInstance().getFirstClicked() != null) {
+            if (ClientBase.getInstance().getFirstClicked() != null) {
                 ClientBase.getInstance().getFirstClicked().setFill(
                         ClientBase.getInstance().getFirstClicked().getMainColor()
                 );
@@ -187,7 +190,7 @@ public class BoardController extends AbstractController implements Initializable
     public void initialize(URL location, ResourceBundle resources) {
         ServerConnector.getInstance().setBoardController(this);
         this.gameId.setText("Game's id : " + ClientBase.getInstance().getGameId());
-        if(ClientBase.getInstance().getPlayerId() != 0){
+        if (ClientBase.getInstance().getPlayerId() != 0) {
             startButton.setVisible(false);
         }
         drawBoard(ClientBase.getInstance().getStartedBoard());
